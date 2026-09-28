@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA-EMS | Live Multi-Agent Simulation Cockpit</title>
+  <meta name="description" content="Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation System — Real-Time Simulation Cockpit & Live FIPA-ACL Telemetry">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <!-- Top Navigation & Control Command Bar -->
+  <header class="cockpit-nav">
+    <div class="nav-left">
+      <a href="index.html" class="nav-back-link" title="Return to Review 2 Presentation Deck">
+        ⏮ Presentation Deck
+      </a>
+      <div class="nav-divider"></div>
+      <div class="brand">
+        <span class="pulse-indicator"></span>
+        <span class="brand-text">AURA-EMS</span>
+        <span class="brand-sub">Mission Control</span>
+      </div>
+      <div class="backend-status-pill" id="backendStatusPill" title="Connection status with Python Mesa core">
+        <span class="status-dot online"></span>
+        <span class="status-label" id="backendStatusLabel">Detecting Backend...</span>
+      </div>
+    </div>
+
+    <!-- Central Playback Controls -->
+    <div class="playback-controls">
+      <button class="ctrl-btn primary" id="btnPlayPause" title="Start or Pause Real-Time Simulation">
+        <span id="playIcon">▶</span> <span id="playText">Run Live</span>
+      </button>
+      <button class="ctrl-btn" id="btnStep" title="Advance by 1 Step (5.0s)">
+        ⏭ Step (5s)
+      </button>
+      <div class="speed-selector">
+        <button class="speed-btn active" data-speed="1.0">1x</button>
+        <button class="speed-btn" data-speed="2.0">2x</button>
+        <button class="speed-btn" data-speed="5.0">5x</button>
+      </div>
+      <div class="scenario-dropdown-wrap">
+        <select id="scenarioSelect" class="scenario-select" title="Switch Stress Scenario">
+          <option value="baseline_normal">Scenario 1: Baseline Urban Flow</option>
+          <option value="mass_casualty_incident">Scenario 2: Highway Disaster (MCI)</option>
+          <option value="hospital_surge">Scenario 3: Hospital Bed Saturation</option>
+          <option value="traffic_gridlock">Scenario 4: Peak Gridlock Storm</option>
+        </select>
+      </div>
+      <button class="ctrl-btn danger" id="btnReset" title="Reset Simulation Model">
+        🔄 Reset
+      </button>
+    </div>
+
+    <!-- Quick Emergency Action Triggers & Utilities -->
+    <div class="nav-right">
+      <button class="action-btn emergency" id="btnTriggerESI1" title="Trigger Critical Resuscitation Call (ESI-1)">
+        🚨 Call ESI-1
+      </button>
+      <button class="action-btn mci" id="btnTriggerMCI" title="Trigger Highway Disaster Cluster (6 Victims)">
+        💥 Disaster MCI
+      </button>
+      <button class="icon-btn" id="themeToggle" title="Toggle Light / Dark Mode" aria-label="Toggle theme">
+        <span class="theme-icon">☀️</span>
+      </button>
+      <button class="icon-btn" id="btnFullscreen" title="Toggle Fullscreen" aria-label="Toggle Fullscreen">
+        <span class="icon">⛶</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Cockpit Viewport -->
+  <main class="cockpit-container">
+
+    <!-- LEFT COLUMN: 2D Interactive City Network & Map -->
+    <section class="city-viewport-panel glass-card">
+      <div class="panel-header">
+        <div class="panel-title-wrap">
+          <span class="icon">🗺️</span>
+          <h2>Urban Topology & Fleet Dispatch Network</h2>
+          <span class="badge blue">6×6 Manhattan Grid · 36 Intersections</span>
+        </div>
+        <div class="map-stats-strip">
+          <span class="stat-pill"><strong id="statActiveCalls">0</strong> Active Incidents</span>
+          <span class="stat-pill"><strong id="statFleetEnRoute">0</strong> En Route</span>
+          <span class="stat-pill"><strong id="statSimTime">0.0s</strong> Simulation Time</span>
+        </div>
+      </div>
+
+      <!-- Canvas / SVG Visualization Stage -->
+      <div class="canvas-stage-wrapper" id="canvasWrapper">
+        <canvas id="cityCanvas" width="800" height="600"></canvas>
+        <div class="canvas-overlay-hint">
+          💡 <strong>Interactive Demo:</strong> Click any intersection on the grid to immediately spawn an emergency call and watch real-time auction bidding!
+        </div>
+      </div>
+
+      <!-- Map Legend & Node Legend -->
+      <div class="map-legend-bar">
+        <div class="legend-group">
+          <span class="legend-item"><span class="node-dot hospital h1"></span> Apollo Metro (Level 1 Trauma)</span>
+          <span class="legend-item"><span class="node-dot hospital h2"></span> St. Jude (Level 2 Center)</span>
+          <span class="legend-item"><span class="node-dot hospital h3"></span> Westside (Level 3 Center)</span>
+        </div>
+        <div class="legend-group">
+          <span class="legend-item"><span class="vehicle-dot als"></span> ALS Paramedic</span>
+          <span class="legend-item"><span class="vehicle-dot bls"></span> BLS Basic</span>
+          <span class="legend-item"><span class="vehicle-dot nicu"></span> NICU Incubator</span>
+          <span class="legend-item"><span class="vehicle-dot hems"></span> HEMS Helicopter</span>
+        </div>
+        <div class="legend-group">
+          <span class="legend-item"><span class="esi-dot esi1"></span> ESI-1 Critical</span>
+          <span class="legend-item"><span class="esi-dot esi2"></span> ESI-2 Emergent</span>
+          <span class="legend-item"><span class="road-dot congested"></span> Congested Road</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: Multi-Agent Telemetry, FIPA-ACL Stream & Metrics -->
+    <aside class="telemetry-panel-column">
+
+      <!-- KPI Metrics Strip -->
+      <div class="kpi-metrics-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Avg Response Time</span>
+          <div class="kpi-val green" id="kpiAvgResp">4.82 min</div>
+          <span class="kpi-sub">58.9% faster than CAD</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Critical ESI-1 Time</span>
+          <div class="kpi-val green" id="kpiESI1Resp">2.46 min</div>
+          <span class="kpi-sub">78.0% critical speedup</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Ambulance Ramping</span>
+          <div class="kpi-val blue" id="kpiRamping">0.00 min</div>
+          <span class="kpi-sub">100% eliminated</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Golden Hour SLA</span>
+          <div class="kpi-val purple" id="kpiGoldenHour">99.4%</div>
+          <span class="kpi-sub">Target &lt; 60 min</span>
+        </div>
+      </div>
+
+      <!-- Tabbed Telemetry Views -->
+      <div class="telemetry-tabs-card glass-card">
+        <div class="telemetry-tab-nav" id="telemetryTabNav">
+          <button class="t-tab-btn active" data-tab="fipa">FIPA-ACL Messages</button>
+          <button class="t-tab-btn" data-tab="fleet">Fleet Telemetry</button>
+          <button class="t-tab-btn" data-tab="hospitals">Hospital ER Beds</button>
+        </div>
+
+        <div class="telemetry-tab-content">
+          <!-- TAB 1: Live FIPA-ACL Communicative Act Stream -->
+          <div class="tab-pane active" id="tab-fipa">
+            <div class="fipa-header">
+              <span class="terminal-title">Real-Time Communicative Acts (CFP / PROPOSE / INFORM)</span>
+              <button class="mini-btn" id="btnClearLog">Clear</button>
+            </div>
+            <div class="fipa-terminal" id="fipaTerminal">
+              <!-- Dynamically populated by dashboard.js -->
+              <div class="term-entry inform">
+                <span class="time">[0.0s]</span>
+                <span class="perf blue">INFORM</span>
+                <span class="detail">SYSTEM: AURA-EMS Multi-Agent Engine initialized. 6 Ambulances, 3 Hospitals online.</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: Fleet State Telemetry -->
+          <div class="tab-pane" id="tab-fleet">
+            <div class="fleet-cards-wrap" id="fleetCardsContainer">
+              <!-- Dynamically populated by dashboard.js -->
+            </div>
+          </div>
+
+          <!-- TAB 3: Hospital ER Bed Capacity & Diversion -->
+          <div class="tab-pane" id="tab-hospitals">
+            <div class="hospital-cards-wrap" id="hospitalCardsContainer">
+              <!-- Dynamically populated by dashboard.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Incident Queue Summary -->
+      <div class="incident-queue-card glass-card">
+        <div class="card-head">
+          <span class="icon">🚨</span>
+          <h3>Active Emergency Incident Queue</h3>
+          <span class="badge red" id="badgeQueueCount">0 Waiting</span>
+        </div>
+        <div class="incident-queue-list" id="incidentQueueList">
+          <div class="empty-queue-msg">No active emergency calls pending dispatch. Nominal steady-state.</div>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
