@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURA-EMS | Review 1 Presentation (10 Marks)</title>
-  <meta name="description" content="Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation System — 23CSE301 FOAI Case Study Review 1 Presentation">
+  <title>AURA-EMS | Autonomous Multi-Agent Emergency Response System</title>
+  <meta name="description" content="Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation System — 23CSE301 FOAI Case Study Presentation">
 
   <!-- Premium Typography -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,14 +28,14 @@
       </div>
     </div>
 
-    <!-- Quick Slide Nav Pills -->
+    <!-- Quick Slide Nav Pills (No Marks) -->
     <nav class="slide-nav-pills" id="slideNavPills">
-      <button class="nav-pill active" data-slide="0" title="Slide 1: Overview">01 Title</button>
-      <button class="nav-pill" data-slide="1" title="Slide 2: PEAS (3M)">02 PEAS [3M]</button>
-      <button class="nav-pill" data-slide="2" title="Slide 3: Env & Agents (3M)">03 Env [3M]</button>
-      <button class="nav-pill" data-slide="3" title="Slide 4: Algorithms (3M)">04 Algos [3M]</button>
-      <button class="nav-pill" data-slide="4" title="Slide 5: Live Demo">05 Demo</button>
-      <button class="nav-pill" data-slide="5" title="Slide 6: Q&A & Plan (1M)">06 Q&A [1M]</button>
+      <button class="nav-pill active" data-slide="0" title="Slide 1: Title & Overview">01 Title</button>
+      <button class="nav-pill" data-slide="1" title="Slide 2: PEAS Formulation">02 PEAS</button>
+      <button class="nav-pill" data-slide="2" title="Slide 3: Environment & Agents">03 Environment</button>
+      <button class="nav-pill" data-slide="3" title="Slide 4: Algorithmic Modeling">04 Algorithms</button>
+      <button class="nav-pill" data-slide="4" title="Slide 5: Live Simulation Demo">05 Live Demo</button>
+      <button class="nav-pill" data-slide="5" title="Slide 6: Defense & Roadmap">06 Defense & Plan</button>
     </nav>
 
     <div class="pres-header-right">
@@ -44,6 +44,12 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span id="timerText">00:00</span>
       </div>
+
+      <!-- Export to PDF Button -->
+      <button class="export-pdf-btn" id="btnExportPDF" title="Export entire presentation to clean PDF (Landscape)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span>Export PDF</span>
+      </button>
 
       <!-- Fullscreen Toggle -->
       <button class="icon-btn" id="btnFullscreen" title="Toggle Fullscreen Presentation">
@@ -64,7 +70,7 @@
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════════
-       MAIN SLIDE CONTAINER (Page-Wise Keynote Frame)
+       MAIN SLIDE CONTAINER (Fit-to-Page Keynote Frame)
        ══════════════════════════════════════════════════════════════════════════ -->
   <main class="deck-viewport">
 
@@ -78,40 +84,40 @@
           <span class="tag-sep">•</span>
           <span>AMRITA SCHOOL OF COMPUTING</span>
           <span class="tag-sep">•</span>
-          <span class="rubric-badge total">REVIEW 1: 10 MARKS</span>
+          <span class="section-tag">CASE STUDY PRESENTATION</span>
         </div>
 
-        <h1 class="main-title">Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation System</h1>
+        <h1 class="main-title">Autonomous Multi-Agent Ambulance Dispatch &amp; Hospital Allocation System</h1>
         <p class="main-subtitle">A decentralized edge architecture combining Contract Net Protocol (CNP) auctions, Time-Dependent A* search, and Gale-Shapley stable matching for life-critical urban emergency logistics.</p>
 
-        <!-- Rubric Distribution Grid -->
+        <!-- Topic Pillars Strip -->
         <div class="rubric-summary-strip">
           <div class="rubric-box">
-            <div class="rb-mark">3 Marks</div>
+            <div class="rb-mark">MODULE 01</div>
             <div class="rb-title">PEAS Formulation</div>
-            <div class="rb-sub">Dispatcher, Fleet & Hospital ER</div>
+            <div class="rb-sub">Dispatcher, Fleet &amp; Hospital ER</div>
           </div>
           <div class="rubric-box">
-            <div class="rb-mark">3 Marks</div>
-            <div class="rb-title">Environment & Agents</div>
-            <div class="rb-sub">7 Canonical Dimensions & CNP</div>
+            <div class="rb-mark">MODULE 02</div>
+            <div class="rb-title">Environment &amp; Agents</div>
+            <div class="rb-sub">7 Canonical Dimensions &amp; CNP</div>
           </div>
           <div class="rubric-box">
-            <div class="rb-mark">3 Marks</div>
+            <div class="rb-mark">MODULE 03</div>
             <div class="rb-title">Algorithmic Modeling</div>
-            <div class="rb-sub">Time-Dependent A*, D* Lite & Gale-Shapley</div>
+            <div class="rb-sub">Time-Dependent A*, D* Lite &amp; Gale-Shapley</div>
           </div>
           <div class="rubric-box">
-            <div class="rb-mark">1 Mark</div>
-            <div class="rb-title">Presentation & Q&A</div>
-            <div class="rb-sub">Viva Defense & Review 2 Roadmap</div>
+            <div class="rb-mark">MODULE 04</div>
+            <div class="rb-title">System Defense &amp; Plan</div>
+            <div class="rb-sub">Viva Examination &amp; Review 2 Plan</div>
           </div>
         </div>
 
         <!-- Team Composition & Topic Distribution Card -->
         <div class="team-card">
           <div class="team-card-header">
-            <div class="tch-title">👥 Project Team & Topic Defense Allocation</div>
+            <div class="tch-title">👥 Project Team &amp; Technical Defense Areas</div>
             <div class="tch-meta">CB.SC.U4CSE235xx · 23CSE301 Foundations of Artificial Intelligence</div>
           </div>
           <div class="team-members-grid">
@@ -119,30 +125,30 @@
               <span class="mb-role">MEMBER 1 · LEAD</span>
               <span class="mb-name">Akshar Sakhi</span>
               <span class="mb-roll">CB.SC.U4CSE23547</span>
-              <span class="mb-topic">System Architecture & Dispatcher/Ambulance PEAS Formulation</span>
+              <span class="mb-topic">System Architecture &amp; Dispatcher/Ambulance PEAS Formulation</span>
             </div>
             <div class="member-box">
               <span class="mb-role">MEMBER 2</span>
               <span class="mb-name">Nishanth</span>
               <span class="mb-roll">CB.SC.U4CSE23538</span>
-              <span class="mb-topic">Hospital ER Agent PEAS, Clinical ESI Matrix & 7-Dimension Analysis</span>
+              <span class="mb-topic">Hospital ER Agent PEAS, Clinical ESI Matrix &amp; 7-Dimension Analysis</span>
             </div>
             <div class="member-box">
               <span class="mb-role">MEMBER 3</span>
               <span class="mb-name">Sanjay Balaji</span>
               <span class="mb-roll">CB.SC.U4CSE23535</span>
-              <span class="mb-topic">Agent Typologies, Decision Loop & Contract Net Protocol (CNP)</span>
+              <span class="mb-topic">Agent Typologies, Decision Loop &amp; Contract Net Protocol (CNP)</span>
             </div>
             <div class="member-box">
               <span class="mb-role">MEMBER 4</span>
               <span class="mb-name">Sharwin</span>
               <span class="mb-roll">CB.SC.U4CSE235xx</span>
-              <span class="mb-topic">Search Strategy (TDA*, D* Lite), Matching Theory & Review 2 Plan</span>
+              <span class="mb-topic">Search Strategy (TDA*, D* Lite), Matching Theory &amp; Review 2 Plan</span>
             </div>
           </div>
         </div>
 
-        <!-- Problem Statement Strip -->
+        <!-- Motivation Strip -->
         <div class="motivation-strip">
           <div class="ms-item">
             <span class="ms-icon">⚡</span>
@@ -150,7 +156,7 @@
           </div>
           <div class="ms-item">
             <span class="ms-icon">🏥</span>
-            <div><strong>Zero Ambulance Offload Delay:</strong> Eliminates hospital bay idling (up to 90 min) by bilateral pre-arrival trauma bed reservation locks before departure.</div>
+            <div><strong>Zero Ambulance Offload Delay:</strong> Eliminates hospital bay idling (up to 90 min) by bilateral pre-arrival trauma bed reservation locks before vehicle departure.</div>
           </div>
         </div>
       </div>
@@ -158,15 +164,15 @@
 
 
     <!-- ──────────────────────────────────────────────────────────────────────
-         SLIDE 2: PEAS FORMULATION (3 MARKS)
+         SLIDE 2: PEAS FORMULATION
          ────────────────────────────────────────────────────────────────────── -->
     <section class="slide-page" id="slide1">
       <div class="slide-inner">
         <div class="slide-tag-row">
-          <span class="rubric-badge">RUBRIC COMPONENT 1 · 3 MARKS</span>
+          <span class="section-tag">SYSTEM SPECIFICATION</span>
           <span class="slide-category">PEAS FORMULATION FOR AUTONOMOUS EMERGENCY RESPONSE AGENTS</span>
         </div>
-        <h2 class="slide-heading">Comprehensive PEAS Matrix & Clinical Triage Model</h2>
+        <h2 class="slide-heading">Comprehensive PEAS Matrix &amp; Clinical Triage Model</h2>
         <p class="slide-subheading">Formal characterization of Performance Measures (P), Environment (E), Actuators (A), and Sensors (S) across heterogeneous agents.</p>
 
         <!-- 3-Column PEAS Grid -->
@@ -247,7 +253,7 @@
         <!-- Clinical Triage Framework (ESI 1-5) -->
         <div class="triage-panel">
           <div class="triage-header">
-            <span class="th-title">🩺 Clinical Urgency & Golden Hour Severity Model (Emergency Severity Index - ESI)</span>
+            <span class="th-title">🩺 Clinical Urgency &amp; Golden Hour Severity Model (Emergency Severity Index - ESI)</span>
             <span class="th-meta">Target: Survival Probability $P(\text{survival}) = e^{-\lambda \cdot \text{ETA}}$</span>
           </div>
           <div class="triage-grid">
@@ -282,13 +288,13 @@
 
 
     <!-- ──────────────────────────────────────────────────────────────────────
-         SLIDE 3: ENVIRONMENT & AGENT ANALYSIS (3 MARKS)
+         SLIDE 3: ENVIRONMENT & AGENT ANALYSIS
          ────────────────────────────────────────────────────────────────────── -->
     <section class="slide-page" id="slide2">
       <div class="slide-inner">
         <div class="slide-tag-row">
-          <span class="rubric-badge">RUBRIC COMPONENT 2 · 3 MARKS</span>
-          <span class="slide-category">ENVIRONMENT TAXONOMY & MULTI-AGENT INTERACTION PROTOCOLS</span>
+          <span class="section-tag">SYSTEM CHARACTERIZATION</span>
+          <span class="slide-category">ENVIRONMENT TAXONOMY &amp; MULTI-AGENT INTERACTION PROTOCOLS</span>
         </div>
         <h2 class="slide-heading">Russell &amp; Norvig's 7 Canonical Dimensions &amp; CNP Bidding</h2>
         <p class="slide-subheading">Formal environment classification, internal agent decision architecture, and FIPA-ACL negotiation protocols.</p>
@@ -298,8 +304,8 @@
           <table class="classic-table">
             <thead>
               <tr>
-                <th style="width: 18%;">Dimension</th>
-                <th style="width: 22%;">Classification</th>
+                <th style="width: 17%;">Dimension</th>
+                <th style="width: 21%;">Classification</th>
                 <th>Rigorous Technical Justification &amp; Algorithmic Impact</th>
               </tr>
             </thead>
@@ -412,13 +418,13 @@
 
 
     <!-- ──────────────────────────────────────────────────────────────────────
-         SLIDE 4: ALGORITHMIC MODELING & SEARCH STRATEGY (3 MARKS)
+         SLIDE 4: ALGORITHMIC MODELING & SEARCH STRATEGY
          ────────────────────────────────────────────────────────────────────── -->
     <section class="slide-page" id="slide3">
       <div class="slide-inner">
         <div class="slide-tag-row">
-          <span class="rubric-badge">RUBRIC COMPONENT 3 · 3 MARKS</span>
-          <span class="slide-category">ALGORITHMIC MODELING, OPTIMAL SEARCH & MATCHING THEORY</span>
+          <span class="section-tag">MATHEMATICAL FOUNDATION</span>
+          <span class="slide-category">ALGORITHMIC MODELING, OPTIMAL SEARCH &amp; MATCHING THEORY</span>
         </div>
         <h2 class="slide-heading">Time-Dependent A*, D* Lite Replanning &amp; Gale-Shapley Matching</h2>
         <p class="slide-subheading">Formal search formulation, mathematical admissibility proof, dynamic replanning, and two-sided stable matching.</p>
@@ -520,7 +526,7 @@
     <section class="slide-page" id="slide4">
       <div class="slide-inner sim-slide-layout">
         <div class="slide-tag-row">
-          <span class="rubric-badge live">INTERACTIVE SYSTEM DEMO · REAL-TIME MAS SIMULATION</span>
+          <span class="section-tag live">SYSTEM VALIDATION</span>
           <span class="slide-category">LIVE CANVASES · REAL-TIME BDI DISPATCH · A* PATHFINDING · D* LITE REPLANNING</span>
         </div>
 
@@ -620,25 +626,25 @@
 
 
     <!-- ──────────────────────────────────────────────────────────────────────
-         SLIDE 6: Q&A, MECHANICS & REVIEW 2 ROADMAP (1 MARK)
+         SLIDE 6: Q&A DEFENSE & REVIEW 2 ROADMAP
          ────────────────────────────────────────────────────────────────────── -->
     <section class="slide-page" id="slide5">
       <div class="slide-inner">
         <div class="slide-tag-row">
-          <span class="rubric-badge">RUBRIC COMPONENT 4 · 1 MARK</span>
-          <span class="slide-category">VIVA DEFENSE STRATEGY &amp; REVIEW 2 IMPLEMENTATION ROADMAP</span>
+          <span class="section-tag">DEFENSE &amp; ROADMAP</span>
+          <span class="slide-category">VIVA DEFENSE STRATEGY &amp; IMPLEMENTATION ROADMAP</span>
         </div>
-        <h2 class="slide-heading">Review 2 Milestone Plan &amp; Examiner Cross-Examination Defense</h2>
-        <p class="slide-subheading">Technical roadmap directly mapped to Review 2 marks distribution and model answers for viva defense.</p>
+        <h2 class="slide-heading">Review 2 Implementation Plan &amp; Examiner Cross-Examination Defense</h2>
+        <p class="slide-subheading">Technical milestone roadmap for the upcoming evaluation review and model answers for viva defense.</p>
 
         <div class="viva-roadmap-grid">
-          <!-- Left: 6-Week Sprints mapped to Review 2 (10 Marks) -->
+          <!-- Left: 6-Week Sprints mapped to Review 2 -->
           <div class="classic-card">
-            <h3 class="card-title">🗓 6-Week Implementation Plan Mapped to Review 2 (10 Marks)</h3>
+            <h3 class="card-title">🗓 6-Week Implementation Roadmap for Review 2</h3>
             <div class="roadmap-timeline">
               <!-- Sprint 1 -->
               <div class="timeline-step">
-                <div class="ts-badge">WEEKS 1–2 · 3 MARKS</div>
+                <div class="ts-badge">PHASE 1 · WEEKS 1–2</div>
                 <div class="ts-title">Tool / Package Selection &amp; Setup</div>
                 <ul class="ts-list">
                   <li>Configure <strong>Python Mesa / JADE</strong> Multi-Agent framework with discrete-event scheduler.</li>
@@ -649,7 +655,7 @@
 
               <!-- Sprint 2 -->
               <div class="timeline-step">
-                <div class="ts-badge">WEEKS 3–4 · 3 MARKS</div>
+                <div class="ts-badge">PHASE 2 · WEEKS 3–4</div>
                 <div class="ts-title">Multi-Agent Execution &amp; Interaction</div>
                 <ul class="ts-list">
                   <li>Implement FIPA-ACL Contract Net Protocol auction message handlers.</li>
@@ -660,7 +666,7 @@
 
               <!-- Sprint 3 -->
               <div class="timeline-step">
-                <div class="ts-badge">WEEKS 5–6 · 4 MARKS</div>
+                <div class="ts-badge">PHASE 3 · WEEKS 5–6</div>
                 <div class="ts-title">Demo Quality, Testing &amp; Scalability</div>
                 <ul class="ts-list">
                   <li>Stress test Mass Casualty Incident (MCI) surges with simultaneous code-red calls.</li>
@@ -724,14 +730,14 @@
       </button>
     </div>
 
-    <!-- Dots pagination -->
+    <!-- Dots pagination (No Marks) -->
     <div class="slide-dots" id="slideDots">
       <span class="dot active" data-slide="0" title="Slide 1: Title & Overview"></span>
-      <span class="dot" data-slide="1" title="Slide 2: PEAS Formulation (3M)"></span>
-      <span class="dot" data-slide="2" title="Slide 3: Environment & Agents (3M)"></span>
-      <span class="dot" data-slide="3" title="Slide 4: Algorithmic Modeling (3M)"></span>
+      <span class="dot" data-slide="1" title="Slide 2: PEAS Formulation"></span>
+      <span class="dot" data-slide="2" title="Slide 3: Environment & Agents"></span>
+      <span class="dot" data-slide="3" title="Slide 4: Algorithmic Modeling"></span>
       <span class="dot" data-slide="4" title="Slide 5: Live Simulation Demo"></span>
-      <span class="dot" data-slide="5" title="Slide 6: Q&A & Plan (1M)"></span>
+      <span class="dot" data-slide="5" title="Slide 6: Defense & Roadmap"></span>
     </div>
 
     <div class="footer-right">

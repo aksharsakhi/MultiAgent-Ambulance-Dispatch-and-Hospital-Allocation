@@ -14,11 +14,11 @@
 
   const slideTitles = [
     '01 / Title & Executive Overview',
-    '02 / PEAS Formulation [3 Marks]',
-    '03 / Environment & Agent Analysis [3 Marks]',
-    '04 / Algorithmic Modeling & Search Strategy [3 Marks]',
+    '02 / PEAS Formulation',
+    '03 / Environment & Agent Analysis',
+    '04 / Algorithmic Modeling & Search Strategy',
     '05 / Live MAS Simulation & System Validation',
-    '06 / Q&A Defense & Review 2 Roadmap [1 Mark]'
+    '06 / System Defense & Review 2 Roadmap'
   ];
 
   // ── DOM Initialization ───────────────────────────────────
@@ -33,6 +33,7 @@
     setupThemeToggle();
     setupTimer();
     setupFullscreen();
+    setupExportPDF();
     setupVivaAccordion();
     bootSim();
     setupSimControls();
@@ -169,6 +170,25 @@
       } else {
         document.exitFullscreen().catch(() => {});
       }
+    });
+  }
+
+  // ══════════════════════════════════════════════════════════
+  // EXPORT TO PDF
+  // ══════════════════════════════════════════════════════════
+  function setupExportPDF() {
+    const btn = document.getElementById('btnExportPDF');
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      // Ensure simulation canvas is drawn before print
+      if (sim) {
+        try {
+          sim.draw();
+        } catch (e) {
+          console.warn('Canvas render before print warning:', e);
+        }
+      }
+      window.print();
     });
   }
 
