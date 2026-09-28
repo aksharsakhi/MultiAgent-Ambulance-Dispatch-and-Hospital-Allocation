@@ -38,7 +38,13 @@ Modern metropolitan emergency healthcare systems suffer from a systemic **"Doubl
 
 ## 🏆 Academic Review Rubrics Breakdown (20 Marks Total)
 
-### 📋 Review 1: Formulation, Modeling & Search Strategy (10 Marks)
+### 🎖️ Combined Master Defense Presentation (Reviews 1 &amp; 2 Combined · 20 Marks Total)
+For faculty panels that evaluate both Review 1 (Theory &amp; Formalisms) and Review 2 (Implementation &amp; Benchmarks) in a single session, a unified **10-slide Keynote presentation deck** is provided in [`Master_Review/`](https://aksharsakhi.github.io/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/Master_Review/):
+- **Zero Redundancy:** Seamlessly transitions from mathematical formulation and search theory directly into software architecture and empirical validation without repeated problem overviews or outdated roadmap filler.
+- **Exact 20-Mark Rubric Coverage:** Perfectly balances all 8 evaluation criteria across both reviews (PEAS 3M, Environment 3M, Algorithms 3M, Tools 3M, Multi-Agent 3M, Scenarios/Benchmarks 3M, Scalability 1M, Viva Defense 1M).
+- **Interactive Mechanics:** Embedded 4-scenario benchmark switcher, publication plot viewer, 6-question viva cross-examination accordion, speech rehearsal timer, and 1-click clean landscape PDF export (`Ctrl+P` / `⌘+P`).
+
+### 📋 Review 1: Formulation, Modeling &amp; Search Strategy (10 Marks)
 | Evaluation Component | Weight | Implementation Details in Repo |
 | :--- | :---: | :--- |
 | **PEAS Formulation** | **3M** | Formalized Performance metrics ($T_{\text{response}}$, $T_{\text{transit}}$, Survival $\lambda$), Stochastic Environment, Specialized Actuators, and Multi-Modal Telemetry Sensors. |
@@ -125,20 +131,30 @@ The benchmark engine outputs publication-ready high-resolution plots located in 
 
 ```tree
 MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/
-├── index.html                      # Root Dual-Review Launchpad Portal (GitHub Pages)
+├── index.html                      # Root Triple-Review Launchpad Portal (GitHub Pages)
 ├── README.md                       # Master Documentation & Benchmark Dossier
 │
-├── Review_1/                       # Academic Review 1 Workspace
+├── Master_Review/                  # 🏆 Combined Master Defense Deck (20 Marks Total)
+│   ├── index.html                  # 10-Slide Keynote Presentation Deck (Reviews 1 & 2 Combined)
+│   ├── styles.css                  # Modern Presentation Design System (Light/Dark + PDF Print)
+│   ├── app.js                      # Deck Controller, Scenario Switcher, Plot Tabs & Viva Accordion
+│   └── favicon.ico                 # Emergency Medical Cross Favicon
+│
+├── Review_1/                       # Academic Review 1 Workspace (10 Marks)
 │   ├── index.html                  # 6-Slide Keynote Presentation Deck (Default Light Mode)
 │   ├── styles.css                  # Apple/Google Glassmorphism Design System
 │   ├── app.js                      # Deck Controller, Fit-to-Page & Rehearsal Timer
 │   └── simulation.js               # 60 FPS HTML5 Canvas City Simulation Engine
 │
-└── Review_2/                       # Academic Review 2 Workspace
+└── Review_2/                       # Academic Review 2 Workspace (10 Marks)
     ├── config.yaml                 # Simulation Hyperparameters & Environment Config
     ├── requirements.txt            # Python Dependencies (Mesa, SimPy, NetworkX, etc.)
     ├── verify_setup.py             # Automated 6-Point Dependency & Topology Validator
     ├── main.py                     # Interactive Terminal CLI Dashboard & ASCII Grid
+    ├── server.py                   # Zero-Dependency Python Mesa Backend & REST API
+    ├── dashboard.html              # 🎮 Live Simulation Cockpit UI (Mission Control Center)
+    ├── dashboard.css               # Cockpit Styling & HUD Overlays
+    ├── dashboard.js                # Dual-Engine WebSocket/REST Telemetry Engine
     ├── Review2_Comprehensive_Report.md # Full 10-Mark Academic Dossier
     ├── index.html                  # Review 2 Web Presentation Deck (Keynote Style)
     ├── styles.css                  # Review 2 Modern Presentation Styling
@@ -150,7 +166,7 @@ MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/
     │   │   ├── d_star_lite.py           # Dynamic incremental replanning
     │   │   └── gale_shapley_matching.py # Stable marriage hospital bed allocation
     │   ├── environment/            # Environment Subsystem
-    │   │   ├── city_graph.py            # 16-node Manhattan graph with dynamic congestion
+    │   │   ├── city_graph.py            # 36-node Manhattan graph with dynamic congestion
     │   │   └── incident_generator.py    # Poisson arrival process & ESI 1-5 triage
     │   ├── agents/                 # Multi-Agent BDI Subsystem
     │   │   ├── messages.py              # FIPA-ACL communicative acts & envelopes
@@ -163,14 +179,14 @@ MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/
     │       └── scenarios.py             # 4 Mission-Critical Stress Scenarios
     │
     ├── benchmarks/                 # Comparative Evaluation Suite
-    │   ├── baseline_cad.py          # Legacy centralized CAD simulator
+    │   ├── legacy_cad.py            # Legacy centralized CAD simulator
     │   ├── benchmark_engine.py      # Head-to-head 100-episode Monte Carlo runner
     │   ├── generate_plots.py        # Publication-grade chart renderer
     │   └── plots/                   # Generated High-Resolution Charts (PNG)
-    │       ├── response_time_cdf.png
-    │       ├── triage_response_by_esi.png
-    │       ├── hospital_ed_wait_times.png
-    │       └── fleet_utilization_breakdown.png
+    │       ├── response_time_comparison.png
+    │       ├── offload_delay_reduction.png
+    │       ├── specialty_matching_rate.png
+    │       └── mci_disaster_clearance.png
     │
     └── tests/                      # Automated Testing Suite (100% Pass)
         ├── test_agents.py          # FIPA-ACL messaging & bidding tests
