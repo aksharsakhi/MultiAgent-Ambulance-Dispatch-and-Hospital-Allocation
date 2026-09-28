@@ -201,6 +201,12 @@
                       <td>Declarative simulation hyperparameters & grid configuration</td>
                       <td>Decoupled configuration from algorithmic source code</td>
                     </tr>
+                    <tr>
+                      <td><span class="badge blue">http.server / REST</span></td>
+                      <td><code>Standard Lib</code></td>
+                      <td>Unified Python Mesa backend & live telemetry streaming</td>
+                      <td>Zero extra pip dependencies; runs real-time terminal & web cockpit</td>
+                    </tr>
                   </tbody>
                 </table>
               </div>
@@ -443,6 +449,20 @@
               </div>
             </div>
           </div>
+
+          <!-- Live System Demonstration Architecture Card -->
+          <div class="glass-card" style="margin-top: 14px; padding: 12px 18px; flex-direction: row; align-items: center; justify-content: space-between; background: linear-gradient(135deg, rgba(37, 99, 235, 0.08) 0%, rgba(16, 185, 129, 0.08) 100%); border-color: rgba(37, 99, 235, 0.25);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <span style="font-size: 1.8rem;">🎮</span>
+              <div>
+                <strong style="font-size: 0.92rem; font-family: var(--font-display); color: var(--text-main); display: block;">Live Interactive Simulation Cockpit:</strong>
+                <span style="font-size: 0.8rem; color: var(--text-muted);">Real-time Python Mesa core (<code>server.py</code>) streaming live FIPA-ACL auction logs, dynamic A* routes, and Gale-Shapley matching directly to the browser cockpit at 5 Hz.</span>
+              </div>
+            </div>
+            <a href="dashboard.html" style="display: inline-flex; align-items: center; gap: 6px; background: var(--blue); color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.82rem; padding: 8px 14px; border-radius: 8px; box-shadow: 0 4px 12px var(--blue-dim); transition: 0.2s;" target="_blank">
+              Launch Live Cockpit ↗
+            </a>
+          </div>
         </div>
       </section>
 
@@ -653,6 +673,16 @@
                   </button>
                   <div class="viva-a">
                     <p>Scenario 2 simulates this directly: Dispatcher activates disaster triage sorting calls by ESI acuity. Quick response motorbikes arrive first to perform field stabilization, while ALS and BLS ambulances are assigned in waves via parallel auction batches, achieving clearance 68% faster than serial dispatch.</p>
+                  </div>
+                </div>
+
+                <div class="viva-item">
+                  <button class="viva-q">
+                    <span>Q5: How does the backend communicate with the presentation dashboard in real time?</span>
+                    <span class="viva-icon">▾</span>
+                  </button>
+                  <div class="viva-a">
+                    <p><code>Review_2/server.py</code> executes the Mesa simulation model with a multithreaded stepping controller and interactive non-blocking terminal hotkeys ([s] step, [r] run, [1] ESI-1 call, [m] MCI disaster). It exposes REST endpoints (<code>/api/state</code>, <code>/api/step</code>, <code>/api/spawn</code>) that stream live FIPA-ACL communicative acts, active A* route coordinates, and hospital bed occupancies to the web cockpit at 5 Hz, enabling side-by-side terminal and browser demonstration.</p>
                   </div>
                 </div>
               </div>
