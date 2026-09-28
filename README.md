@@ -13,10 +13,11 @@
 
 Experience both academic review presentations and interactive engines live in your browser:
 
-| Presentation Deck | Focus & Core Artifacts | Live Access Link |
+| Presentation / System | Focus & Core Artifacts | Live Access Link |
 | :--- | :--- | :--- |
 | **Review 1 Presentation** | PEAS Formulation, Environment Typology, Dynamic A* & 60 FPS City Simulation | 🔗 **[Launch Review 1 Deck](https://aksharsakhi.github.io/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/Review_1/)** |
 | **Review 2 Presentation** | Multi-Agent Engine, FIPA-ACL Protocol, 4 Stress Scenarios & Empirical Benchmarks | 🔗 **[Launch Review 2 Deck](https://aksharsakhi.github.io/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/Review_2/)** |
+| **🎮 Live Simulation Cockpit** | Real-Time Multi-Agent Mission Control, 36-Node City Map, Live FIPA-ACL Telemetry & Python Backend | 🔗 **[Launch Live Cockpit](https://aksharsakhi.github.io/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/Review_2/dashboard.html)** |
 
 ---
 
@@ -192,13 +193,20 @@ pip install -r requirements.txt
 python verify_setup.py
 ```
 
-### 2. Run Interactive Terminal Dashboard
-Experience real-time multi-agent dispatch with an ASCII city grid, live FIPA-ACL message telemetry, and step-by-step agent decisions:
+### 2. Launch Multi-Agent Backend & Live Web Cockpit
+Run the unified Python server that executes the Mesa multi-agent engine and serves the interactive browser cockpit simultaneously:
+```bash
+python server.py
+```
+Then open `http://localhost:8000/Review_2/dashboard.html` in your browser to inspect the live multi-agent simulation cockpit with real-time FIPA-ACL auction message streams!
+
+### 3. Run Interactive Terminal Dashboard (CLI Mode)
+Experience terminal-based dispatch with an ASCII city grid and step-by-step agent decisions:
 ```bash
 python main.py
 ```
 
-### 3. Run Benchmark Suite & Generate Visualizations
+### 4. Run Benchmark Suite & Generate Visualizations
 Execute head-to-head Monte Carlo simulations against legacy CAD:
 ```bash
 # Run benchmark engine
@@ -208,7 +216,7 @@ python benchmarks/benchmark_engine.py
 python benchmarks/generate_plots.py
 ```
 
-### 4. Run Automated Test Suite
+### 5. Run Automated Test Suite
 ```bash
 python -m unittest discover -s tests
 ```
