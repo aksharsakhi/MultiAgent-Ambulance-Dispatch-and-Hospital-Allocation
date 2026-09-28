@@ -146,11 +146,13 @@
     const toggle = document.getElementById('themeToggle');
     if (!toggle) return;
 
-    const saved = localStorage.getItem('aura-theme');
-    if (saved) document.documentElement.setAttribute('data-theme', saved);
+    // Default to light mode as requested
+    const saved = localStorage.getItem('aura-theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    if (sim) sim.updateTheme();
 
     toggle.addEventListener('click', () => {
-      const cur = document.documentElement.getAttribute('data-theme');
+      const cur = document.documentElement.getAttribute('data-theme') || 'light';
       const next = cur === 'light' ? 'dark' : 'light';
       document.documentElement.setAttribute('data-theme', next);
       localStorage.setItem('aura-theme', next);
