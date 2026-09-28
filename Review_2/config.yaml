@@ -1,0 +1,130 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# AURA-EMS: Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation
+# Simulation & Multi-Agent System Hyper-Parameters Configuration
+# ══════════════════════════════════════════════════════════════════════════════
+
+simulation:
+  name: "AURA-EMS Review 2 Multi-Agent Simulation Engine"
+  seed: 42
+  time_step_seconds: 5        # Discretization step (seconds per simulation tick)
+  total_duration_minutes: 120 # Standard simulation episode duration (minutes)
+  traffic_update_interval: 12 # Ticks between dynamic traffic congestion updates
+
+environment:
+  grid_width_km: 12.0
+  grid_height_km: 12.0
+  num_intersections: 36       # 6x6 urban grid graph
+  road_types:
+    highway:
+      speed_kmh: 80.0
+      capacity: 120
+    arterial:
+      speed_kmh: 50.0
+      capacity: 60
+    local:
+      speed_kmh: 30.0
+      capacity: 30
+    bridge_bottleneck:
+      speed_kmh: 40.0
+      capacity: 40
+  congestion:
+    peak_hours_start_min: 30
+    peak_hours_end_min: 75
+    bottleneck_severity: 0.25 # Speed multiplier during severe gridlock
+
+incident_generation:
+  base_arrival_rate_per_min: 0.4 # Non-homogeneous Poisson process lambda
+  peak_arrival_multiplier: 2.2
+  esi_distribution:
+    esi_1_resuscitation: 0.15   # Immediate life threat (Cardiac arrest, major trauma)
+    esi_2_emergent: 0.35        # High risk, severe pain, STEMI, acute stroke
+    esi_3_urgent: 0.30          # Moderate risk, requires multiple resources
+    esi_4_less_urgent: 0.15     # Simple fracture, minor laceration
+    esi_5_non_urgent: 0.05      # Medication refill, minor rash
+  golden_hour_targets_min:
+    esi_1: 8.0
+    esi_2: 14.0
+    esi_3: 30.0
+    esi_4: 60.0
+    esi_5: 120.0
+
+fleet:
+  ambulances:
+    - id: "AMB-ALS-01"
+      type: "ALS"               # Advanced Life Support (Paramedic, Ventilator, Defibrillator)
+      base_node: 0
+      speed_kmh: 65.0
+      fuel_capacity_km: 300.0
+      capabilities: ["CARDIAC_MONITOR", "VENTILATOR", "INTUBATION", "IV_MEDS"]
+    - id: "AMB-ALS-02"
+      type: "ALS"
+      base_node: 5
+      speed_kmh: 65.0
+      fuel_capacity_km: 300.0
+      capabilities: ["CARDIAC_MONITOR", "VENTILATOR", "INTUBATION", "IV_MEDS"]
+    - id: "AMB-BLS-01"
+      type: "BLS"               # Basic Life Support (EMT, Oxygen, First Aid)
+      base_node: 30
+      speed_kmh: 55.0
+      fuel_capacity_km: 350.0
+      capabilities: ["OXYGEN", "SPLINTING", "BASIC_AED"]
+    - id: "AMB-BLS-02"
+      type: "BLS"
+      base_node: 35
+      speed_kmh: 55.0
+      fuel_capacity_km: 350.0
+      capabilities: ["OXYGEN", "SPLINTING", "BASIC_AED"]
+    - id: "AMB-NICU-01"
+      type: "NICU"              # Neonatal / Pediatric Intensive Care Unit
+      base_node: 17
+      speed_kmh: 55.0
+      fuel_capacity_km: 250.0
+      capabilities: ["INCUBATOR", "PEDIATRIC_VENTILATOR", "NITRIC_OXIDE"]
+    - id: "AMB-HELI-01"
+      type: "HEMS"              # Helicopter Emergency Medical Service (Air Ambulance)
+      base_node: 14
+      speed_kmh: 180.0
+      fuel_capacity_km: 400.0
+      capabilities: ["FLIGHT_PHYSICIAN", "BLOOD_TRANSFUSION", "SURGICAL_CRIC"]
+      ignores_road_congestion: true
+
+hospitals:
+  - id: "HOSP-CENTRAL-01"
+    name: "Apollo Metro Medical Center"
+    node_id: 14
+    trauma_level: 1             # Level 1 Trauma (24/7 Neurosurgery, Cardio-thoracic, Burn)
+    er_capacity: 18
+    icu_capacity: 10
+    specialties: ["NEUROSURGERY", "CARDIAC_CATH_LAB", "TRAUMA_SURGERY", "BURN_CARE"]
+    base_turnaround_time_min: 15.0
+  - id: "HOSP-EAST-02"
+    name: "St. Jude General Hospital"
+    node_id: 11
+    trauma_level: 2             # Level 2 Trauma (Emergency Surgery, ICU)
+    er_capacity: 12
+    icu_capacity: 6
+    specialties: ["CARDIAC_CATH_LAB", "ORTHOPEDIC_SURGERY", "GENERAL_SURGERY"]
+    base_turnaround_time_min: 12.0
+  - id: "HOSP-WEST-03"
+    name: "Westside Community Healthcare"
+    node_id: 20
+    trauma_level: 3             # Level 3 Community Hospital (Resuscitation, Urgent Care)
+    er_capacity: 8
+    icu_capacity: 3
+    specialties: ["GENERAL_SURGERY", "PEDIATRIC_URGENT_CARE"]
+    base_turnaround_time_min: 10.0
+
+algorithms:
+  cnp_auction:
+    time_weight_wt: 0.60        # Weight on estimated travel time (min)
+    capability_weight_we: 0.30  # Penalty weight for specialty mismatch
+    fuel_weight_wf: 0.10        # Penalty weight on deadhead mileage
+    bid_timeout_seconds: 3.0
+  gale_shapley:
+    preference_weights:
+      trauma_level_match: 0.40
+      bed_availability: 0.35
+      travel_distance: 0.25
+  search:
+    heuristic_weight_epsilon: 1.0 # Epsilon = 1.0 for strictly admissible A*
+    dynamic_replanning_threshold: 1.5 # Trigger D* Lite replan if edge travel time doubles

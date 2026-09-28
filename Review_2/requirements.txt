@@ -1,0 +1,21 @@
+# AURA-EMS: Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation
+# Review 2 Dependencies — Python 3.10+
+# Course: 23CSE301 Foundations of Artificial Intelligence (Amrita Vishwa Vidyapeetham)
+
+# Core Multi-Agent Framework
+mesa>=3.0.0
+
+# Graph Theory & Network Topologies
+networkx>=3.0
+
+# Scientific Computing & Arrival Stochastic Models
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Publication-Grade Visualization & Benchmarking Charts
+matplotlib>=3.7.0
+
+# Terminal Formatting & Configuration
+tabulate>=0.9.0
+pyyaml>=6.0
