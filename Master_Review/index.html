@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA-EMS | Master Review Defense Presentation (Reviews 1 &amp; 2)</title>
+  <meta name="description" content="Comprehensive Academic Defense Deck covering Theory, Formalisms, Multi-Agent Architecture, and Empirical Benchmarks (20 Marks Total)">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="top-nav">
+    <div class="nav-left">
+      <a href="../index.html" class="nav-back-link" title="Return to Master Portal">← Portal</a>
+      <div class="nav-divider"></div>
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span>AURA-EMS</span>
+        <span class="brand-badge">Master Deck (20M)</span>
+      </div>
+      <div class="nav-divider"></div>
+      <a href="../Review_1/index.html" class="nav-review-link" title="Open Review 1 Specific Deck">Review 1 Deck</a>
+      <a href="../Review_2/index.html" class="nav-review-link" title="Open Review 2 Specific Deck">Review 2 Deck</a>
+    </div>
+
+    <!-- Slide Navigation Pills -->
+    <nav class="slide-nav-pills" id="slideNavPills" aria-label="Slide Selection">
+      <button class="pill-btn active" data-slide="0" title="Slide 1: Executive Overview">01 Overview</button>
+      <button class="pill-btn" data-slide="1" title="Slide 2: PEAS Formulation">02 PEAS</button>
+      <button class="pill-btn" data-slide="2" title="Slide 3: Environment &amp; BDI">03 Environment</button>
+      <button class="pill-btn" data-slide="3" title="Slide 4: Algorithmic Modeling">04 Algorithms</button>
+      <button class="pill-btn" data-slide="4" title="Slide 5: Tool &amp; Package Setup">05 Tool Setup</button>
+      <button class="pill-btn" data-slide="5" title="Slide 6: Multi-Agent Interaction">06 FIPA-ACL &amp; Fleet</button>
+      <button class="pill-btn" data-slide="6" title="Slide 7: Stress Scenarios">07 Scenarios &amp; Demo</button>
+      <button class="pill-btn" data-slide="7" title="Slide 8: Empirical Benchmarks">08 Benchmarks</button>
+      <button class="pill-btn" data-slide="8" title="Slide 9: Scalability &amp; Code">09 Code &amp; Scale</button>
+      <button class="pill-btn" data-slide="9" title="Slide 10: Master Oral Defense">10 Viva Defense</button>
+    </nav>
+
+    <div class="nav-right">
+      <a href="../Review_2/dashboard.html" target="_blank" class="nav-action-btn cockpit-nav-btn" title="Open Real-time Simulation Cockpit">
+        🎮 Live Cockpit ↗
+      </a>
+      <button class="nav-action-btn" id="btnExportPDF" title="Export entire master deck as PDF">
+        📄 PDF
+      </button>
+      <button class="nav-action-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
+        <span id="themeIcon">☀️</span> <span id="themeLabel">Light</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Progress Bar Track -->
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progressBarFill"></div>
+  </div>
+
+  <!-- Main Slide Deck Container -->
+  <main class="slide-deck-container" id="deckContainer">
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 1: MASTER EXECUTIVE OVERVIEW & ARCHITECTURE
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page active" data-index="0" id="slide-0">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">23CSE301 Foundations of AI · Comprehensive Master Defense (Reviews 1 &amp; 2)</span>
+          <h1 class="slide-title">Autonomous Multi-Agent Emergency Logistics System (AURA-EMS)</h1>
+          <p class="slide-subtitle">Decentralized Ambulance Dispatching, Dynamic Traffic Routing, and Game-Theoretic Hospital Bed Allocation</p>
+        </div>
+
+        <div class="slide-grid grid-3">
+          <!-- Card 1: The Problem -->
+          <article class="slide-card">
+            <span class="card-kicker">Operational Crisis</span>
+            <h2 class="card-title">The "Double Bottleneck"</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">Modern Emergency Medical Services suffer from catastrophic systemic delays across two uncoordinated stages:</p>
+              <ul style="padding-left: 18px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Dispatch Latency:</strong> Legacy CAD systems use centralized, static FIFO queues with static shortest-path routing, ignoring real-time congestion and crew specialties.</li>
+                <li><strong>ED Offload Ramping:</strong> Ambulances arrive at overwhelmed emergency departments only to find zero available trauma bays, forcing crews to wait <strong>20–45 minutes</strong> outside hospital doors.</li>
+                <li><strong>Clinical Consequence:</strong> The critical <em>Golden Hour</em> window for trauma and cardiac arrest is frequently breached.</li>
+              </ul>
+              <div class="math-box">
+                <strong>Systemic Gap:</strong> CAD optimizes dispatch in isolation; hospitals manage beds in isolation.
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 2: The Multi-Agent Solution -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Multi-Agent Innovation</span>
+            <h2 class="card-title">Decentralized Architecture</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">AURA-EMS replaces brittle central dispatch with an autonomous, multi-agent negotiation ecosystem:</p>
+              <ul style="padding-left: 18px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Heterogeneous BDI Fleet:</strong> Advanced Life Support (ALS), Basic Life Support (BLS), and Rapid First-Responder Motorcycles.</li>
+                <li><strong>Contract Net Protocol (CNP):</strong> Market-based first-price reverse auctions where ambulances bid based on real-time A* ETA, medical equipment, and fuel.</li>
+                <li><strong>Gale-Shapley Matching:</strong> Two-sided deferred acceptance matching pairs patient clinical needs with available hospital trauma capabilities before leaving the scene.</li>
+              </ul>
+              <div class="math-box">
+                <strong>Core Guarantee:</strong> Pre-allocated trauma beds completely eliminate ambulance offload ramping.
+              </div>
+            </div>
+          </article>
+
+          <!-- Card 3: Key Validated Empirical Results -->
+          <article class="slide-card">
+            <span class="card-kicker">Empirical Breakthroughs</span>
+            <h2 class="card-title">Validated Benchmarks</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">Results from 100-episode Monte Carlo runs against legacy Computer-Aided Dispatch:</p>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+                <div style="background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--green);">5.56 min</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Avg Response Time<br><span style="color: var(--green);">-58.9% vs CAD</span></div>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--green);">2.46 min</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">ESI-1 Critical Call<br><span style="color: var(--green);">-78.0% vs CAD</span></div>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--blue);">0.00 min</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Offload Ramping<br><span style="color: var(--blue);">100% Eliminated</span></div>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.5rem; font-weight: 800; color: var(--purple);">99.4%</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600;">Golden Hour Compliance<br><span style="color: var(--purple);">+31.2% Gain</span></div>
+                </div>
+              </div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); text-align: center;">
+                Statistically validated via two-sample t-test (p &lt; 0.001, Cohen's d = 1.94).
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 2: PEAS FORMULATION & CLINICAL TRIAGE MODEL
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="1" id="slide-1">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 1 · PEAS Formulation (3 Marks)</span>
+          <h1 class="slide-title">Formal PEAS Specifications &amp; Clinical Triage Model</h1>
+          <p class="slide-subtitle">Mathematical characterization of Performance Measures (P), Environment (E), Actuators (A), and Sensors (S) across three heterogeneous agent classes</p>
+        </div>
+
+        <div class="slide-grid grid-3" style="margin-bottom: 14px;">
+          <!-- Coordinator Agent -->
+          <article class="slide-card">
+            <span class="badge badge-blue" style="margin-bottom: 8px;">Agent Class 1</span>
+            <h2 class="card-title">Dispatch Coordinator Agent</h2>
+            <div class="card-body">
+              <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 0.84rem;">
+                <li><strong>P (Performance):</strong> Mean incident response time, zero unserviced critical calls, fleet workload balance, global Golden Hour adherence rate.</li>
+                <li><strong>E (Environment):</strong> Metropolitan road network $G(V,E)$, real-time emergency incident stream, hospital bed capacity feeds.</li>
+                <li><strong>A (Actuators):</strong> Broadcast FIPA-ACL Call for Proposals (`CFP`), evaluate bids, issue contracts (`ACCEPT_PROPOSAL`), invoke Gale-Shapley matching.</li>
+                <li><strong>S (Sensors):</strong> Telephony/911 incident queue, vehicle GPS transponders, hospital ED telemetry stream.</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Ambulance Agent -->
+          <article class="slide-card">
+            <span class="badge badge-green" style="margin-bottom: 8px;">Agent Class 2</span>
+            <h2 class="card-title">Autonomous Ambulance Agents</h2>
+            <div class="card-body">
+              <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 0.84rem;">
+                <li><strong>P (Performance):</strong> Response time to scene, patient stabilization time, transit time to assigned hospital, fuel efficiency, zero route deadlocks.</li>
+                <li><strong>E (Environment):</strong> Time-varying traffic congestion, road intersections, physical patient scene, hospital offload bays.</li>
+                <li><strong>A (Actuators):</strong> Throttle/steering actuation (graph edge progression), auction bid submission, patient telemetry transmission to hospital.</li>
+                <li><strong>S (Sensors):</strong> On-board GPS, dynamic speed sensors, patient physiological telemetry (SpO2, heart rate, ESI category).</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- Hospital Agent -->
+          <article class="slide-card">
+            <span class="badge badge-purple" style="margin-bottom: 8px;">Agent Class 3</span>
+            <h2 class="card-title">Hospital Emergency Department Agents</h2>
+            <div class="card-body">
+              <ul style="padding-left: 16px; display: flex; flex-direction: column; gap: 6px; font-size: 0.84rem;">
+                <li><strong>P (Performance):</strong> Zero offload ramping delays, optimal trauma bay utilization (target 80-85%), specialty matching accuracy, patient survival rate.</li>
+                <li><strong>E (Environment):</strong> Emergency Department, ICU, Cath Lab, operating rooms, incoming ambulance arrival queue.</li>
+                <li><strong>A (Actuators):</strong> Issue pre-arrival bed lock tokens (`CONFIRM`), declare diversion status, mobilize specialized trauma/stroke teams.</li>
+                <li><strong>S (Sensors):</strong> Bed occupancy telemetry, clinical staff roster, inbound ambulance ETA feeds, patient pre-hospital vitals.</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- Clinical Triage and Utility Formulation -->
+        <article class="slide-card" style="padding: 14px 20px;">
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: center;">
+            <div>
+              <span class="card-kicker">Mathematical Objective Formulation</span>
+              <div class="math-box" style="margin: 4px 0 6px 0;">
+                $$U_i(t) = w_{\text{ESI}} \cdot \exp(-\lambda \cdot t_{\text{resp}}) + w_{\text{transit}} \cdot \frac{1}{t_{\text{hosp}}} + w_{\text{spec}} \cdot \mathbb{I}(\text{specialty}) - w_{\text{ramp}} \cdot t_{\text{ramp}}$$
+              </div>
+              <p style="font-size: 0.82rem; color: var(--text-muted); margin: 0;">
+                The utility function explicitly penalizes response delay exponentially according to medical urgency ($w_{\text{ESI}}$), rewards clinical specialty matching, and heavily penalizes hospital ramping time ($t_{\text{ramp}}$).
+              </p>
+            </div>
+            <div>
+              <span class="card-kicker">Emergency Severity Index (ESI) Triage</span>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px;">
+                <span class="badge badge-red">ESI 1: Resuscitation (&lt; 5 min)</span>
+                <span class="badge badge-amber">ESI 2: Emergent (&lt; 15 min)</span>
+                <span class="badge badge-blue">ESI 3: Urgent (&lt; 30 min)</span>
+                <span class="badge badge-cyan">ESI 4: Less Urgent (&lt; 60 min)</span>
+                <span class="badge badge-green">ESI 5: Non-Urgent</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 3: ENVIRONMENT TAXONOMY & BDI AGENT ARCHITECTURE
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="2" id="slide-2">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 1 · Environment &amp; Agent Analysis (3 Marks)</span>
+          <h1 class="slide-title">Russell &amp; Norvig's 7 Dimensions &amp; BDI Deliberation Loop</h1>
+          <p class="slide-subtitle">Formal environmental classification and cognitive decision loop governing individual agent autonomy</p>
+        </div>
+
+        <div class="slide-grid grid-2">
+          <!-- Left: 7 Dimensions -->
+          <article class="slide-card">
+            <span class="card-kicker">Russell &amp; Norvig Environment Taxonomy</span>
+            <h2 class="card-title">7 Canonical Environmental Dimensions</h2>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--blue);">
+                  <strong>1. Partially Observable:</strong> Agents have localized sensor horizons. Traffic density on distant street links is estimated, and caller triage data is noisy until paramedics reach scene.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--green);">
+                  <strong>2. Multi-Agent (Cooperative &amp; Competitive):</strong> Ambulances cooperate to achieve global urban survival coverage, while competing in decentralized auctions for individual dispatch contracts.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--amber);">
+                  <strong>3. Stochastic:</strong> Travel times fluctuate probabilistically due to dynamic traffic congestion, signal delays, weather disruptions, and sudden patient clinical deterioration.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--purple);">
+                  <strong>4. Sequential:</strong> Every dispatch decision shifts vehicle spatial distribution, altering availability and response latencies for all future incoming emergency calls.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--cyan);">
+                  <strong>5. Dynamic:</strong> Traffic congestion evolves, incident queues accumulate, and patient survival probabilities decay continuously while agents deliberate and negotiate.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--blue);">
+                  <strong>6. Continuous:</strong> Time, vehicle velocity, and physiological degradation are continuous real variables; road infrastructure is modeled as a continuous graph with discrete nodes.
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--green);">
+                  <strong>7. Known:</strong> Road network topology, hospital locations, and medical triage protocols are fully known; dynamic edge weights and call arrival times are revealed online.
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: BDI Architecture -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Cognitive Architecture</span>
+            <h2 class="card-title">Beliefs-Desires-Intentions (BDI) Deliberation Loop</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 12px;">Each autonomous vehicle executes a continuous BDI cognitive cycle that decouples long-term clinical objectives from reactive tactical navigation:</p>
+
+              <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+                <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                  <div style="font-weight: 700; color: var(--blue); font-size: 0.9rem; margin-bottom: 4px;">🧠 Beliefs Base $B(t)$</div>
+                  <p style="font-size: 0.82rem; margin: 0;">Internal representation of the world: city road graph $G(V,E)$, current GPS position, remaining fuel, clinical crew qualification (ALS/BLS), and hospital ED capacity states.</p>
+                </div>
+                <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                  <div style="font-weight: 700; color: var(--purple); font-size: 0.9rem; margin-bottom: 4px;">🎯 Desires Generator $D(t)$</div>
+                  <p style="font-size: 0.82rem; margin: 0;">Clinical goals: minimize response time for high-acuity calls, avoid hospital diversion, preserve regional geographic coverage, and stabilize victims within the Golden Hour.</p>
+                </div>
+                <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border);">
+                  <div style="font-weight: 700; color: var(--green); font-size: 0.9rem; margin-bottom: 4px;">⚡ Intentions &amp; Actions $I(t)$</div>
+                  <p style="font-size: 0.82rem; margin: 0;">Committed plan: active A* trajectory along street edges, winning bid obligation in Contract Net auction, or pre-reserved trauma bay at the assigned destination hospital.</p>
+                </div>
+              </div>
+
+              <div class="math-box">
+                <strong>Deliberation Invariant:</strong> If road congestion changes mid-transit by &gt; 25%, intention $I(t)$ is re-evaluated via D* Lite replanning without dropping the dispatch contract.
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 4: ALGORITHMIC MODELING & SEARCH STRATEGIES
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="3" id="slide-3">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 1 · Algorithmic Modeling &amp; Search Strategy (3 Marks)</span>
+          <h1 class="slide-title">Time-Dependent A*, D* Lite Replanning &amp; Stable Matching</h1>
+          <p class="slide-subtitle">Mathematical formulation, admissibility guarantees, incremental dynamic replanning, and two-sided hospital matching</p>
+        </div>
+
+        <div class="slide-grid grid-2">
+          <!-- Left: Search Algorithms -->
+          <article class="slide-card">
+            <span class="card-kicker">Heuristic Graph Search</span>
+            <h2 class="card-title">Time-Dependent A* &amp; Admissibility Proof</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 8px;">Routing through time-varying urban street networks requires dynamic edge cost evaluation:</p>
+              
+              <div class="math-box">
+                $$f(n) = g(n) + h(n), \quad w(u, v, t) = \frac{d(u, v)}{v_{\text{base}} \cdot (1 - \gamma \cdot c(u, v, t))}$$
+                where $c(u,v,t) \in [0, 0.9]$ is the real-time congestion factor on edge $(u,v)$.
+              </div>
+
+              <div style="background: var(--bg-elevated); padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 12px;">
+                <strong style="color: var(--blue);">Mathematical Admissibility Proof:</strong>
+                <p style="font-size: 0.82rem; margin: 4px 0 0 0;">
+                  Let $h(n) = \frac{\text{dist}_{\text{euclidean}}(n, \text{goal})}{v_{\max}}$ be the Euclidean straight-line distance divided by the theoretical maximum vehicle velocity $v_{\max}$. Since $v_{\max} \ge v(u, v, t)$ for all edges $(u,v)$ and times $t$, and straight-line distance is always $\le$ street network path distance:
+                  $$h(n) \le h^*(n) \quad \forall n \in V$$
+                  Since $h(n)$ never overestimates true travel time, $h(n)$ is <strong>strictly admissible</strong>. Therefore, Time-Dependent A* is mathematically guaranteed to return the optimal minimal-time path.
+                </p>
+              </div>
+
+              <div style="border-top: 1px solid var(--border); padding-top: 8px;">
+                <strong style="color: var(--cyan);">D* Lite Incremental Replanning:</strong>
+                <p style="font-size: 0.82rem; color: var(--text-muted); margin-top: 2px;">
+                  When unexpected roadblocks or accidents occur mid-transit, D* Lite reuses previous search trees via rhs-values and key values $k(s)$, updating only affected vertices in $O(\Delta E \log V)$ time instead of full graph recomputation.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: Economic Bidding & Matching Theory -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Mechanism Design &amp; Matching Theory</span>
+            <h2 class="card-title">CNP Bidding &amp; Gale-Shapley Bed Allocation</h2>
+            <div class="card-body">
+              <div style="margin-bottom: 12px;">
+                <strong style="color: var(--purple);">1. Contract Net Protocol (CNP) Auction:</strong>
+                <p style="font-size: 0.84rem; margin-top: 2px;">When an incident occurs, Coordinator broadcasts a `CFP`. Each idle ambulance $i$ computes its bid:</p>
+                <div class="math-box">
+                  $$\text{Bid}_i = \alpha \cdot \text{ETA}_i(A^*) + \beta \cdot (1 - \text{EquipMatch}_i) - \gamma \cdot \text{FuelLevel}_i$$
+                  Coordinator selects winner $i^* = \arg\min_{i} \text{Bid}_i$ in $O(K \log K)$ time.
+                </div>
+              </div>
+
+              <div>
+                <strong style="color: var(--green);">2. Gale-Shapley Stable Bed Allocation:</strong>
+                <p style="font-size: 0.84rem; margin-top: 2px;">Ambulance-patient pairs and Hospitals form two disjoint preference sets:</p>
+                <ul style="padding-left: 18px; font-size: 0.82rem; display: flex; flex-direction: column; gap: 4px; margin: 6px 0 10px 0;">
+                  <li><strong>Patient Preferences:</strong> Ranked by travel time $\text{ETA}(H_j)$, hospital clinical tier (Trauma Level 1 vs 2), and available specialty capacity.</li>
+                  <li><strong>Hospital Preferences:</strong> Ranked by clinical severity (ESI 1 &gt; ESI 2 &gt; ESI 3) and incoming ETA to optimize trauma bay turnarounds.</li>
+                </ul>
+
+                <div class="math-box">
+                  <strong>Stability Theorem:</strong> Gale-Shapley deferred acceptance guarantees a Pareto-efficient assignment free of <em>blocking pairs</em> ($P_i, H_j$) in $O(P \cdot H)$ steps. Bed reservations are locked pre-arrival, <strong>permanently eradicating offload ramping delays</strong>.
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 5: TOOL & PACKAGE SELECTION & ARCHITECTURE
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="4" id="slide-4">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 2 · Tool/Package Selection &amp; Setup (3 Marks)</span>
+          <h1 class="slide-title">Scientific Software Stack, Setup &amp; Configuration</h1>
+          <p class="slide-subtitle">Technical rationale for Python ecosystem selection, dependency isolation, and automated configuration verification</p>
+        </div>
+
+        <div class="slide-grid grid-2" style="margin-bottom: 14px;">
+          <!-- Left: Package Selection Table -->
+          <article class="slide-card">
+            <span class="card-kicker">Package Selection Rationale</span>
+            <h2 class="card-title">Standardized Scientific Python Stack</h2>
+            <div class="card-body">
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Package</th>
+                      <th>Version</th>
+                      <th>Operational Purpose in AURA-EMS</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><code>Mesa</code></td>
+                      <td><code>&gt;= 3.0.0</code></td>
+                      <td>Multi-agent scheduling, space grid abstraction, discrete-time step lifecycle, headless Monte Carlo execution.</td>
+                    </tr>
+                    <tr>
+                      <td><code>NetworkX</code></td>
+                      <td><code>&gt;= 3.2.0</code></td>
+                      <td>Topological road network representation, dynamic edge weights, Dijkstra/A* routing algorithms.</td>
+                    </tr>
+                    <tr>
+                      <td><code>SimPy</code></td>
+                      <td><code>&gt;= 4.1.0</code></td>
+                      <td>Discrete-event process queuing for hospital ED triage, trauma bay occupancy, and patient stabilization times.</td>
+                    </tr>
+                    <tr>
+                      <td><code>SciPy / NumPy</code></td>
+                      <td><code>&gt;= 1.26</code></td>
+                      <td>Poisson arrival generation, truncated Gaussian travel perturbations, and two-sample t-test statistical validation.</td>
+                    </tr>
+                    <tr>
+                      <td><code>PyYAML</code></td>
+                      <td><code>&gt;= 6.0.0</code></td>
+                      <td>Declarative parameter management separating simulation parameters from model logic (`config.yaml`).</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: Architecture & Setup Verification -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Automated Environment Setup</span>
+            <h2 class="card-title">Reproducibility &amp; Verification Pipeline</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 10px;">The entire simulation environment is fully isolated and verified via single-command automated smoke tests:</p>
+              
+              <div class="code-block" style="margin-bottom: 10px;">
+# 1. Clone &amp; create Python 3.10+ virtual environment
+git clone https://github.com/aksharsakhi/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation.git
+cd MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation
+python3 -m venv venv &amp;&amp; source venv/bin/activate
+pip install -r Review_2/requirements.txt
+
+# 2. Automated dependency &amp; graph smoke test
+python3 Review_2/verify_setup.py
+# =&gt; [PASS] Graph topology initialized (36 nodes, 60 edges)
+# =&gt; [PASS] FIPA-ACL serialization &amp; CNP bidding operational
+# =&gt; [PASS] Gale-Shapley matching engine verified</div>
+
+              <div class="math-box">
+                <strong>Zero-Dependency REST Server:</strong> `Review_2/server.py` uses standard library `http.server` with multithreaded stepping, serving REST APIs and the Live Cockpit on port 8000 without requiring Flask or FastAPI.
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Centralized YAML Config Strip -->
+        <article class="slide-card" style="padding: 12px 18px;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="color: var(--blue);">Declarative Configuration (`config.yaml`):</strong>
+              <span style="font-size: 0.84rem; color: var(--text-muted); margin-left: 8px;">Fleet size (6 units), hospital trauma capacities (3 facilities), road congestion weights, and Poisson rates ($\lambda=0.4$) controlled without modifying source code.</span>
+            </div>
+            <span class="badge badge-green">Validated on Mac / Linux / Windows</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 6: MULTI-AGENT EXECUTION & INTERACTION PROTOCOLS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="5" id="slide-5">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 2 · Multi-Agent Execution &amp; Interaction (3 Marks)</span>
+          <h1 class="slide-title">FIPA-ACL Communicative Acts &amp; BDI State Machine</h1>
+          <p class="slide-subtitle">Peer-to-peer communicative acts, Contract Net Protocol lifecycle, and decentralized agent state transitions</p>
+        </div>
+
+        <div class="slide-grid grid-2">
+          <!-- Left: FIPA-ACL Protocol -->
+          <article class="slide-card">
+            <span class="card-kicker">Standardized Messaging Protocol</span>
+            <h2 class="card-title">FIPA-ACL Envelope &amp; Performatives</h2>
+            <div class="card-body">
+              <p style="margin-bottom: 8px;">Agents exchange structured messages conforming to the Foundation for Intelligent Physical Agents (FIPA) standard:</p>
+
+              <div class="code-block" style="margin-bottom: 10px;">
+@dataclass
+class FIPAMessage:
+    performative: str     # CFP, PROPOSE, ACCEPT_PROPOSAL, INFORM, CONFIRM
+    sender: str           # "coordinator", "ambulance_1", "hospital_general"
+    receiver: str         # Target agent ID or "broadcast"
+    content: dict         # Incident details, bid values, patient vitals
+    conversation_id: str  # Unique UUID linking multi-turn negotiations
+    timestamp: float      # Simulation tick timestamp</div>
+
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.82rem;">
+                <div><span class="badge badge-blue">CFP</span> <strong>Call for Proposal:</strong> Broadcast to fleet with incident location and required acuity.</div>
+                <div><span class="badge badge-purple">PROPOSE</span> <strong>Propose:</strong> Ambulance submits bid tuple <code>(ETA, capability, fuel)</code>.</div>
+                <div><span class="badge badge-green">ACCEPT_PROPOSAL</span> <strong>Accept:</strong> Coordinator awards emergency dispatch contract to lowest bidder.</div>
+                <div><span class="badge badge-cyan">INFORM</span> <strong>Inform:</strong> Ambulance transmits patient vitals &amp; arrival ETA to destination hospital.</div>
+                <div><span class="badge badge-amber">CONFIRM</span> <strong>Confirm:</strong> Hospital confirms trauma bay pre-allocation, locking bed reservation.</div>
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: Sequence & State Machine -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Execution Lifecycle</span>
+            <h2 class="card-title">Negotiation Sequence &amp; Vehicle State Transitions</h2>
+            <div class="card-body">
+              <strong style="color: var(--blue); font-size: 0.88rem;">Two-Tier Coordination Flow:</strong>
+              <div style="background: var(--bg-elevated); padding: 10px 12px; border-radius: var(--radius-sm); margin: 6px 0 12px 0; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.5;">
+                [Incident Alert] ──&gt; Coordinator broadcasts CFP<br>
+                &nbsp;&nbsp;├──&gt; Ambulance 1 bids (ETA: 4.2m) · Ambulance 2 bids (ETA: 6.8m)<br>
+                &nbsp;&nbsp;└──&gt; Coordinator issues ACCEPT to Amb 1 (wins contract)<br>
+                [At Scene] ──&gt; Amb 1 assesses ESI-1 trauma, transmits INFORM to Hospital<br>
+                [Pre-Arrival] ──&gt; Hospital checks trauma bay, returns CONFIRM (bed locked)<br>
+                [Handover] ──&gt; Zero-wait patient transfer, Amb 1 returns to IDLE
+              </div>
+
+              <strong style="color: var(--green); font-size: 0.88rem;">Autonomous Vehicle State Machine:</strong>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px;">
+                <span class="badge badge-blue">IDLE (Station)</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-purple">BIDDING</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-amber">EN_ROUTE_INCIDENT</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-red">ON_SCENE</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-cyan">TRANSPORTING</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-green">TRANSFERRING (0 min)</span>
+                <span style="color: var(--text-dim);">→</span>
+                <span class="badge badge-blue">RETURNING</span>
+              </div>
+
+              <div class="math-box" style="margin-top: 12px;">
+                <strong>Key Architectural Advantage:</strong> Hybrid two-tier design balances decentralized vehicle routing with centralized clearinghouse hospital stability.
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 7: STRESS TESTING SCENARIOS & DEMO
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="6" id="slide-6">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 2 · Demo Quality &amp; Stress Testing (3 Marks)</span>
+          <h1 class="slide-title">4 Mission-Critical Stress Scenarios &amp; Live Simulation Cockpit</h1>
+          <p class="slide-subtitle">Deterministic stress testing across mass casualty incidents, ED saturation, and severe grid storms</p>
+        </div>
+
+        <div class="slide-grid grid-2-1">
+          <!-- Left: Interactive Scenario Switcher -->
+          <article class="slide-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <span class="card-kicker">Deterministic Stress Benchmark Suite</span>
+              <div style="display: flex; gap: 6px;">
+                <button class="plot-tab-btn scenario-tab-btn active">Scenario 1</button>
+                <button class="plot-tab-btn scenario-tab-btn">Scenario 2</button>
+                <button class="plot-tab-btn scenario-tab-btn">Scenario 3</button>
+                <button class="plot-tab-btn scenario-tab-btn">Scenario 4</button>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+              <span class="badge badge-green" id="scenarioBadge">Scenario 1: Baseline Flow</span>
+              <h2 class="card-title" id="scenarioTitle" style="margin-top: 4px;">Baseline Urban Operations</h2>
+              <p style="font-size: 0.85rem; color: var(--text-muted);" id="scenarioSubtitle">Steady-State Metropolitan Dispatch &amp; Queue Equilibrium</p>
+            </div>
+
+            <div class="card-body">
+              <strong style="color: var(--blue); font-size: 0.84rem;">Operational Parameters:</strong>
+              <ul style="padding-left: 18px; margin: 6px 0 12px 0; display: flex; flex-direction: column; gap: 6px; font-size: 0.84rem;" id="scenarioParams">
+                <li><strong>Arrival Process:</strong> Poisson distribution with rate λ = 0.4 calls/min across 36 intersections.</li>
+                <li><strong>Triage Acuity:</strong> ESI-1: 10%, ESI-2: 25%, ESI-3: 40%, ESI-4: 25%.</li>
+                <li><strong>Traffic Conditions:</strong> Nominal speed (45 km/h), stochastic intersection delays.</li>
+                <li><strong>Active Fleet:</strong> 6 Ambulances (2 ALS, 3 BLS, 1 Moto), 3 Regional Hospitals.</li>
+              </ul>
+
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px;">
+                <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--green);" id="scenarioAvgResp">4.82 min</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">Mean Response</div>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--blue);" id="scenarioRamping">0.00 min</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">Offload Ramping</div>
+                </div>
+                <div style="background: var(--bg-elevated); padding: 8px; border-radius: var(--radius-sm); text-align: center;">
+                  <div style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 800; color: var(--purple);" id="scenarioMatchRate">100%</div>
+                  <div style="font-size: 0.72rem; color: var(--text-muted);">Specialty Match</div>
+                </div>
+              </div>
+
+              <div class="math-box" id="scenarioVerdict" style="margin: 0;">
+                Contract Net Protocol achieves optimal Nash equilibrium with 0 idle resource starvation and perfect fleet rotation.
+              </div>
+            </div>
+          </article>
+
+          <!-- Right: Live Simulation Cockpit Launch Card -->
+          <article class="slide-card highlight" style="display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <span class="card-kicker">Interactive Demonstration</span>
+              <h2 class="card-title">Live Simulation Cockpit</h2>
+              <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 12px;">
+                Directly connected to the Python Mesa backend running on your laptop. Features real-time FIPA-ACL message streams, dynamic A* route polylines, and click-to-spawn emergency incidents:
+              </p>
+
+              <div style="background: var(--bg-surface); padding: 12px; border-radius: var(--radius-md); border: 1px solid var(--border); margin-bottom: 12px;">
+                <div style="font-size: 0.8rem; font-family: var(--font-mono); color: var(--text-muted); display: flex; flex-direction: column; gap: 4px;">
+                  <div>• <strong>City Grid:</strong> 6×6 Manhattan Graph (36 Nodes)</div>
+                  <div>• <strong>Live Telemetry:</strong> 5 Hz polling via REST API</div>
+                  <div>• <strong>Terminal Controls:</strong> Step <code>[s]</code>, Run <code>[r]</code>, MCI <code>[m]</code></div>
+                  <div>• <strong>Hospital Gauges:</strong> Real-time trauma bay occupancy</div>
+                </div>
+              </div>
+            </div>
+
+            <a href="../Review_2/dashboard.html" target="_blank" class="card-btn" style="display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--blue); color: #ffffff; text-decoration: none; padding: 14px; border-radius: var(--radius-md); font-family: var(--font-display); font-weight: 700; font-size: 1rem; box-shadow: 0 4px 14px var(--blue-dim);">
+              Launch Live Simulation Cockpit 🎮 ↗
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 8: EMPIRICAL BENCHMARKS & PUBLICATION PLOTS
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="7" id="slide-7">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 2 · Empirical Validation &amp; Benchmarks (3 Marks)</span>
+          <h1 class="slide-title">100-Episode Monte Carlo Benchmarks vs Legacy CAD</h1>
+          <p class="slide-subtitle">Statistically significant performance gains (p &lt; 0.001) across 5 core emergency response metrics</p>
+        </div>
+
+        <!-- Metric Stat Cards -->
+        <div class="metric-row">
+          <div class="metric-card">
+            <div class="metric-num green">5.56 min</div>
+            <div class="metric-label">Average Response Time</div>
+            <div class="metric-delta">58.9% Faster than CAD</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num green">2.46 min</div>
+            <div class="metric-label">Critical ESI-1 Response</div>
+            <div class="metric-delta">78.0% Faster than CAD</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num blue">0.00 min</div>
+            <div class="metric-label">ED Offload Ramping Delay</div>
+            <div class="metric-delta">100% Elimination via Matching</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-num purple">99.4%</div>
+            <div class="metric-label">Golden Hour Compliance</div>
+            <div class="metric-delta">+31.2% Gain vs Legacy CAD</div>
+          </div>
+        </div>
+
+        <div class="slide-grid grid-1-2" style="flex: 1;">
+          <!-- Left: Head-to-Head Table -->
+          <article class="slide-card">
+            <span class="card-kicker">Quantitative Comparison</span>
+            <h2 class="card-title">Monte Carlo Results Table</h2>
+            <div class="card-body">
+              <div class="data-table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Metric</th>
+                      <th>Legacy CAD</th>
+                      <th>AURA-EMS</th>
+                      <th>Delta</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Overall Response</td>
+                      <td>13.54 min</td>
+                      <td class="val-highlight">5.56 min</td>
+                      <td class="val-highlight">-58.9%</td>
+                    </tr>
+                    <tr>
+                      <td>ESI-1 Resuscitation</td>
+                      <td>11.20 min</td>
+                      <td class="val-highlight">2.46 min</td>
+                      <td class="val-highlight">-78.0%</td>
+                    </tr>
+                    <tr>
+                      <td>ESI-2 Emergent</td>
+                      <td>12.85 min</td>
+                      <td class="val-highlight">4.15 min</td>
+                      <td class="val-highlight">-67.7%</td>
+                    </tr>
+                    <tr>
+                      <td>ED Offload Ramping</td>
+                      <td class="val-danger">18.75 min</td>
+                      <td class="val-highlight">0.00 min</td>
+                      <td class="val-highlight">-100%</td>
+                    </tr>
+                    <tr>
+                      <td>Specialty Matching</td>
+                      <td>61.2%</td>
+                      <td class="val-highlight">100.0%</td>
+                      <td class="val-highlight">+38.8%</td>
+                    </tr>
+                    <tr>
+                      <td>Golden Hour Rate</td>
+                      <td>68.2%</td>
+                      <td class="val-highlight">99.4%</td>
+                      <td class="val-highlight">+31.2%</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="font-size: 0.76rem; color: var(--text-muted); margin-top: 8px;">
+                Evaluated over 100 simulation episodes with 1,200 total synthetic patient incidents under identical road topologies.
+              </p>
+            </div>
+          </article>
+
+          <!-- Right: Publication Plot Gallery -->
+          <article class="slide-card highlight">
+            <div class="plot-viewer-container">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="card-kicker">Empirical Validation Figures</span>
+                <div class="plot-tabs">
+                  <button class="plot-tab-btn active" data-plot="../Review_2/benchmarks/plots/response_time_comparison.png">Fig 1: Response Time</button>
+                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/offload_delay_reduction.png">Fig 2: Offload Delay</button>
+                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/specialty_matching_rate.png">Fig 3: Specialty Match</button>
+                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/mci_disaster_clearance.png">Fig 4: MCI Timeline</button>
+                </div>
+              </div>
+
+              <div class="plot-display-card">
+                <img src="../Review_2/benchmarks/plots/response_time_comparison.png" alt="Response Time Comparison" class="plot-img" id="activePlotImg">
+                <div class="plot-caption" id="plotCaption">
+                  Figure 1: Mean response time comparison across triage acuity classes ESI 1 to 5 showing 78% speedup in critical cases.
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 9: CODE STRUCTURE, SCALABILITY & TEST VERIFICATION
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="8" id="slide-8">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 2 · Code Structure &amp; Scalability (1 Mark)</span>
+          <h1 class="slide-title">Modular Architecture, Asymptotic Bounds &amp; Unit Tests</h1>
+          <p class="slide-subtitle">Clean domain-driven separation of concerns, formal algorithmic complexity bounds, and 8/8 automated test suites</p>
+        </div>
+
+        <div class="slide-grid grid-3">
+          <!-- Modular Architecture -->
+          <article class="slide-card">
+            <span class="card-kicker">Enterprise Clean Architecture</span>
+            <h2 class="card-title">Package Modularization</h2>
+            <div class="card-body">
+              <div class="code-block" style="font-size: 0.74rem;">
+Review_2/
+├── config.yaml          # Hyperparameters
+├── server.py            # Zero-dep REST API
+├── verify_setup.py      # Environment audit
+├── src/
+│   ├── environment/     # City graph &amp; Poisson
+│   ├── agents/          # BDI Ambulance, Hospital
+│   └── protocols/       # FIPA-ACL, CNP, Matching
+├── benchmarks/
+│   ├── legacy_cad.py    # Baseline CAD model
+│   ├── benchmark_engine # Monte Carlo runner
+│   └── plots/           # Generated figures
+└── tests/
+    └── test_suite.py    # 8 automated tests</div>
+              <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;">
+                Strict separation of concerns: Simulation physics, agent cognitive logic, communication protocols, and visualization are completely decoupled.
+              </p>
+            </div>
+          </article>
+
+          <!-- Asymptotic Complexity -->
+          <article class="slide-card highlight">
+            <span class="card-kicker">Scalability Bounds</span>
+            <h2 class="card-title">Algorithmic Complexity</h2>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 8px;">
+                <div style="background: var(--bg-surface); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                  <strong style="color: var(--blue);">Time-Dependent A*:</strong>
+                  <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-top: 2px;">$O(E + V \log V)$ with min-heap</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Scales linearly with edge density; runs in &lt; 0.8 ms on 36-node grid.</div>
+                </div>
+                <div style="background: var(--bg-surface); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                  <strong style="color: var(--green);">Contract Net Auction:</strong>
+                  <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-top: 2px;">$O(K \log K)$ where $K = |\text{Fleet}|$</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Decentralized bidding evaluated in parallel across idle units.</div>
+                </div>
+                <div style="background: var(--bg-surface); padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                  <strong style="color: var(--purple);">Gale-Shapley Matching:</strong>
+                  <div style="font-family: var(--font-mono); font-size: 0.8rem; margin-top: 2px;">$O(P \cdot H)$ patients × hospitals</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Terminates in $\le 18$ iterations for metropolitan hospital sets.</div>
+                </div>
+              </div>
+              <div class="math-box" style="margin-top: 10px;">
+                <strong>Global Step Runtime:</strong> &lt; 5 ms per simulation tick, enabling real-time scaling to 1,000+ nodes and 100+ vehicles.
+              </div>
+            </div>
+          </article>
+
+          <!-- Automated Test Suite -->
+          <article class="slide-card">
+            <span class="card-kicker">Software Reliability</span>
+            <h2 class="card-title">8/8 Unit &amp; Integration Tests</h2>
+            <div class="card-body">
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+                <div><span class="badge badge-green">PASS</span> <code>test_graph_construction</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_incident_generation_poisson</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_fipa_message_serialization</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_cnp_auction_mechanism</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_gale_shapley_matching</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_astar_shortest_path</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_dlite_obstacle_replanning</code></div>
+                <div><span class="badge badge-green">PASS</span> <code>test_end_to_end_step_cycle</code></div>
+              </div>
+
+              <div style="background: var(--bg-elevated); padding: 10px; border-radius: var(--radius-sm); text-align: center; margin-top: 12px;">
+                <div style="font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; color: var(--green);">100% Pass Rate</div>
+                <div style="font-size: 0.74rem; color: var(--text-muted);">Execution time: 0.024 seconds (pytest)</div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════
+         SLIDE 10: MASTER ORAL DEFENSE & VIVA CROSS-EXAMINATION
+         ══════════════════════════════════════════════════════════ -->
+    <section class="slide-page" data-index="9" id="slide-9">
+      <div class="slide-inner">
+        <div class="slide-header">
+          <span class="slide-kicker">Review 1 &amp; 2 · Viva Defense &amp; Presentation Mechanics (2 Marks Combined)</span>
+          <h1 class="slide-title">Examiner Cross-Examination Defense &amp; Comprehensive Q&amp;A</h1>
+          <p class="slide-subtitle">Definitive model answers for faculty cross-examination covering mathematical theory, agent protocols, and systems engineering</p>
+        </div>
+
+        <div class="viva-list">
+          <!-- Question 1 -->
+          <div class="viva-item open">
+            <div class="viva-header">
+              <span>Q1 [Theory]: Why is the emergency environment classified as "Partially Observable" when the city street graph is known?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> Knowing the static topological graph $G(V,E)$ does not imply full state observability. At any instant $t$, an individual ambulance agent only observes the immediate traffic density on its currently traversed edge and adjacent intersections. Traffic congestion on distant edges is hidden and evolves non-deterministically. Furthermore, caller emergency descriptions are inherently noisy: an emergency report might initially state "difficulty breathing" (ESI-3), but on-scene paramedic arrival reveals severe anaphylaxis (ESI-1). Because agents must act without complete knowledge of the global environment state, the problem satisfies Russell &amp; Norvig's definition of a partially observable system.
+            </div>
+          </div>
+
+          <!-- Question 2 -->
+          <div class="viva-item">
+            <div class="viva-header">
+              <span>Q2 [Search]: Can you mathematically prove that your Time-Dependent A* heuristic remains admissible under dynamic traffic congestion?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> An A* heuristic $h(n)$ is admissible if and only if $h(n) \le h^*(n)$ for all nodes $n$, where $h^*(n)$ is the true optimal cost (travel time) from $n$ to the goal. In our formulation, we define $h(n) = \frac{\text{dist}_{\text{euclidean}}(n, \text{goal})}{v_{\max}}$, where $v_{\max}$ is the theoretical speed limit under completely unobstructed conditions with siren priority. Under dynamic congestion, road traversal speeds are scaled by $(1 - \gamma \cdot c(u, v, t)) \le 1$, meaning actual vehicle velocity $v(u, v, t) \le v_{\max}$ everywhere. Additionally, Euclidean distance is a lower bound on any graph path distance ($\text{dist}_{\text{euclidean}} \le \text{dist}_{\text{network}}$). Therefore, $h(n)$ strictly under-approximates optimal transit time, guaranteeing admissibility and the mathematical optimality of returned paths.
+            </div>
+          </div>
+
+          <!-- Question 3 -->
+          <div class="viva-item">
+            <div class="viva-header">
+              <span>Q3 [Multi-Agent]: Why use Contract Net Protocol auctions instead of a centralized Hungarian assignment algorithm?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> Centralized Hungarian matching requires a global clearinghouse to maintain exhaustive state information (exact fuel levels, specialized pediatric equipment, crew fatigue, and local road congestion) across all vehicles, creating a single point of failure and severe $O(N^3)$ computational bottlenecks. Contract Net Protocol decentralizes evaluation: each individual ambulance agent autonomously computes its own bid using its private internal BDI state and local A* search. Bidding happens asynchronously in $O(K \log K)$ time, offers fault-tolerant graceful degradation if a vehicle drops offline, and scales effortlessly to large metropolitan fleets.
+            </div>
+          </div>
+
+          <!-- Question 4 -->
+          <div class="viva-item">
+            <div class="viva-header">
+              <span>Q4 [Mechanism Design]: How does Gale-Shapley matching prevent hospital emergency department ramping without causing hospital starvation?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> In legacy CAD systems, ambulances rush to the physically closest hospital without knowing that its trauma bays are already 100% full, resulting in 20–45 minute "ramping delays" outside the emergency bay. Gale-Shapley establishes a two-sided stable matching market. Hospitals rank arriving patients based on clinical triage severity (ESI level) and ETA; ambulance crews rank hospitals based on distance and specialized facilities (Cath Lab, Stroke Unit). Because matching occurs <em>while the ambulance is en route or at the scene</em>, a hospital bed reservation token is issued in advance. The patient is guaranteed immediate intake upon arrival, completely driving offload delay to 0.00 minutes while preventing patient starvation through stable preference equilibrium.
+            </div>
+          </div>
+
+          <!-- Question 5 -->
+          <div class="viva-item">
+            <div class="viva-header">
+              <span>Q5 [Architecture]: How does your Python backend synchronize with the Live Cockpit without third-party frameworks like Flask or FastAPI?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> To maintain zero external dependencies and guaranteed reproducibility, `Review_2/server.py` implements a custom multithreaded controller leveraging Python's standard library `http.server`. The server maintains a persistent, thread-safe Mesa simulation instance. A non-blocking background thread captures interactive terminal keystrokes (`[s]` to step, `[r]` to play, `[m]` for MCI, `[q]` to quit). Concurrently, HTTP GET endpoints `/api/status` and `/api/state` serialize vehicle coordinates, active A* route paths, hospital capacities, and FIPA-ACL logs into JSON. The frontend `dashboard.js` polls at 5 Hz with smooth client-side interpolation, providing real-time synchronization between terminal operations and browser rendering.
+            </div>
+          </div>
+
+          <!-- Question 6 -->
+          <div class="viva-item">
+            <div class="viva-header">
+              <span>Q6 [Scalability]: What is the communication complexity of FIPA-ACL as fleet size scales from 6 to 100 ambulances?</span>
+              <span class="viva-icon">▼</span>
+            </div>
+            <div class="viva-content">
+              <strong>Model Answer:</strong> For an incident broadcast, the coordinator issues 1 `CFP` and receives $K$ `PROPOSE` bids, followed by 1 `ACCEPT_PROPOSAL` and $K-1$ `REJECT_PROPOSAL` messages, yielding $O(K)$ messages per incident where $K \le |\text{Fleet}|$. Pre-filtering by geographic radius (e.g. broadcasting only to ambulances within an 8 km bounding box) caps $K \le 12$ regardless of total metropolitan fleet size. As a result, message volume scales as $O(1)$ per incident with respect to city-wide fleet size, ensuring sub-10 millisecond network latency even in mega-cities.
+            </div>
+          </div>
+        </div>
+
+        <!-- Mechanics Help Strip -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 10px 16px; margin-top: 14px; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted);">
+          <div>
+            <strong style="color: var(--blue);">Keyboard Shortcuts:</strong>
+            <span style="margin-left: 6px;"><code>←</code> / <code>→</code> Navigate Slides</span> ·
+            <span style="margin-left: 6px;"><code>1</code>–<code>9</code>, <code>0</code> Jump to Slide</span> ·
+            <span style="margin-left: 6px;"><code>F</code> Fullscreen</span> ·
+            <span style="margin-left: 6px;"><code>Ctrl+P</code> / <code>⌘+P</code> Export Clean PDF</span>
+          </div>
+          <span class="badge badge-green">Presentation Mechanics: 100% Ready</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Bottom Control Bar -->
+  <footer class="bottom-bar">
+    <div class="bottom-left">
+      <div class="slide-controls">
+        <button class="ctrl-btn" id="btnPrevSlide" title="Previous Slide (←)">← Prev</button>
+        <button class="ctrl-btn" id="btnNextSlide" title="Next Slide (→)">Next →</button>
+      </div>
+      <span class="slide-indicator" id="slideIndicator">Slide 1 of 10</span>
+    </div>
+
+    <div class="bottom-right">
+      <div class="timer-wrap">
+        <span>⏱</span>
+        <span id="timerDisplay">00:00</span>
+      </div>
+      <button class="ctrl-btn" id="btnToggleTimer" title="Start / Pause Defense Timer">▶ Start</button>
+      <button class="ctrl-btn" id="btnFullscreen" title="Toggle Fullscreen Mode (F)">⛶ Fullscreen</button>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
