@@ -732,6 +732,24 @@
       ctx.textBaseline = 'alphabetic';
     });
 
+    // 4.5. Draw Active A* / D* Lite Route Trails
+    localState.ambulances.forEach(amb => {
+      if (amb.path_coords && amb.path_coords.length >= 2) {
+        ctx.beginPath();
+        const start = getCanvasCoords(amb.x, amb.y);
+        ctx.moveTo(start.x, start.y);
+        for (let i = 0; i < amb.path_coords.length; i++) {
+          const pt = getCanvasCoords(amb.path_coords[i][0], amb.path_coords[i][1]);
+          ctx.lineTo(pt.x, pt.y);
+        }
+        ctx.strokeStyle = amb.type === 'ALS' ? 'rgba(239, 68, 68, 0.75)' : (amb.type === 'HEMS' ? 'rgba(245, 158, 11, 0.8)' : 'rgba(59, 130, 246, 0.75)');
+        ctx.lineWidth = 3.5;
+        ctx.setLineDash([6, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+    });
+
     // 5. Draw Ambulances
     localState.ambulances.forEach(amb => {
       const c = getCanvasCoords(amb.x, amb.y);
@@ -766,12 +784,19 @@
     });
   }
 
-  function renderLoop() {
+  let lastBackendPoll = 0;
+  function renderLoop(timestamp) {
     draw();
-    if (connectedToBackend && isRunning) {
-      // Sync telemetry periodically when running
-      if (stepCount % 4 === 0) syncWithBackend();
+
+    if (connectedToBackend) {
+      // High-speed backend telemetry sync: every 180ms when running, or every 800ms when idle
+      const pollInterval = isRunning ? 180 : 800;
+      if (timestamp - lastBackendPoll > pollInterval) {
+        lastBackendPoll = timestamp;
+        syncWithBackend();
+      }
     }
+
     requestAnimationFrame(renderLoop);
   }
 
