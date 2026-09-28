@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA-EMS | Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation</title>
+  <meta name="description" content="Multi-Agent Ambulance Dispatch and Hospital Allocation System — PEAS formulation, environment analysis, A* search, D* Lite replanning, and Gale-Shapley matching.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       TOP NAVIGATION (Apple-style frosted glass)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <header class="top-nav" id="topNav">
+    <div class="nav-brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">AURA-EMS</span>
+      <div class="brand-sep"></div>
+      <div class="brand-meta">
+        <span class="brand-meta-title">AMRITA SCHOOL OF COMPUTING • DISTRIBUTED AI</span>
+        <span class="brand-meta-sub">23CSE301 FOAI · PROJECT REVIEW 1 (10 MARKS)</span>
+      </div>
+    </div>
+
+    <div class="nav-center">
+      <div class="pill pill-green"><span class="pill-dot"></span> MAS ENGINE ONLINE</div>
+      <div class="pill pill-accent">FLEET: 4 UNITS</div>
+      <div class="pill pill-purple">MEDEVAC: 1 HELI</div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="timer-chip" id="rehearsalTimer" title="Click to start/pause. Double-click to reset.">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="timerText">00:00</span>
+      </div>
+
+      <button class="nav-btn" id="btnDeckMode" title="Toggle Deck / Full view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+        <span id="deckModeText">Deck</span>
+      </button>
+
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark / light mode">
+        <!-- Sun icon (shown in light mode) -->
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <!-- Moon icon (shown in dark mode) -->
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE TABS (Presentation Deck)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <nav class="stage-nav" id="stageNav">
+    <div class="stage-tabs">
+      <button class="stage-tab active" data-stage="0"><span class="st-num">01</span> Live Simulation</button>
+      <button class="stage-tab" data-stage="1"><span class="st-num">02</span> PEAS & Agents</button>
+      <button class="stage-tab" data-stage="2"><span class="st-num">03</span> Environment</button>
+      <button class="stage-tab" data-stage="3"><span class="st-num">04</span> Algorithms</button>
+      <button class="stage-tab" data-stage="4"><span class="st-num">05</span> Summary</button>
+    </div>
+    <div class="stage-nav-right">
+      <span class="stage-counter" id="stageCounter">1 / 5</span>
+      <button class="stage-arrow" id="btnPrev" title="Previous">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg> Prev
+      </button>
+      <button class="stage-arrow stage-arrow-next" id="btnNext" title="Next">
+        Next <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE 0 — LIVE SIMULATION DASHBOARD
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="stage-card active" id="stage0">
+    <section class="sim-hero">
+      <div class="sim-header">
+        <div class="sim-header-left">
+          <div class="live-badge"><span class="live-badge-dot"></span> SIMULATION LIVE · 60 FPS</div>
+          <h1 class="sim-title">Multi-Agent Urban Emergency Response</h1>
+          <p class="sim-subtitle">Real-time CNP dispatch, A* pathfinding, D* Lite replanning, and Gale-Shapley hospital matching — all running simultaneously on HTML5 Canvas.</p>
+        </div>
+        <div class="sim-shortcuts">
+          <div class="shortcut"><kbd>Click</kbd> road → toggle jam</div>
+          <div class="shortcut"><kbd>Click</kbd> node → new 911 call</div>
+          <div class="shortcut"><kbd>Click</kbd> ambulance → inspect</div>
+        </div>
+      </div>
+
+      <div class="sim-grid">
+        <!-- Canvas -->
+        <div class="canvas-card">
+          <div class="canvas-bar">
+            <div class="canvas-bar-left">
+              <span class="canvas-bar-dot"></span>
+              <span class="canvas-bar-title">CITY OPERATIONS · REAL-TIME FEED</span>
+            </div>
+            <span class="weather-badge">☀ CLEAR</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="simCanvas"></canvas>
+          </div>
+          <div class="sim-toolbar">
+            <div class="toolbar-group">
+              <button class="sim-btn btn-red" id="btnEmergency" title="Spawn ESI-1 incident">🚨 ESI-1 Emergency</button>
+              <button class="sim-btn btn-amber" id="btnMCI" title="Mass casualty incident">⚡ MCI Event</button>
+              <button class="sim-btn btn-green" id="btnClearInc">✓ Clear Resolved</button>
+            </div>
+            <div class="toolbar-group">
+              <button class="sim-btn btn-neutral" id="btnSlow">0.5×</button>
+              <button class="sim-btn btn-blue" id="btnNormal">1×</button>
+              <button class="sim-btn btn-neutral" id="btnFast">2×</button>
+              <button class="sim-btn btn-neutral" id="btnPause">⏸ Pause</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="sim-sidebar">
+          <div class="kpi-grid">
+            <div class="kpi-card kpi-accent">
+              <div class="kpi-title">911 Calls</div>
+              <div class="kpi-val" id="hudCalls">0</div>
+              <div class="kpi-sub">dispatched via CNP</div>
+            </div>
+            <div class="kpi-card kpi-green">
+              <div class="kpi-title">Avg Response</div>
+              <div class="kpi-val" id="hudResponse">--</div>
+              <div class="kpi-sub">door-to-patient</div>
+            </div>
+            <div class="kpi-card kpi-amber">
+              <div class="kpi-title">Active Incidents</div>
+              <div class="kpi-val" id="hudActive">0</div>
+              <div class="kpi-sub">in progress</div>
+            </div>
+            <div class="kpi-card kpi-purple">
+              <div class="kpi-title">Lives Saved</div>
+              <div class="kpi-val" id="hudSaved">0</div>
+              <div class="kpi-sub">golden hour cases</div>
+            </div>
+          </div>
+
+          <!-- Inspector -->
+          <div class="inspector-card">
+            <div class="inspector-header">
+              <div>
+                <div class="inspector-title-group">
+                  <div class="inspector-dot"></div>
+                  <span class="inspector-title" id="inspectTitle">Rescue Alpha</span>
+                </div>
+                <div class="inspector-sub" id="inspectSub">Status: STANDBY · Stationed at Sector 1 Hub</div>
+              </div>
+            </div>
+            <div class="inspector-row"><div class="inspector-label">PROTOCOL</div><div class="inspector-data">BDI with Contract Net Protocol (CNP)</div></div>
+            <div class="inspector-row"><div class="inspector-label">PATHFINDER</div><div class="inspector-data">A* (Euclidean heuristic) → D* Lite on jam</div></div>
+            <div class="ecg-box">
+              <div class="ecg-header"><span class="ecg-label">PATIENT VITALS</span><span class="ecg-bpm">♥ 87 BPM</span></div>
+              <canvas class="ecg-canvas" id="ecgCanvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Console -->
+          <div class="console-card">
+            <div class="console-header">
+              <div class="console-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                FIPA-ACL Console
+              </div>
+              <div class="console-dot"></div>
+            </div>
+            <div class="console-body" id="simConsoleLogs">
+              <div class="log-entry"><span class="log-time">[SYS]</span> AURA-EMS initialized. 4 ambulances online.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE 1 — PEAS FORMULATION (3 Marks)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage1">
+    <div class="main-content">
+      <div class="stage-meta">
+        <div class="member-chip"><span class="chip-role">LEAD</span><span class="chip-name">Akshar Sakhi</span></div>
+        <span class="rubric-tag">PEAS FORMULATION — 3 / 3</span>
+      </div>
+
+      <div class="stage-heading">
+        <h2 class="stage-h2">PEAS Formulation — Multi-Agent System Design</h2>
+        <p class="stage-desc">A rigorous decomposition of our emergency dispatch system into Performance measures, Environment properties, Actuators, and Sensors — for each of the four cooperating agents.</p>
+      </div>
+
+      <!-- Why PEAS matters -->
+      <div class="comparison-grid" style="margin-bottom:24px">
+        <div class="glass-panel panel-accent-left">
+          <div class="panel-header"><span class="panel-icon">❌</span><div><div class="panel-title">Without PEAS</div><div class="panel-subtitle">Chaotic, unstructured dispatch</div></div></div>
+          <div class="numbered-item"><span class="item-num">01</span><div><div class="item-title">Unbounded Goals</div><div class="item-desc">No measurable performance → impossible to evaluate if the system is optimal.</div></div></div>
+          <div class="numbered-item"><span class="item-num">02</span><div><div class="item-title">Missing Environment Spec</div><div class="item-desc">Agents don't know if the world is stochastic or deterministic — wrong planner selected.</div></div></div>
+          <div class="numbered-item"><span class="item-num">03</span><div><div class="item-title">No Sensor Model</div><div class="item-desc">GPS accuracy, hospital API latency, traffic feed reliability — all unspecified.</div></div></div>
+        </div>
+        <div class="glass-panel panel-accent-right">
+          <div class="panel-header"><span class="panel-icon">✅</span><div><div class="panel-title">With PEAS</div><div class="panel-subtitle">Structured, measurable, verifiable</div></div></div>
+          <div class="numbered-item"><span class="item-num">01</span><div><div class="item-title">KPI-Driven Agents</div><div class="item-desc">Response time, survival rate, offload delay — each agent optimizes measurable targets.</div></div></div>
+          <div class="numbered-item"><span class="item-num">02</span><div><div class="item-title">Correct Planner</div><div class="item-desc">Partially observable + stochastic → BDI with real-time replanning (D* Lite) is justified.</div></div></div>
+          <div class="numbered-item"><span class="item-num">03</span><div><div class="item-title">Sensor Budget</div><div class="item-desc">GPS refresh rate, hospital HL7 polling — all quantified, enabling realistic simulation.</div></div></div>
+        </div>
+      </div>
+
+      <!-- Agent PEAS Tabs -->
+      <div class="glass-panel">
+        <div class="panel-header"><span class="panel-icon">🤖</span><div><div class="panel-title">Agent-Level PEAS Decomposition</div><div class="panel-subtitle">Select each agent to view its complete PEAS specification</div></div></div>
+
+        <div class="peas-tabs">
+          <button class="peas-tab active" data-peas="dispatcher">🎛 Dispatcher</button>
+          <button class="peas-tab" data-peas="ambulance">🚑 Ambulance</button>
+          <button class="peas-tab" data-peas="hospital">🏥 Hospital</button>
+          <button class="peas-tab" data-peas="helicopter">🚁 Helicopter</button>
+        </div>
+
+        <!-- Dispatcher PEAS -->
+        <div class="peas-view active" id="peas-dispatcher">
+          <div class="peas-grid">
+            <div class="peas-card peas-p"><span class="peas-letter">P</span><div class="peas-card-title">Performance</div>
+              <ul class="peas-list"><li>Minimize <strong>dispatch-to-departure</strong> ≤ 90s</li><li>Maximize <strong>fleet utilization</strong> > 85%</li><li>Zero <strong>missed ESI-1</strong> calls</li><li>Fair load balancing (Jain Index > 0.9)</li></ul>
+            </div>
+            <div class="peas-card peas-e"><span class="peas-letter">E</span><div class="peas-card-title">Environment</div>
+              <ul class="peas-list"><li><strong>Stochastic</strong> 911 arrival (Poisson λ=4/hr)</li><li><strong>Partially Observable</strong> — only sees ambulance GPS</li><li><strong>Dynamic</strong> — new calls during dispatch</li><li><strong>Multi-Agent</strong> — coordinates 4+ units</li></ul>
+            </div>
+            <div class="peas-card peas-a"><span class="peas-letter">A</span><div class="peas-card-title">Actuators</div>
+              <ul class="peas-list"><li><strong>CFP Broadcast</strong> — sends FIPA-ACL Call-For-Proposals</li><li><strong>Award Message</strong> — selects winning bidder</li><li><strong>Replan Directive</strong> — triggers D* Lite re-route</li><li><strong>MCI Escalation</strong> — activates mutual-aid</li></ul>
+            </div>
+            <div class="peas-card peas-s"><span class="peas-letter">S</span><div class="peas-card-title">Sensors</div>
+              <ul class="peas-list"><li><strong>CAD System</strong> — 911 call metadata & ESI triage</li><li><strong>AVL Feed</strong> — real-time ambulance lat/lng (1 Hz)</li><li><strong>Hospital API</strong> — bed census via HL7 (30s poll)</li><li><strong>Traffic Feed</strong> — Google Roads / Waze alerts</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ambulance PEAS -->
+        <div class="peas-view" id="peas-ambulance">
+          <div class="peas-grid">
+            <div class="peas-card peas-p"><span class="peas-letter">P</span><div class="peas-card-title">Performance</div>
+              <ul class="peas-list"><li>Minimize <strong>response time</strong> ≤ 8 min urban</li><li>Maximize <strong>patient survival</strong> during transport</li><li>Minimize <strong>fuel consumption</strong> on patrol</li><li>Maintain <strong>coverage</strong> during patrol gaps</li></ul>
+            </div>
+            <div class="peas-card peas-e"><span class="peas-letter">E</span><div class="peas-card-title">Environment</div>
+              <ul class="peas-list"><li><strong>Continuous</strong> state (GPS coordinates)</li><li><strong>Stochastic</strong> traffic congestion</li><li><strong>Sequential</strong> — each action affects future options</li><li><strong>Known</strong> road graph, <strong>unknown</strong> live traffic</li></ul>
+            </div>
+            <div class="peas-card peas-a"><span class="peas-letter">A</span><div class="peas-card-title">Actuators</div>
+              <ul class="peas-list"><li><strong>Steering & throttle</strong> — path-following controller</li><li><strong>Siren & lights</strong> — activates right-of-way</li><li><strong>Bid Message</strong> — submits CNP proposal</li><li><strong>Status Update</strong> — broadcasts ON_SCENE, TRANSPORT</li></ul>
+            </div>
+            <div class="peas-card peas-s"><span class="peas-letter">S</span><div class="peas-card-title">Sensors</div>
+              <ul class="peas-list"><li><strong>GPS</strong> — position (2m accuracy, 1 Hz)</li><li><strong>LiDAR / Camera</strong> — obstacle detection</li><li><strong>Vitals Monitor</strong> — SpO₂, ECG, BP</li><li><strong>Radio</strong> — FIPA-ACL message receiver</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hospital PEAS -->
+        <div class="peas-view" id="peas-hospital">
+          <div class="peas-grid">
+            <div class="peas-card peas-p"><span class="peas-letter">P</span><div class="peas-card-title">Performance</div>
+              <ul class="peas-list"><li>Minimize <strong>ER offload delay</strong> ≤ 15 min</li><li>Maximize <strong>specialty match</strong> (cardiac → cath lab)</li><li>Balance <strong>bed load</strong> across network</li><li>Zero <strong>diversion events</strong></li></ul>
+            </div>
+            <div class="peas-card peas-e"><span class="peas-letter">E</span><div class="peas-card-title">Environment</div>
+              <ul class="peas-list"><li><strong>Partially Observable</strong> — can't see incoming ambulances until notified</li><li><strong>Stochastic</strong> patient severity can escalate</li><li><strong>Multi-Agent</strong> — competes for bed allocation with other hospitals</li></ul>
+            </div>
+            <div class="peas-card peas-a"><span class="peas-letter">A</span><div class="peas-card-title">Actuators</div>
+              <ul class="peas-list"><li><strong>Bed Lock</strong> — reserves ER bay for incoming patient</li><li><strong>Diversion Signal</strong> — broadcasts FULL to dispatch</li><li><strong>Preference Rank</strong> — submits ranking for Gale-Shapley matching</li><li><strong>Surge Activation</strong> — opens overflow unit</li></ul>
+            </div>
+            <div class="peas-card peas-s"><span class="peas-letter">S</span><div class="peas-card-title">Sensors</div>
+              <ul class="peas-list"><li><strong>BMS</strong> — bed management system (real-time census)</li><li><strong>HL7/FHIR</strong> — incoming patient pre-alerts</li><li><strong>Staff Roster</strong> — available specialists on shift</li><li><strong>ETA Feed</strong> — ambulance arrival countdown</li></ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Helicopter PEAS -->
+        <div class="peas-view" id="peas-helicopter">
+          <div class="peas-grid">
+            <div class="peas-card peas-p"><span class="peas-letter">P</span><div class="peas-card-title">Performance</div>
+              <ul class="peas-list"><li>Activate only for <strong>ESI-1</strong> (cardiac, trauma)</li><li>Minimize <strong>scene-to-hospital</strong> time ≤ 12 min</li><li>Maximize <strong>golden hour</strong> compliance</li><li>Avoid <strong>unnecessary deployments</strong> (cost $5K/flight)</li></ul>
+            </div>
+            <div class="peas-card peas-e"><span class="peas-letter">E</span><div class="peas-card-title">Environment</div>
+              <ul class="peas-list"><li><strong>Continuous</strong> 3D airspace</li><li><strong>Stochastic</strong> weather (IFR/VFR constraints)</li><li><strong>Dynamic</strong> — landing zone availability changes</li><li><strong>Partially Observable</strong> — limited ground visibility</li></ul>
+            </div>
+            <div class="peas-card peas-a"><span class="peas-letter">A</span><div class="peas-card-title">Actuators</div>
+              <ul class="peas-list"><li><strong>Flight controls</strong> — heading, altitude, airspeed</li><li><strong>Hoist/Winch</strong> — rooftop extractions</li><li><strong>Accept/Decline</strong> — responds to dispatch CFP</li><li><strong>Priority Landing</strong> — requests rooftop helipad</li></ul>
+            </div>
+            <div class="peas-card peas-s"><span class="peas-letter">S</span><div class="peas-card-title">Sensors</div>
+              <ul class="peas-list"><li><strong>ADS-B</strong> — airspace traffic awareness</li><li><strong>FLIR Camera</strong> — forward-looking infrared</li><li><strong>Weather Radar</strong> — cloud ceiling, wind shear</li><li><strong>Radio</strong> — ATC + dispatch FIPA-ACL</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA to simulation -->
+      <div class="cta-banner">
+        <span class="cta-text">👉 <strong>See it live:</strong> The simulation on Stage 01 runs the exact PEAS model above in real-time.</span>
+        <button class="cta-btn" onclick="document.querySelector('[data-stage=&quot;0&quot;]').click()">
+          Open Simulation <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE 2 — ENVIRONMENT & AGENT ANALYSIS (3 Marks)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage2">
+    <div class="main-content">
+      <div class="stage-meta">
+        <div class="member-chip"><span class="chip-role">ENV</span><span class="chip-name">Nishanth</span></div>
+        <span class="rubric-tag">ENVIRONMENT & AGENTS — 3 / 3</span>
+      </div>
+
+      <div class="stage-heading">
+        <h2 class="stage-h2">Environment Characterization & Agent Architecture</h2>
+        <p class="stage-desc">Russell & Norvig's 7-dimensional environment taxonomy applied to urban emergency dispatch, followed by BDI agent internals and inter-agent coordination via FIPA-ACL.</p>
+      </div>
+
+      <!-- 7 Dimensions -->
+      <div class="glass-panel" style="margin-bottom:24px">
+        <div class="panel-header"><span class="panel-icon">🌐</span><div><div class="panel-title">7-Dimensional Environment Characterization</div><div class="panel-subtitle">Mapping our problem space to Russell & Norvig's taxonomy</div></div></div>
+
+        <div class="dim-grid">
+          <div class="dim-card"><div class="dim-badge badge-red">PARTIALLY OBSERVABLE</div><div class="dim-name">Observability</div><div class="dim-desc">Ambulances see only their GPS cone + 500m. No agent has full city view. Dispatcher sees all AVL feeds but not patient conditions until paramedic reports.</div></div>
+
+          <div class="dim-card"><div class="dim-badge badge-amber">STOCHASTIC</div><div class="dim-name">Determinism</div><div class="dim-desc">911 arrivals follow Poisson(λ=4/hr). Traffic jams, patient deterioration, and hospital diversions are all probabilistic — requiring contingency plans.</div></div>
+
+          <div class="dim-card"><div class="dim-badge badge-green">SEQUENTIAL</div><div class="dim-name">Episodic vs Sequential</div><div class="dim-desc">Dispatching AMB-101 to INC-A means it can't respond to INC-B. Each action constrains future fleet availability — the hallmark of sequential environments.</div></div>
+
+          <div class="dim-card"><div class="dim-badge badge-blue">DYNAMIC</div><div class="dim-name">Static vs Dynamic</div><div class="dim-desc">New emergencies arrive while ambulances are en-route. Traffic patterns shift. Hospital bed counts change between dispatch and arrival — the world doesn't wait.</div></div>
+
+          <div class="dim-card"><div class="dim-badge badge-accent">CONTINUOUS</div><div class="dim-name">Discrete vs Continuous</div><div class="dim-desc">GPS coordinates are continuous (lat/lng). Time flows continuously. We discretize the road network into a weighted graph for A* but the underlying state space is continuous.</div></div>
+
+          <div class="dim-card"><div class="dim-badge badge-purple">COOPERATIVE</div><div class="dim-name">Multi-Agent</div><div class="dim-desc">4 ambulances + 4 hospitals + 1 helicopter cooperate via FIPA-ACL protocols (CNP, Inform, Request). This is cooperative multi-agent, not competitive.</div></div>
+
+          <div class="dim-card dim-card-wide"><div class="dim-badge badge-rose">KNOWN STRUCTURE</div><div class="dim-name">Known vs Unknown</div><div class="dim-desc">Road topology is known (OpenStreetMap), but edge weights (travel time) are dynamic. Hospital specialties are known, but bed availability is stochastic. This is a known structure with unknown parameters — justifying online replanning via D* Lite.</div></div>
+        </div>
+      </div>
+
+      <!-- BDI Architecture -->
+      <div class="glass-panel">
+        <div class="panel-header"><span class="panel-icon">🧠</span><div><div class="panel-title">BDI Agent Architecture</div><div class="panel-subtitle">Beliefs → Desires → Intentions → Plan → Execute → Monitor loop</div></div></div>
+
+        <div class="bdi-grid">
+          <div class="bdi-step"><div class="bdi-num">01</div><div class="bdi-title">Perceive</div><div class="bdi-desc">GPS fix, traffic feed, CAD alert — sensors update the belief base.</div></div>
+          <div class="bdi-step"><div class="bdi-num">02</div><div class="bdi-title">Deliberate</div><div class="bdi-desc">Desire generator ranks: "save life" > "minimize fuel" > "return to base".</div></div>
+          <div class="bdi-step"><div class="bdi-num">03</div><div class="bdi-title">Plan</div><div class="bdi-desc">A* computes shortest path. D* Lite patches if a road is jammed mid-route.</div></div>
+          <div class="bdi-step"><div class="bdi-num">04</div><div class="bdi-title">Commit</div><div class="bdi-desc">Agent locks intention: "Respond to INC-1042". Sends BID via CNP.</div></div>
+          <div class="bdi-step"><div class="bdi-num">05</div><div class="bdi-title">Execute</div><div class="bdi-desc">Path-following controller + siren activation. Monitors vitals en-route.</div></div>
+        </div>
+
+        <!-- Utility function -->
+        <div class="utility-box">
+          <div class="utility-title">Multi-Attribute Utility Function</div>
+          <div class="formula-card"><div class="formula">U(a, i) = −(γ · ETA + δ · Dist + ψ · load_penalty + ζ · fuel_cost)</div></div>
+          <div class="utility-sliders">
+            <div class="slider-item"><div class="slider-top"><span>γ (ESI weight)</span><span class="slider-val" id="vGamma">3.0</span></div><input type="range" class="cyber-slider" id="sGamma" min="1" max="5" step="0.5" value="3"><div class="slider-hint">Higher = more urgent incidents get priority</div></div>
+            <div class="slider-item"><div class="slider-top"><span>δ (Distance weight)</span><span class="slider-val" id="vDelta">1.0</span></div><input type="range" class="cyber-slider" id="sDelta" min="0.5" max="3" step="0.5" value="1"><div class="slider-hint">Higher = closer ambulances preferred</div></div>
+            <div class="slider-item"><div class="slider-top"><span>ψ (Load penalty)</span><span class="slider-val" id="vPsi">0.5</span></div><input type="range" class="cyber-slider" id="sPsi" min="0" max="2" step="0.5" value="0.5"><div class="slider-hint">Penalizes already-busy ambulances</div></div>
+          </div>
+          <div class="utility-result">
+            <span>Computed: <strong class="text-accent" id="utilResult">U = −14.2</strong></span>
+            <span class="text-green" id="utilWinner">🏆 Rescue Alpha wins bid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE 3 — ALGORITHMIC MODELING (3 Marks)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage3">
+    <div class="main-content">
+      <div class="stage-meta">
+        <div class="member-chip"><span class="chip-role">ALGO</span><span class="chip-name">Sanjay Balaji</span></div>
+        <span class="rubric-tag">ALGORITHMS & SEARCH — 3 / 3</span>
+      </div>
+
+      <div class="stage-heading">
+        <h2 class="stage-h2">Algorithmic Modeling & Search Strategy</h2>
+        <p class="stage-desc">Three core algorithms power AURA-EMS: A* for initial pathfinding, D* Lite for real-time replanning under dynamic edge costs, and Gale-Shapley for stable ambulance-hospital matching.</p>
+      </div>
+
+      <!-- A* + D* Lite -->
+      <div class="glass-panel" style="margin-bottom:24px">
+        <div class="panel-header"><span class="panel-icon">🔎</span><div><div class="panel-title">Search Algorithms — A* & D* Lite</div><div class="panel-subtitle">Optimal pathfinding under dynamic traffic conditions</div></div></div>
+
+        <div class="algo-grid">
+          <div class="algo-card">
+            <span class="dim-badge badge-accent">INITIAL PLAN</span>
+            <div class="algo-card-title">A* Search</div>
+            <div class="formula-card"><div class="formula">f(n) = g(n) + h(n)</div></div>
+            <div class="algo-card-desc">
+              <strong>g(n):</strong> cumulative cost from start (travel time considering speed limits & congestion).<br>
+              <strong>h(n):</strong> Euclidean distance / max_speed — admissible & consistent heuristic.<br>
+              <strong>Guarantee:</strong> returns optimal path when h is admissible. O(b^d) worst case, ~O(n log n) with priority queue.
+            </div>
+          </div>
+          <div class="algo-card">
+            <span class="dim-badge badge-amber">REAL-TIME REPLAN</span>
+            <div class="algo-card-title">D* Lite (Incremental)</div>
+            <div class="formula-card"><div class="formula">If edge(u,v) changes → update rhs(u) → reinsert to open list → propagate</div></div>
+            <div class="algo-card-desc">
+              <strong>Trigger:</strong> traffic jam detected on current route.<br>
+              <strong>Advantage:</strong> only re-expands affected nodes, not entire graph. O(k log k) where k = changed nodes.<br>
+              <strong>vs Full A*:</strong> 60-80% fewer node expansions on replans.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gale-Shapley -->
+      <div class="glass-panel">
+        <div class="panel-header"><span class="panel-icon">💍</span><div><div class="panel-title">Stable Matching — Gale-Shapley Algorithm</div><div class="panel-subtitle">Ambulance ↔ Hospital matching with guaranteed stability (no blocking pairs)</div></div></div>
+
+        <div class="algo-grid" style="margin-bottom:14px">
+          <div class="algo-card">
+            <span class="dim-badge badge-green">AMBULANCE PREFERENCES</span>
+            <div class="algo-card-title">Proposer Side</div>
+            <div class="algo-card-desc">Each ambulance ranks hospitals by: <strong>(1)</strong> specialty match (cardiac → cath lab), <strong>(2)</strong> travel distance, <strong>(3)</strong> historical offload delay. ESI-1 cardiac patients weight cath-lab availability 3× higher than distance.</div>
+          </div>
+          <div class="algo-card">
+            <span class="dim-badge badge-purple">HOSPITAL PREFERENCES</span>
+            <div class="algo-card-title">Responder Side</div>
+            <div class="algo-card-desc">Each hospital ranks incoming ambulances by: <strong>(1)</strong> patient severity (ESI-1 first), <strong>(2)</strong> specialty alignment, <strong>(3)</strong> current bed load (prefer sending overflow elsewhere). Diversion threshold at 90% capacity.</div>
+          </div>
+        </div>
+
+        <div class="matching-board">
+          <div class="matching-header">
+            <div><div class="matching-title">Interactive Gale-Shapley Demo</div><div class="dim-desc">Click to run one round of the algorithm.</div></div>
+            <button class="matching-btn" id="btnRunGS">▶ Run Round</button>
+          </div>
+          <div class="matching-log" id="gsLog">
+            <div class="log-entry"><span class="log-time">[READY]</span> Click "Run Round" to start Gale-Shapley matching.</div>
+          </div>
+          <div class="matching-proof">
+            <span><span class="gs-badge">THEOREM</span> For n proposers and n responders, Gale-Shapley terminates in O(n²) and yields a <strong>stable matching</strong> — no blocking pair exists.</span>
+            <span class="text-green" id="gsStable">⊘ not yet matched</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       STAGE 4 — SUMMARY & Q&A (1 Mark)
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="stage-card" id="stage4">
+    <div class="main-content">
+      <div class="stage-meta">
+        <div class="member-chip"><span class="chip-role">Q&A</span><span class="chip-name">All Members</span></div>
+        <span class="rubric-tag">PRESENTATION & Q&A — 1 / 1</span>
+      </div>
+
+      <div class="stage-heading">
+        <h2 class="stage-h2">Summary, Roadmap & Q&A Portal</h2>
+        <p class="stage-desc">Review 1 coverage scorecard, sprint roadmap for Review 2, and an interactive viva question bank for team preparation.</p>
+      </div>
+
+      <!-- Rubric Scorecard -->
+      <div class="rubric-panel" style="margin-bottom:24px">
+        <div class="rubric-badge">REVIEW 1 · 10 MARKS</div>
+        <div class="rubric-title">Coverage Scorecard</div>
+        <div class="rubric-grid">
+          <div class="rubric-card">
+            <div class="rubric-marks">3/3</div>
+            <div class="rubric-heading">PEAS Formulation</div>
+            <div class="rubric-text">All 4 agents decomposed across P, E, A, S. Multi-attribute utility function with interactive weights.</div>
+            <span class="rubric-status text-green">✓ COVERED</span>
+          </div>
+          <div class="rubric-card">
+            <div class="rubric-marks">3/3</div>
+            <div class="rubric-heading">Environment & Agents</div>
+            <div class="rubric-text">7-dimensional characterization. BDI architecture. FIPA-ACL coordination. Live simulation.</div>
+            <span class="rubric-status text-green">✓ COVERED</span>
+          </div>
+          <div class="rubric-card">
+            <div class="rubric-marks">3/3</div>
+            <div class="rubric-heading">Algorithms & Search</div>
+            <div class="rubric-text">A* with admissible heuristic. D* Lite incremental replan. Gale-Shapley stable matching with proof.</div>
+            <span class="rubric-status text-green">✓ COVERED</span>
+          </div>
+          <div class="rubric-card">
+            <div class="rubric-marks">1/1</div>
+            <div class="rubric-heading">Q&A & Presentation</div>
+            <div class="rubric-text">Live simulation demo. Rehearsed timer. Viva prep bank. Professional design & interactions.</div>
+            <span class="rubric-status text-green">✓ COVERED</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="glass-panel" style="margin-bottom:24px">
+        <div class="panel-header"><span class="panel-icon">🚀</span><div><div class="panel-title">Sprint Roadmap → Review 2</div><div class="panel-subtitle">Planned enhancements for the next iteration</div></div></div>
+
+        <div class="roadmap-grid">
+          <div class="sprint-card">
+            <div class="sprint-header"><span class="sprint-label">SPRINT 1</span></div>
+            <div class="sprint-title">Reinforcement Learning</div>
+            <ul class="sprint-list"><li>Q-Learning for adaptive patrol routes</li><li>Reward shaping: −(response_time) + survival_bonus</li><li>ε-greedy exploration vs. exploitation</li></ul>
+          </div>
+          <div class="sprint-card">
+            <div class="sprint-header"><span class="sprint-label">SPRINT 2</span></div>
+            <div class="sprint-title">Constraint Satisfaction</div>
+            <ul class="sprint-list"><li>Shift scheduling as CSP</li><li>Vehicle maintenance windows</li><li>Zone coverage constraints</li></ul>
+          </div>
+          <div class="sprint-card">
+            <div class="sprint-header"><span class="sprint-label">SPRINT 3</span></div>
+            <div class="sprint-title">Game Theory & Coalitions</div>
+            <ul class="sprint-list"><li>Nash equilibrium for resource contention</li><li>Shapley value for fair cost allocation</li><li>Coalition formation for MCI events</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Viva Portal -->
+      <div class="viva-panel" style="margin-bottom:24px">
+        <div class="viva-badge">VIVA PREPARATION</div>
+        <div class="viva-title">Q&A Portal</div>
+        <p class="viva-desc">Click any question to reveal the prepared answer. Team members should practice explaining these aloud.</p>
+
+        <div class="viva-list" id="vivaList">
+          <div class="viva-item">
+            <button class="viva-trigger">Why A* over Dijkstra?<span class="viva-icon">+</span></button>
+            <div class="viva-answer">A* adds an admissible heuristic h(n) that prunes branches of the search tree that can't improve on the current best path. In our road graph (~35 nodes), this reduces node expansions by ~40% vs Dijkstra, which is equivalent to A* with h=0. The heuristic (Euclidean distance / max_speed) is both admissible and consistent.</div>
+          </div>
+          <div class="viva-item">
+            <button class="viva-trigger">When does D* Lite activate vs. running full A* again?<span class="viva-icon">+</span></button>
+            <div class="viva-answer">D* Lite activates when the ambulance is already en-route and a traffic change is detected on a future edge. It only re-expands the nodes affected by the cost change (O(k log k), k = changed nodes), while full A* would re-expand the entire graph (O(n log n)). For small changes (1-2 jammed edges), D* Lite is 60-80% faster.</div>
+          </div>
+          <div class="viva-item">
+            <button class="viva-trigger">Why Gale-Shapley and not a greedy assignment?<span class="viva-icon">+</span></button>
+            <div class="viva-answer">Greedy "nearest hospital" can create unstable matchings: Ambulance A prefers Hospital 1 but gets Hospital 2, while Hospital 1 has capacity and would have preferred A's patient (blocking pair). Gale-Shapley guarantees no such blocking pair exists — the matching is stable, meaning no ambulance-hospital pair would mutually prefer to deviate.</div>
+          </div>
+          <div class="viva-item">
+            <button class="viva-trigger">How does the CNP (Contract Net Protocol) work?<span class="viva-icon">+</span></button>
+            <div class="viva-answer">1) Dispatcher broadcasts Call-For-Proposals (CFP) with incident details. 2) Available ambulances compute utility U(a,i) and submit BID messages. 3) Dispatcher selects highest-utility bidder and sends ACCEPT. 4) Other bidders receive REJECT. This is FIPA-ACL compliant and avoids centralized bottleneck — each agent independently computes its bid.</div>
+          </div>
+          <div class="viva-item">
+            <button class="viva-trigger">What makes your environment "partially observable"?<span class="viva-icon">+</span></button>
+            <div class="viva-answer">No single agent sees the complete state: (1) Ambulances don't know other ambulances' exact positions until AVL ping arrives (1 Hz latency). (2) Hospitals don't see incoming patients until pre-alert. (3) Dispatcher sees GPS feeds but not patient vitals until paramedic reports. (4) Traffic jams may exist on roads the ambulance hasn't traversed yet.</div>
+          </div>
+          <div class="viva-item">
+            <button class="viva-trigger">What agent type is your ambulance? (Russell & Norvig classification)<span class="viva-icon">+</span></button>
+            <div class="viva-answer">Our ambulance is a Utility-Based Agent with BDI architecture. It maximizes a multi-attribute utility function U(a,i) = −(γ·ETA + δ·Dist + ψ·load + ζ·fuel). It's not a simple reflex agent (no if-then rules), not model-based (it has a utility function, not just a world model), and not purely goal-based (it optimizes, not satisfices).</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team -->
+      <div class="glass-panel">
+        <div class="panel-header"><span class="panel-icon">👥</span><div><div class="panel-title">Team Composition</div><div class="panel-subtitle">CB.SC.U4CSE24314 — Foundations of AI, Project Review 1</div></div></div>
+        <div class="team-grid">
+          <div class="team-item"><span class="team-role">LEAD</span><span class="team-name">Akshar Sakhi</span><span class="team-topic">PEAS Formulation, System Architecture, Full-Stack Implementation</span></div>
+          <div class="team-item"><span class="team-role">ENV</span><span class="team-name">Nishanth</span><span class="team-topic">Environment Characterization, BDI Architecture, FIPA-ACL Protocols</span></div>
+          <div class="team-item"><span class="team-role">ALGO</span><span class="team-name">Sanjay Balaji</span><span class="team-topic">A* Search, D* Lite Replan, Gale-Shapley Matching</span></div>
+          <div class="team-item"><span class="team-role">Q&A</span><span class="team-name">Sharwin</span><span class="team-topic">Presentation Design, Viva Preparation, Technical Report</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="simulation.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
