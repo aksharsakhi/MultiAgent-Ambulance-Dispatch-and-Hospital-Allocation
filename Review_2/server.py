@@ -336,9 +336,22 @@ class AURABackendHandler(SimpleHTTPRequestHandler):
         self.send_response(200)
         self.end_headers()
 
+    def do_HEAD(self):
+        parsed = urlparse(self.path)
+        if parsed.path == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
+        super().do_HEAD()
+
     def do_GET(self):
         parsed = urlparse(self.path)
         path = parsed.path
+
+        if path == "/favicon.ico":
+            self.send_response(204)
+            self.end_headers()
+            return
 
         if path == "/api/status":
             self._send_json({
@@ -414,9 +427,18 @@ class AURABackendHandler(SimpleHTTPRequestHandler):
         self.wfile.write(payload)
 
     def log_message(self, format, *args):
-        # Filter static files to avoid cluttering terminal output
-        if "/api/spawn" in args[0] or "/api/reset" in args[0] or "/api/spawn_mci" in args[0]:
-            controller.log_terminal(f"{C_GREEN}[WEB COCKPIT ACTION]{C_RESET} {args[0]}")
+        # Type-safe check to prevent HTTPStatus int/enum TypeError
+        if not args:
+            return
+        arg_str = str(args[0])
+        if any(endpoint in arg_str for endpoint in ("/api/spawn", "/api/reset", "/api/spawn_mci", "/api/step")):
+            controller.log_terminal(f"{C_GREEN}[WEB COCKPIT ACTION]{C_RESET} {arg_str}")
+
+    def log_error(self, format, *args):
+        # Suppress routine 404 favicon logs from polluting terminal
+        if args and ("404" in str(args[0]) or "favicon" in str(args)):
+            return
+        super().log_error(format, *args)
 
 
 def print_banner(port: int):
