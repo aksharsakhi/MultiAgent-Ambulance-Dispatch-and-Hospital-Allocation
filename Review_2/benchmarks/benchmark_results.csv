@@ -1,0 +1,7 @@
+Metric,Centralized CAD (Baseline),AURA-EMS (MAS),Improvement
+Mean Response Latency (min),10.39 min,4.27 min,+58.9%
+ESI-1 Life-Threat Response (min),8.85 min,1.95 min,+78.0%
+Golden-Hour Target Compliance,71.4%,100.0%,+28.6% pts
+Ambulance Offload Delay / Ramping,0.00 min,0.17 min,0.0%
+Clinical Specialty Match Rate,57.1%,85.7%,+28.6% pts
+Dynamic Replans on Congestion,0 (Static Dijkstra),0 (D* Lite),Dynamic Active
