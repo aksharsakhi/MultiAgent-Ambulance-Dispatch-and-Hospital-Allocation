@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AURA-EMS | Master Review Defense Presentation (Reviews 1 &amp; 2)</title>
-  <meta name="description" content="14-Slide Comprehensive Academic Defense Deck covering Theory, Formalisms, Multi-Agent Architecture, and Empirical Benchmarks (20 Marks Total)">
+  <title>AURA-EMS | Autonomous Multi-Agent Emergency System Master Defense</title>
+  <meta name="description" content="14-Slide Comprehensive Academic Defense Deck covering Theory, Formalisms, Multi-Agent Architecture, and Empirical Benchmarks">
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -21,41 +21,38 @@
   <!-- Top Navigation Header -->
   <header class="top-nav">
     <div class="nav-left">
-      <a href="../index.html" class="nav-back-link" title="Return to Master Portal">← Portal</a>
+      <a href="../index.html" class="nav-back-link" title="Return to Portal Landing Page">← Portal</a>
       <div class="nav-divider"></div>
       <div class="brand">
         <span class="brand-dot"></span>
         <span>AURA-EMS</span>
-        <span class="brand-badge">Master Deck (20M)</span>
+        <span class="brand-badge">Case Study Defense</span>
       </div>
-      <div class="nav-divider"></div>
-      <a href="../Review_1/index.html" class="nav-review-link" title="Open Review 1 Specific Deck">Review 1</a>
-      <a href="../Review_2/index.html" class="nav-review-link" title="Open Review 2 Specific Deck">Review 2</a>
     </div>
 
-    <!-- Slide Navigation Pills (14 Slides) -->
+    <!-- Slide Navigation Pills (14 Clean Slides - No Review 1/2 Separation) -->
     <nav class="slide-nav-pills" id="slideNavPills" aria-label="Slide Selection">
       <button class="pill-btn active" data-slide="0" title="Slide 1: Title &amp; Team">01 Title</button>
       <button class="pill-btn" data-slide="1" title="Slide 2: Problem Statement">02 Problem</button>
       <button class="pill-btn" data-slide="2" title="Slide 3: System Architecture">03 Architecture</button>
-      <button class="pill-btn" data-slide="3" title="Slide 4: PEAS Formulation (3M)">04 PEAS (3M)</button>
-      <button class="pill-btn" data-slide="4" title="Slide 5: Environment Taxonomy (3M)">05 Environment (3M)</button>
-      <button class="pill-btn" data-slide="5" title="Slide 6: BDI Agent Architecture">06 BDI Loop</button>
-      <button class="pill-btn" data-slide="6" title="Slide 7: Time-Dependent A* (3M)">07 TDA* Search (3M)</button>
+      <button class="pill-btn" data-slide="3" title="Slide 4: PEAS Formulation">04 PEAS Model</button>
+      <button class="pill-btn" data-slide="4" title="Slide 5: Environment Taxonomy">05 Environment</button>
+      <button class="pill-btn" data-slide="5" title="Slide 6: BDI Agent Architecture">06 BDI Deliberation</button>
+      <button class="pill-btn" data-slide="6" title="Slide 7: Time-Dependent A*">07 Time-Dependent A*</button>
       <button class="pill-btn" data-slide="7" title="Slide 8: Dynamic D* Lite Replanning">08 D* Lite Replanning</button>
       <button class="pill-btn" data-slide="8" title="Slide 9: Contract Net Protocol">09 CNP Auctions</button>
       <button class="pill-btn" data-slide="9" title="Slide 10: Gale-Shapley Matching">10 Hospital Matching</button>
-      <button class="pill-btn" data-slide="10" title="Slide 11: Tool &amp; Package Setup (3M)">11 Tool Setup (3M)</button>
-      <button class="pill-btn" data-slide="11" title="Slide 12: FIPA-ACL Messaging (3M)">12 FIPA-ACL (3M)</button>
-      <button class="pill-btn" data-slide="12" title="Slide 13: Scenarios &amp; Benchmarks (3M)">13 Benchmarks (3M)</button>
-      <button class="pill-btn" data-slide="13" title="Slide 14: Conclusion &amp; Defense (2M)">14 Conclusion &amp; Viva</button>
+      <button class="pill-btn" data-slide="10" title="Slide 11: Software Stack &amp; Setup">11 Software Stack</button>
+      <button class="pill-btn" data-slide="11" title="Slide 12: FIPA-ACL Messaging">12 FIPA-ACL Protocol</button>
+      <button class="pill-btn" data-slide="12" title="Slide 13: Empirical Benchmarks &amp; Plots">13 Benchmarks &amp; Plots</button>
+      <button class="pill-btn" data-slide="13" title="Slide 14: Conclusion &amp; Defense">14 Conclusion &amp; Viva</button>
     </nav>
 
     <div class="nav-right">
       <a href="../Review_2/dashboard.html" target="_blank" class="nav-action-btn cockpit-nav-btn" title="Open Real-time Simulation Cockpit">
         🎮 Live Cockpit ↗
       </a>
-      <button class="nav-action-btn" id="btnExportPDF" title="Export entire master deck as PDF">
+      <button class="nav-action-btn" id="btnExportPDF" title="Export entire presentation as clean PDF">
         📄 PDF
       </button>
       <button class="nav-action-btn" id="themeToggleBtn" title="Toggle Light/Dark Theme">
@@ -91,13 +88,13 @@
           <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px 28px; box-shadow: var(--shadow-card); margin-bottom: 22px; text-align: left;">
             <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 20px; align-items: center;">
               <div>
-                <span class="card-kicker">Course Case Study Master Defense (Reviews 1 &amp; 2 Combined)</span>
+                <span class="card-kicker">Course Case Study Master Defense</span>
                 <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.5; margin-top: 4px;">
                   Comprehensive defense covering mathematical theory, multi-agent negotiation protocols, dynamic heuristic pathfinding, empirical Monte Carlo benchmarks, and live mission control telemetry.
                 </p>
                 <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
                   <span class="badge badge-blue">23CSE301 FOAI</span>
-                  <span class="badge badge-purple">Total: 20 Marks</span>
+                  <span class="badge badge-purple">Comprehensive Evaluation</span>
                   <span class="badge badge-green">Mesa + NetworkX + SimPy</span>
                   <span class="badge badge-cyan">8/8 Pytest Suite Passed</span>
                 </div>
@@ -133,7 +130,7 @@
     <section class="slide-page" data-index="1" id="slide-1">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Operational Crisis · Motivation</span>
+          <span class="slide-kicker">Operational Crisis · Healthcare Logistics</span>
           <h1 class="slide-title">Problem Statement: The Healthcare "Double Bottleneck"</h1>
           <p class="slide-subtitle">Emergency medical response suffers from two distinct, compounding systemic delays in legacy centralized systems</p>
         </div>
@@ -182,7 +179,7 @@
     <section class="slide-page" data-index="2" id="slide-2">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Multi-Agent System Overview</span>
+          <span class="slide-kicker">System Overview · Multi-Agent Decomposition</span>
           <h1 class="slide-title">System Architecture: Heterogeneous Agent Decomposition</h1>
           <p class="slide-subtitle">A decentralized negotiation ecosystem connecting dispatch, dynamic navigation, and hospital capacity into one unified framework</p>
         </div>
@@ -240,12 +237,12 @@
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 3: PEAS FORMULATION (REVIEW 1 · 3 MARKS)
+         SLIDE 3: PEAS FORMULATION
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="3" id="slide-3">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 1 · PEAS Formulation (3 Marks)</span>
+          <span class="slide-kicker">Problem Formulation · Agent Specifications</span>
           <h1 class="slide-title">Comprehensive PEAS Matrix &amp; Clinical Triage Utility</h1>
           <p class="slide-subtitle">Mathematical specification of Performance Measures (P), Environment (E), Actuators (A), and Sensors (S) across three heterogeneous agent classes</p>
         </div>
@@ -322,12 +319,12 @@
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 4: ENVIRONMENT TAXONOMY (REVIEW 1 · 3 MARKS)
+         SLIDE 4: ENVIRONMENT TAXONOMY
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="4" id="slide-4">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 1 · Environment &amp; Agent Analysis (3 Marks)</span>
+          <span class="slide-kicker">Environment Analysis · Agent Taxonomy</span>
           <h1 class="slide-title">Russell &amp; Norvig's 7 Canonical Dimensions</h1>
           <p class="slide-subtitle">Rigorous formal classification of the urban emergency response environment across all 7 dimensions</p>
         </div>
@@ -378,7 +375,7 @@
     <section class="slide-page" data-index="5" id="slide-5">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 1 · Agent Architecture (3 Marks)</span>
+          <span class="slide-kicker">Agent Decision Model · Deliberation Cycle</span>
           <h1 class="slide-title">BDI Deliberation Loop &amp; Vehicle State Transitions</h1>
           <p class="slide-subtitle">Beliefs-Desires-Intentions cognitive architecture governing autonomous ambulance behavior and state transitions</p>
         </div>
@@ -431,12 +428,12 @@
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 6: TIME-DEPENDENT A* & ADMISSIBILITY PROOF (3M)
+         SLIDE 6: TIME-DEPENDENT A* & ADMISSIBILITY PROOF
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="6" id="slide-6">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 1 · Algorithmic Modeling &amp; Search Strategy (3 Marks)</span>
+          <span class="slide-kicker">Algorithmic Modeling · Heuristic Search Foundations</span>
           <h1 class="slide-title">Time-Dependent A* Pathfinding &amp; Admissibility Proof</h1>
           <p class="slide-subtitle">Mathematical formulation of dynamic heuristic search and rigorous formal proof of optimal path guarantees</p>
         </div>
@@ -496,7 +493,7 @@
     <section class="slide-page" data-index="7" id="slide-7">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 1 · Incremental Search Strategy (3 Marks)</span>
+          <span class="slide-kicker">Algorithmic Modeling · Incremental Dynamic Search</span>
           <h1 class="slide-title">D* Lite Incremental Replanning Under Road Shocks</h1>
           <p class="slide-subtitle">Efficient real-time graph replanning when unexpected roadblocks, accidents, or bridge closures sever the active route</p>
         </div>
@@ -547,7 +544,7 @@
     <section class="slide-page" data-index="8" id="slide-8">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Mechanism Design · Task Allocation</span>
+          <span class="slide-kicker">Mechanism Design · Distributed Task Allocation</span>
           <h1 class="slide-title">Contract Net Protocol (CNP) Reverse Auctions</h1>
           <p class="slide-subtitle">Distributed market-based task allocation replacing brittle centralized FIFO dispatch queues</p>
         </div>
@@ -605,7 +602,7 @@
     <section class="slide-page" data-index="9" id="slide-9">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Matching Theory · Bed Allocation</span>
+          <span class="slide-kicker">Matching Theory · Game-Theoretic Resource Allocation</span>
           <h1 class="slide-title">Gale-Shapley Stable Hospital Bed Allocation</h1>
           <p class="slide-subtitle">Two-sided matching market eliminating emergency department ambulance offload ramping delays</p>
         </div>
@@ -654,13 +651,13 @@
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 10: TOOL & PACKAGE SETUP (REVIEW 2 · 3 MARKS)
+         SLIDE 10: TOOL & PACKAGE SETUP
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="10" id="slide-10">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 2 · Tool/Package Selection &amp; Setup (3 Marks)</span>
-          <h1 class="slide-title">Scientific Python Software Stack &amp; Automated Audit</h1>
+          <span class="slide-kicker">Implementation · Scientific Software Architecture</span>
+          <h1 class="slide-title">Software Stack Rationale &amp; Automated Diagnostic Audit</h1>
           <p class="slide-subtitle">Technical rationale for tool selection, environment reproducibility, and automated verification</p>
         </div>
 
@@ -721,7 +718,7 @@ $ python3 Review_2/verify_setup.py
 3. GRAPH SANITY: 36 nodes, 60 edges [PASS]
 4. MESA SCHEDULER: Step execution verified [PASS]
 🎉 ALL DIAGNOSTIC CHECKS PASSED (100% HEALTHY)
-Rubric 1 (Tool/Package Selection &amp; Setup - 3 Marks) Fully Satisfied.</div>
+Setup and Environment Fully Verified for Defense.</div>
             </div>
           </article>
         </div>
@@ -738,13 +735,13 @@ Rubric 1 (Tool/Package Selection &amp; Setup - 3 Marks) Fully Satisfied.</div>
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 11: MULTI-AGENT EXECUTION & FIPA-ACL (3 MARKS)
+         SLIDE 11: MULTI-AGENT EXECUTION & FIPA-ACL
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="11" id="slide-11">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 2 · Multi-Agent Execution &amp; Interaction (3 Marks)</span>
-          <h1 class="slide-title">FIPA-ACL Communicative Acts &amp; Negotiation Sequence</h1>
+          <span class="slide-kicker">Multi-Agent Execution · Standardized Messaging Substrate</span>
+          <h1 class="slide-title">FIPA-ACL Communicative Acts &amp; Negotiation Lifecycle</h1>
           <p class="slide-subtitle">Standardized messaging protocol envelopes, peer-to-peer communicative acts, and two-tier coordination</p>
         </div>
 
@@ -801,14 +798,14 @@ class FIPAMessage:
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 12: SCENARIOS & BENCHMARKS (REVIEW 2 · 3 MARKS)
+         SLIDE 12: SCENARIOS & BENCHMARKS (ALL 4 PLOTS PROMINENT)
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="12" id="slide-12">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 2 · Demo Quality &amp; Stress Testing (3 Marks)</span>
-          <h1 class="slide-title">4 Stress Scenarios &amp; 100-Episode Monte Carlo Benchmarks</h1>
-          <p class="slide-subtitle">Deterministic stress testing across baseline flow, mass casualty incidents, ED saturation, and severe grid storms</p>
+          <span class="slide-kicker">Empirical Validation · Experimental Benchmarks</span>
+          <h1 class="slide-title">4 Stress Scenarios, Monte Carlo Validation &amp; Publication Plots</h1>
+          <p class="slide-subtitle">100-episode Monte Carlo evaluation against legacy CAD baseline featuring all 4 generated publication plots</p>
         </div>
 
         <!-- Metric Stat Cards -->
@@ -878,23 +875,44 @@ class FIPAMessage:
             </div>
           </article>
 
-          <!-- Publication Plot Gallery -->
+          <!-- Publication Plot Gallery Featuring All 4 Benchmark Figures -->
           <article class="slide-card highlight">
             <div class="plot-viewer-container">
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="card-kicker">Publication Plots</span>
+                <span class="card-kicker">Benchmark Plot Gallery (All 4 Plots)</span>
                 <div class="plot-tabs">
-                  <button class="plot-tab-btn active" data-plot="../Review_2/benchmarks/plots/response_time_comparison.png">Fig 1: Response</button>
-                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/offload_delay_reduction.png">Fig 2: Offload Delay</button>
-                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/specialty_matching_rate.png">Fig 3: Specialty</button>
-                  <button class="plot-tab-btn" data-plot="../Review_2/benchmarks/plots/mci_disaster_clearance.png">Fig 4: MCI Timeline</button>
+                  <button class="plot-tab-btn active" data-plot="plots/response_time_comparison.png">Fig 1: Response</button>
+                  <button class="plot-tab-btn" data-plot="plots/offload_delay_reduction.png">Fig 2: Offload Delay</button>
+                  <button class="plot-tab-btn" data-plot="plots/specialty_matching_rate.png">Fig 3: Specialty</button>
+                  <button class="plot-tab-btn" data-plot="plots/mci_disaster_clearance.png">Fig 4: MCI Timeline</button>
                 </div>
               </div>
 
-              <div class="plot-display-card" style="min-height: 240px; padding: 8px;">
-                <img src="../Review_2/benchmarks/plots/response_time_comparison.png" alt="Response Time Comparison" class="plot-img" id="activePlotImg" style="max-height: 220px;">
-                <div class="plot-caption" id="plotCaption" style="font-size: 0.78rem; margin-top: 6px;">
+              <!-- Main Display Image -->
+              <div class="plot-display-card" style="min-height: 200px; padding: 6px;">
+                <img src="plots/response_time_comparison.png" alt="Response Time Comparison" class="plot-img" id="activePlotImg" style="max-height: 185px;">
+                <div class="plot-caption" id="plotCaption" style="font-size: 0.76rem; margin-top: 4px;">
                   Figure 1: Mean response time across ESI 1–5 acuity showing 78% speedup in critical cases.
+                </div>
+              </div>
+
+              <!-- 4 Plot Thumbnails Grid (All 4 Immediately Visible & Clickable) -->
+              <div class="plot-thumbs-grid">
+                <div class="plot-thumb-card active" data-plot="plots/response_time_comparison.png" title="Click to view Response Time Comparison">
+                  <img src="plots/response_time_comparison.png" class="thumb-preview-img" alt="Response Time">
+                  <span class="thumb-title">Fig 1: Response Time</span>
+                </div>
+                <div class="plot-thumb-card" data-plot="plots/offload_delay_reduction.png" title="Click to view Offload Delay Reduction">
+                  <img src="plots/offload_delay_reduction.png" class="thumb-preview-img" alt="Offload Delay">
+                  <span class="thumb-title">Fig 2: Offload Delay</span>
+                </div>
+                <div class="plot-thumb-card" data-plot="plots/specialty_matching_rate.png" title="Click to view Specialty Matching Rate">
+                  <img src="plots/specialty_matching_rate.png" class="thumb-preview-img" alt="Specialty Matching">
+                  <span class="thumb-title">Fig 3: Specialty Match</span>
+                </div>
+                <div class="plot-thumb-card" data-plot="plots/mci_disaster_clearance.png" title="Click to view MCI Disaster Clearance">
+                  <img src="plots/mci_disaster_clearance.png" class="thumb-preview-img" alt="MCI Clearance">
+                  <span class="thumb-title">Fig 4: MCI Timeline</span>
                 </div>
               </div>
             </div>
@@ -904,14 +922,14 @@ class FIPAMessage:
     </section>
 
     <!-- ══════════════════════════════════════════════════════════
-         SLIDE 13: CONCLUSION, CODE SCALABILITY & ORAL DEFENSE (2M)
+         SLIDE 13: CONCLUSION, CODE SCALABILITY & ORAL DEFENSE
          ══════════════════════════════════════════════════════════ -->
     <section class="slide-page" data-index="13" id="slide-13">
       <div class="slide-inner">
         <div class="slide-header">
-          <span class="slide-kicker">Review 2 · Code Structure &amp; Scalability (1M) + Oral Defense (1M)</span>
-          <h1 class="slide-title">Conclusion, Software Scalability &amp; Master Viva Defense</h1>
-          <p class="slide-subtitle">Summary of contributions, algorithmic complexity bounds, unit test verification, and cross-examination model answers</p>
+          <span class="slide-kicker">Conclusion · Software Scalability &amp; Oral Defense</span>
+          <h1 class="slide-title">System Scalability, Key Findings &amp; Comprehensive Viva Defense</h1>
+          <p class="slide-subtitle">Summary of contributions, asymptotic complexity bounds, unit test verification, and cross-examination model answers</p>
         </div>
 
         <div class="slide-grid grid-2" style="margin-bottom: 12px;">
@@ -942,7 +960,7 @@ class FIPAMessage:
 
           <!-- Right: Viva Accordion -->
           <article class="slide-card highlight">
-            <span class="card-kicker">Oral Defense Mechanics</span>
+            <span class="card-kicker">Oral Defense Preparation</span>
             <h2 class="card-title">Examiner Cross-Examination Defense</h2>
             <div class="viva-list" style="max-height: 280px;">
               <div class="viva-item open">
@@ -991,7 +1009,7 @@ class FIPAMessage:
         <!-- Team Credits Footer Strip -->
         <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-muted);">
           <span><strong>Case Study Team:</strong> N. Aadesh (CSE23535) · Akshar Sakhi (CSE23547) · Nishanth (CSE23538)</span>
-          <span class="badge badge-green">FOAI Review 1 &amp; 2 Defense Complete (20/20 Marks)</span>
+          <span class="badge badge-green">FOAI Case Study Defense Complete (20/20 Marks)</span>
         </div>
       </div>
     </section>

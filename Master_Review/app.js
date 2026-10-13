@@ -1,7 +1,7 @@
 /**
- * AURA-EMS — Master Review Presentation Controller
- * Combined Defense: Review 1 (Theory & Formalisms) + Review 2 (Implementation & Benchmarks)
- * 14-Slide Master Deck: 1 Title + 12 Core Slides + 1 Conclusion (20 Marks Total)
+ * AURA-EMS — Master Defense Presentation Controller
+ * Unified Case Study Defense (20 Marks Total)
+ * 14-Slide Master Deck: 1 Title + 12 Core Slides + 1 Conclusion
  */
 
 (function () {
@@ -81,10 +81,10 @@
 
   // ── Publication Plot Captions for Slide 12 ─────────────────
   const plotCaptions = {
-    '../Review_2/benchmarks/plots/response_time_comparison.png': 'Figure 1: Mean response time comparison across triage acuity classes ESI 1 to 5 showing 78% speedup in critical cases.',
-    '../Review_2/benchmarks/plots/offload_delay_reduction.png': 'Figure 2: Complete eradication of Emergency Department ambulance ramping delays via Gale-Shapley bed allocation.',
-    '../Review_2/benchmarks/plots/specialty_matching_rate.png': 'Figure 3: Clinical specialty matching accuracy (Cath Lab, Trauma, Neuro) reaching 100% with multi-agent coordination.',
-    '../Review_2/benchmarks/plots/mci_disaster_clearance.png': 'Figure 4: Mass Casualty Incident clearance timeline demonstrating 54% faster disaster evacuation under AURA-EMS.'
+    'plots/response_time_comparison.png': 'Figure 1: Mean response time comparison across triage acuity classes ESI 1 to 5 showing 78% speedup in critical cases.',
+    'plots/offload_delay_reduction.png': 'Figure 2: Complete eradication of Emergency Department ambulance ramping delays via Gale-Shapley bed allocation.',
+    'plots/specialty_matching_rate.png': 'Figure 3: Clinical specialty matching accuracy (Cath Lab, Trauma, Neuro) reaching 100% with multi-agent coordination.',
+    'plots/mci_disaster_clearance.png': 'Figure 4: Mass Casualty Incident clearance timeline demonstrating 54% faster disaster evacuation under AURA-EMS.'
   };
 
   // ── DOM Initialization ───────────────────────────────────
@@ -312,22 +312,35 @@
   // ══════════════════════════════════════════════════════════
   function setupPlotGallery() {
     const plotBtns = document.querySelectorAll('.plot-tab-btn');
+    const plotThumbs = document.querySelectorAll('.plot-thumb-card');
     const plotImg = document.getElementById('activePlotImg');
     const plotCaption = document.getElementById('plotCaption');
 
+    function selectPlot(src, title) {
+      plotBtns.forEach(b => b.classList.toggle('active', b.getAttribute('data-plot') === src));
+      plotThumbs.forEach(t => t.classList.toggle('active', t.getAttribute('data-plot') === src));
+
+      if (plotImg && src) {
+        plotImg.src = src;
+        plotImg.alt = title || 'Publication Plot';
+        if (plotCaption) {
+          plotCaption.textContent = plotCaptions[src] || title;
+        }
+      }
+    }
+
     plotBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
-        plotBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
         const src = btn.getAttribute('data-plot');
-        if (plotImg && src) {
-          plotImg.src = src;
-          plotImg.alt = btn.textContent;
-          if (plotCaption) {
-            plotCaption.textContent = plotCaptions[src] || btn.textContent;
-          }
-        }
+        selectPlot(src, btn.textContent);
+      });
+    });
+
+    plotThumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        const src = thumb.getAttribute('data-plot');
+        const title = thumb.querySelector('.thumb-title')?.textContent;
+        selectPlot(src, title);
       });
     });
   }
