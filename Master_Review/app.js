@@ -1,17 +1,17 @@
 /**
  * AURA-EMS — Master Review Presentation Controller
  * Combined Defense: Review 1 (Theory & Formalisms) + Review 2 (Implementation & Benchmarks)
- * 10-Slide Unified Master Keynote Deck (20 Marks Total)
+ * 14-Slide Master Deck: 1 Title + 12 Core Slides + 1 Conclusion (20 Marks Total)
  */
 
 (function () {
   'use strict';
 
   // ── Global State ──────────────────────────────────────────
-  const totalSlides = 10;
+  const totalSlides = 14;
   let currentSlide = 0;
 
-  // ── Scenario Data for Slide 7 ─────────────────────────────
+  // ── Scenario Data for Slide 12 ────────────────────────────
   const scenariosData = [
     {
       title: 'Baseline Urban Operations',
@@ -79,7 +79,7 @@
     }
   ];
 
-  // ── Publication Plot Captions for Slide 8 ──────────────────
+  // ── Publication Plot Captions for Slide 12 ─────────────────
   const plotCaptions = {
     '../Review_2/benchmarks/plots/response_time_comparison.png': 'Figure 1: Mean response time comparison across triage acuity classes ESI 1 to 5 showing 78% speedup in critical cases.',
     '../Review_2/benchmarks/plots/offload_delay_reduction.png': 'Figure 2: Complete eradication of Emergency Department ambulance ramping delays via Gale-Shapley bed allocation.',
@@ -164,10 +164,14 @@
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         goToSlide(currentSlide - 1);
+      } else if (e.key === 'Home') {
+        goToSlide(0);
+      } else if (e.key === 'End') {
+        goToSlide(totalSlides - 1);
       } else if (e.key >= '1' && e.key <= '9') {
         goToSlide(parseInt(e.key, 10) - 1);
       } else if (e.key === '0') {
-        goToSlide(9); // Slide 10
+        goToSlide(9);
       } else if (e.key.toLowerCase() === 'f') {
         toggleFullscreen();
       }
@@ -265,7 +269,7 @@
   }
 
   // ══════════════════════════════════════════════════════════
-  // SLIDE 7: SCENARIO SWITCHER
+  // SLIDE 12: SCENARIO SWITCHER
   // ══════════════════════════════════════════════════════════
   function setupScenarioSwitcher() {
     const btns = document.querySelectorAll('.scenario-tab-btn');
@@ -304,7 +308,7 @@
   }
 
   // ══════════════════════════════════════════════════════════
-  // SLIDE 8: PUBLICATION PLOT GALLERY
+  // SLIDE 12: PUBLICATION PLOT GALLERY
   // ══════════════════════════════════════════════════════════
   function setupPlotGallery() {
     const plotBtns = document.querySelectorAll('.plot-tab-btn');
@@ -329,7 +333,7 @@
   }
 
   // ══════════════════════════════════════════════════════════
-  // SLIDE 10: VIVA ACCORDION
+  // SLIDE 14: VIVA ACCORDION
   // ══════════════════════════════════════════════════════════
   function setupVivaAccordion() {
     const items = document.querySelectorAll('.viva-item');
