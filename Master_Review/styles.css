@@ -105,22 +105,33 @@ html, body {
 
 /* ── TOP NAV BAR ───────────────────────────────────────────────────────────── */
 .top-nav {
-  height: 56px;
+  height: 54px;
   background: var(--bg-surface);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 0 14px;
   position: relative;
   z-index: 50;
   box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  white-space: nowrap;
 }
 
-.nav-left, .nav-right {
+.nav-left {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-back-link, .nav-review-link {
@@ -128,14 +139,16 @@ html, body {
   align-items: center;
   gap: 5px;
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--text-muted);
   background: var(--bg-elevated);
-  padding: 5px 10px;
+  padding: 5px 9px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
   transition: var(--transition);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-back-link:hover, .nav-review-link:hover {
@@ -148,6 +161,7 @@ html, body {
   width: 1px;
   height: 20px;
   background: var(--border);
+  flex-shrink: 0;
 }
 
 .brand {
@@ -155,8 +169,18 @@ html, body {
   align-items: center;
   gap: 8px;
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.brand span {
+  white-space: nowrap;
+  word-break: keep-all;
+  overflow-wrap: normal;
 }
 
 .brand-dot {
@@ -165,26 +189,23 @@ html, body {
   border-radius: 50%;
   background-color: var(--blue);
   box-shadow: 0 0 10px var(--blue);
+  flex-shrink: 0;
 }
 
 .brand-badge {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 7px;
-  border-radius: var(--radius-sm);
-  background: var(--blue-dim);
-  color: var(--blue);
-  border: 1px solid rgba(37, 99, 235, 0.2);
+  display: none;
 }
 
 /* ── SLIDE NAV PILLS ───────────────────────────────────────────────────────── */
 .slide-nav-pills {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 3px;
   overflow-x: auto;
-  max-width: 58vw;
-  padding: 4px 0;
+  flex: 1;
+  min-width: 0;
+  padding: 4px 6px;
+  margin: 0 10px;
   scrollbar-width: none;
 }
 .slide-nav-pills::-webkit-scrollbar { display: none; }
@@ -193,13 +214,14 @@ html, body {
   background: transparent;
   border: 1px solid transparent;
   color: var(--text-muted);
-  padding: 5px 10px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   font-family: var(--font-display);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  flex-shrink: 0;
   transition: var(--transition);
 }
 
