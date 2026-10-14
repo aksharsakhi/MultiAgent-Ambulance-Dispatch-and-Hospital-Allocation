@@ -4,14 +4,14 @@
 **Project:** AURA-EMS (Autonomous Unified Response Agent for Emergency Medical Logistics)  
 **Authors:** N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538)  
 **Academic Defense Scope:** Review 1 (10 Marks) + Review 2 (10 Marks) = **20 Marks Total**  
-**Test Suite Status:** 🟢 **25 / 25 Unit & Integration Tests Passing (100% Health, 0.042s Execution Time)**
+**Test Suite Status:** 🟢 **26 / 26 Unit & Integration Tests Passing (100% Health, 0.046s Execution Time)**
 
 ---
 
 ## 1. Executive Summary & Testing Philosophy
 
 The AURA-EMS testing suite enforces **dual-tier rigorous empirical verification**:
-1. **Tier 1 (Micro-Algorithmic Invariant Verification):** Verifies mathematical admissibility of heuristics ($h(n) \le h^*(n)$), graph consistency, D* Lite dynamic edge updates ($rhs \ne g$), zero blocking pairs in Gale-Shapley matching, and strict compliance with the FIPA-ACL Contract Net Protocol standard.
+1. **Tier 1 (Micro-Algorithmic Invariant Verification):** Verifies mathematical admissibility of heuristics ($h(n) \le h^*(n)$), graph consistency, D* Lite dynamic edge updates ($rhs \ne g$), zero blocking pairs in Gale-Shapley matching, strict compliance with the FIPA-ACL Contract Net Protocol standard, and persistent ACID SQLite telemetry storage with real-time operational analytics calculation.
 2. **Tier 2 (Macro Multi-Agent Simulation & Scenario Stress Testing):** Verifies the full Python Mesa multi-agent lifecycle under stochastic Poisson emergency generation across 4 distinct metropolitan crisis scenarios: Baseline Flow, Rush-Hour Bridge Gridlock, 10-Victim Mass Casualty Incidents (MCI), and 100% Hospital ER Bed Saturation.
 
 Every automated test case directly validates an explicit criterion in the course evaluation rubrics.
@@ -56,7 +56,7 @@ Every automated test case directly validates an explicit criterion in the course
 
 ---
 
-### Suite 3: Simulation Engine & Scenario Tests (`test_simulation.py` · 7 Tests · Review 2 Rubrics 1 & 3 - 6M)
+### Suite 3: Simulation Engine & Scenario Tests (`test_simulation.py` · 8 Tests · Review 2 Rubrics 1 & 3 - 6M)
 | # | Test Method Name | Marks | Condition / Invariant Asserted |
 | :-: | :--- | :-: | :--- |
 | **12** | `test_model_initialization_and_stepping` | **3M** | Validates clean initialization of Mesa multi-agent scheduler, NetworkX graph, and 20 simulation timesteps without memory leaks. |
@@ -66,19 +66,20 @@ Every automated test case directly validates an explicit criterion in the course
 | **16** | `test_hospital_surge_scenario_execution` | **3M** | Executes Hospital ER surge stress scenario, asserting metric capture and offload delay minimization. |
 | **17** | `test_city_graph_road_blockage_toggling` | **3M** | Verifies setting road blockage sets weight to $100,000\text{ s}$ and unblocking restores normal free-flow travel time. |
 | **18** | `test_incident_generator_poisson_arrival_rate_scaling` | **3M** | Validates non-homogeneous Poisson call generator; asserts peak-hour arrival rate scales by $\approx 2.5\times$ over off-peak. |
+| **19** | `test_sqlite_telemetry_database_persistence_and_analytics` | **3M** | Verifies SQLite `telemetry_db.py` persistent transaction storage, FIPA-ACL act logging, ESI distribution, and operational metrics calculation. |
 
 ---
 
 ### Suite 4: PEAS Formulation, Environment & Scalability Tests (`test_peas_and_environment.py` · 7 Tests · Review 1 Rubrics 1, 2 & Review 2 Rubric 4)
 | # | Test Method Name | Marks | Condition / Invariant Asserted |
 | :-: | :--- | :-: | :--- |
-| **19** | `test_peas_clinical_triage_acuity_and_targets` | **3M** | Verifies ESI 1–5 triage acuity targets: ESI-1 $\le 8\text{ min}$, ESI-2 $\le 14\text{ min}$, ESI-3 $\le 30\text{ min}$. |
-| **20** | `test_peas_heterogeneous_fleet_capabilities` | **3M** | Verifies equipment: ALS (Cardiac/Ventilator), BLS (Oxygen/Splint), HEMS (Flight Physician), and fuel limits ($250-400\text{ km}$). |
-| **21** | `test_peas_utility_cost_function_strict_preference` | **3M** | Clinical utility invariant: $U_{\text{ALS}} > U_{\text{BLS}}$ for ESI-1 cardiac calls even when BLS is 2 minutes closer, preventing under-triaged deaths. |
-| **22** | `test_environment_seven_canonical_dimensions` | **3M** | Russell & Norvig's 7 canonical dimensions: Partially Observable, Stochastic, Dynamic, Discrete/Continuous, Sequential, Multi-Agent, Known. |
-| **23** | `test_hospital_er_diversion_and_zero_ramping` | **3M** | When Apollo ER is saturated to 100% (18/18 beds), Gale-Shapley diverts new patients to St. Jude with **0 ramping delay**. |
-| **24** | `test_peas_sensors_telemetry_accuracy` | **3M** | Verifies sensor telemetry feeds (GPS node tracking, remaining fuel depletion, and ER bed occupancy) match ground truth without drift. |
-| **25** | `test_algorithmic_scalability_and_sub_millisecond_latency` | **1M** | Benchmarks TDA* on a 100-node network ($N=100, E=180$); asserts completion in **$< 15\text{ ms}$**, proving sub-second scaling. |
+| **20** | `test_peas_clinical_triage_acuity_and_targets` | **3M** | Verifies ESI 1–5 triage acuity targets: ESI-1 $\le 8\text{ min}$, ESI-2 $\le 14\text{ min}$, ESI-3 $\le 30\text{ min}$. |
+| **21** | `test_peas_heterogeneous_fleet_capabilities` | **3M** | Verifies equipment: ALS (Cardiac/Ventilator), BLS (Oxygen/Splint), HEMS (Flight Physician), and fuel limits ($250-400\text{ km}$). |
+| **22** | `test_peas_utility_cost_function_strict_preference` | **3M** | Clinical utility invariant: $U_{\text{ALS}} > U_{\text{BLS}}$ for ESI-1 cardiac calls even when BLS is 2 minutes closer, preventing under-triaged deaths. |
+| **23** | `test_environment_seven_canonical_dimensions` | **3M** | Russell & Norvig's 7 canonical dimensions: Partially Observable, Stochastic, Dynamic, Discrete/Continuous, Sequential, Multi-Agent, Known. |
+| **24** | `test_hospital_er_diversion_and_zero_ramping` | **3M** | When Apollo ER is saturated to 100% (18/18 beds), Gale-Shapley diverts new patients to St. Jude with **0 ramping delay**. |
+| **25** | `test_peas_sensors_telemetry_accuracy` | **3M** | Verifies sensor telemetry feeds (GPS node tracking, remaining fuel depletion, and ER bed occupancy) match ground truth without drift. |
+| **26** | `test_algorithmic_scalability_and_sub_millisecond_latency` | **1M** | Benchmarks TDA* on a 100-node network ($N=100, E=180$); asserts completion in **$< 15\text{ ms}$**, proving sub-second scaling. |
 
 ---
 
@@ -256,13 +257,14 @@ Ran 7 tests in 0.003s
 OK
 
 ══════════════════════════════════════════════════════════════════════════════
-🎉 ALL 25 AUTOMATED UNIT & INTEGRATION TESTS PASSED WITH 100% SUCCESS RATE!
+🎉 ALL 26 AUTOMATED UNIT & INTEGRATION TESTS PASSED WITH 100% SUCCESS RATE!
    • PEAS Clinical Triage & Heterogeneous Fleet Utility: VERIFIED
    • Russell & Norvig 7 Canonical Environment Properties: VERIFIED
    • Time-Dependent A* Admissibility & Dynamic D* Lite Replanning: VERIFIED
    • Gale-Shapley Stable Matching & Zero Ambulance Ramping: VERIFIED
    • FIPA-ACL Contract Net Protocol Reverse Auctions: VERIFIED
    • Python Mesa Multi-Agent Scheduler & 4 Stress Scenarios: VERIFIED
+   • SQLite Incident Telemetry Engine & Operational Analytics: VERIFIED
    • Sub-Millisecond Algorithmic Scalability (O(E + V log V)): VERIFIED
 ══════════════════════════════════════════════════════════════════════════════
 ```

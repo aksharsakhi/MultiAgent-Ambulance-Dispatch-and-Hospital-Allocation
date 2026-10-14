@@ -30,6 +30,7 @@ if WORKSPACE_ROOT not in sys.path:
 
 from src.simulation.aura_model import AURASimulationModel
 from src.simulation.scenarios import SimulationScenarioManager, ScenarioType
+from src.simulation.telemetry_db import TelemetryDB
 
 # ANSI Color Codes for Terminal Output
 C_RESET = "\033[0m"
@@ -57,6 +58,7 @@ class SimulationStateController:
         self.worker_thread = None
         self.last_logged_msg_idx = 0
         self.terminal_active = True
+        self.db = TelemetryDB()
         self.reset_model(self.current_scenario)
 
     def reset_model(self, scenario_name: str = "baseline_normal"):
@@ -77,10 +79,13 @@ class SimulationStateController:
                 for _ in range(hosp1.total_er_capacity - 1):
                     mock_inc = self.model.spawn_emergency(node_id=14, esi_level=3, specialty="GENERAL_SURGERY")
                     hosp1.admit_patient(mock_inc)
+                    self.db.save_incident(mock_inc, self.current_scenario)
                 self.log_terminal(f"{C_PURPLE}[SCENARIO PRE-CONDITION]{C_RESET} Apollo Metro ER saturated to {hosp1.occupancy_rate:.1f}%. Proactive Gale-Shapley diversion engaged.")
 
             elif scenario_name == "mass_casualty_incident":
                 calls = self.model.spawn_mci_event(node_id=17, count=6)
+                for inc in calls:
+                    self.db.save_incident(inc, self.current_scenario)
                 self.log_terminal(f"{C_RED}[SCENARIO PRE-CONDITION]{C_RESET} Mass Casualty Incident triggered: 6 victims at Node 17! Fleet mobilized.")
 
             self.log_terminal(f"{C_CYAN}[MODEL INITIALIZED]{C_RESET} Scenario '{scenario_name}' loaded. Fleet: 6 Ambulances, 3 Hospitals online.")
@@ -92,6 +97,12 @@ class SimulationStateController:
 
             self.model.step()
             self._print_step_telemetry()
+
+            # Persist incidents to SQLite database
+            for inc in list(self.model.incidents.values()):
+                self.db.save_incident(inc, self.current_scenario)
+            for inc in list(self.model.resolved_incidents):
+                self.db.save_incident(inc, self.current_scenario)
 
     def start_running(self):
         if not self.is_running:
@@ -145,6 +156,7 @@ class SimulationStateController:
                     detail = str(msg.content)
 
                 self.log_terminal(f"{color}{C_BOLD}[FIPA-ACL {perf:15s}]{C_RESET} {msg.sender:14s} ➔ {msg.receiver:14s} | {detail}")
+                self.db.save_fipa_message(perf, msg.sender, msg.receiver, msg.conversation_id, detail, m.current_time_sec)
 
         # Periodic step summary line every 6 steps (30 simulation seconds)
         if m.step_count % 6 == 0 or m.step_count == 1:
@@ -162,12 +174,15 @@ class SimulationStateController:
     def spawn_emergency(self, node_id: int, esi_level: int = 1, specialty: str = "TRAUMA_SURGERY"):
         with self.lock:
             inc = self.model.spawn_emergency(node_id=node_id, esi_level=esi_level, specialty=specialty)
+            self.db.save_incident(inc, self.current_scenario)
             self.log_terminal(f"{C_RED}{C_BOLD}>>> [EMERGENCY CALL DISPATCHED]{C_RESET} Incident #{inc.incident_id} (ESI-{esi_level}: {specialty}) at Node {node_id}")
             return inc
 
     def spawn_mci_cluster(self, node_id: int, count: int = 6):
         with self.lock:
             calls = self.model.spawn_mci_event(node_id=node_id, count=count)
+            for inc in calls:
+                self.db.save_incident(inc, self.current_scenario)
             self.log_terminal(f"{C_RED}{C_BOLD}>>> [MASS CASUALTY INCIDENT (MCI)]{C_RESET} {count} Victims spawned simultaneously at Node {node_id}! Initiating batch auction...")
             return calls
 
@@ -311,7 +326,8 @@ class SimulationStateController:
                     "esi1_response_min": esi1_resp_min,
                     "ramping_delay_min": 0.0,
                     "golden_hour_rate": 99.4
-                }
+                },
+                "db_analytics": self.db.get_analytics_summary()
             }
 
 
@@ -364,6 +380,12 @@ class AURABackendHandler(SimpleHTTPRequestHandler):
             })
         elif path == "/api/state":
             self._send_json(controller.get_state())
+        elif path == "/api/db/analytics":
+            self._send_json(controller.db.get_analytics_summary())
+        elif path == "/api/db/incidents":
+            query = parse_qs(parsed.query)
+            limit = int(query.get("limit", [100])[0])
+            self._send_json({"incidents": controller.db.get_all_incidents(limit=limit)})
         else:
             super().do_GET()
 
@@ -413,6 +435,10 @@ class AURABackendHandler(SimpleHTTPRequestHandler):
             count = int(body.get("count", 6))
             calls = controller.spawn_mci_cluster(node_id, count=count)
             self._send_json({"spawned_mci_count": len(calls), "node": node_id})
+
+        elif path == "/api/db/clear":
+            controller.db.clear_db()
+            self._send_json({"status": "cleared", "analytics": controller.db.get_analytics_summary()})
 
         else:
             self.send_response(404)

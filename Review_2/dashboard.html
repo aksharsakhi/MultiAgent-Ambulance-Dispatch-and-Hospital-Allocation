@@ -156,6 +156,7 @@
           <button class="t-tab-btn active" data-tab="fipa">FIPA-ACL Messages</button>
           <button class="t-tab-btn" data-tab="fleet">Fleet Telemetry</button>
           <button class="t-tab-btn" data-tab="hospitals">Hospital ER Beds</button>
+          <button class="t-tab-btn" data-tab="analytics" id="tabBtnAnalytics">📊 SQLite Analytics &amp; Log</button>
         </div>
 
         <div class="telemetry-tab-content">
@@ -186,6 +187,100 @@
           <div class="tab-pane" id="tab-hospitals">
             <div class="hospital-cards-wrap" id="hospitalCardsContainer">
               <!-- Dynamically populated by dashboard.js -->
+            </div>
+          </div>
+
+          <!-- TAB 4: SQLite Database Telemetry & Historical Analytics -->
+          <div class="tab-pane" id="tab-analytics">
+            <div class="analytics-pane-wrapper">
+              <!-- DB Stats Header Banner -->
+              <div class="db-status-bar">
+                <div class="db-badge">
+                  <span class="db-dot"></span>
+                  <span class="db-title">SQLite Store:</span>
+                  <code class="db-filename" id="dbFilename">Review_2/telemetry.db</code>
+                </div>
+                <div class="db-quick-metrics">
+                  <span class="db-chip"><strong id="dbTotalIncidents">0</strong> Calls</span>
+                  <span class="db-chip"><strong id="dbResolvedIncidents">0</strong> Resolved</span>
+                  <span class="db-chip"><strong id="dbStorageSize">0 KB</strong></span>
+                </div>
+                <div class="db-actions">
+                  <button class="mini-btn action-btn" id="btnExportCsv" title="Export Recorded Incidents to CSV">⬇ CSV Export</button>
+                  <button class="mini-btn danger-btn" id="btnClearDb" title="Clear SQLite Database">🗑 Clear DB</button>
+                </div>
+              </div>
+
+              <!-- Acuity & Specialty Visual Distributions -->
+              <div class="analytics-charts-grid">
+                <!-- ESI Acuity Distribution -->
+                <div class="chart-card">
+                  <div class="chart-header">
+                    <h4>ESI Acuity Triage Distribution</h4>
+                    <span class="chart-sub">Emergency Severity Index (1–5)</span>
+                  </div>
+                  <div class="esi-bars-container" id="esiBarsContainer">
+                    <!-- Progress bars for ESI 1 to 5 dynamically inserted -->
+                  </div>
+                </div>
+
+                <!-- Specialty Allocation & Mission Stats -->
+                <div class="chart-card">
+                  <div class="chart-header">
+                    <h4>Clinical Specialty Breakdown</h4>
+                    <span class="chart-sub">Matched Hospital Units</span>
+                  </div>
+                  <div class="specialty-chips-container" id="specialtyChipsContainer">
+                    <!-- Specialty distribution tags dynamically inserted -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Hospital & Fleet Performance Breakdown Cards -->
+              <div class="analytics-subcards-grid">
+                <div class="subcard">
+                  <span class="subcard-title">Hospital Admissions by Center</span>
+                  <div class="hospital-alloc-list" id="hospitalAllocList">
+                    <!-- Hospital admit bars -->
+                  </div>
+                </div>
+                <div class="subcard">
+                  <span class="subcard-title">Ambulance Fleet Utilization</span>
+                  <div class="fleet-alloc-list" id="fleetAllocList">
+                    <!-- Fleet missions breakdown -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Recorded Incidents Table -->
+              <div class="analytics-table-wrap">
+                <div class="table-head-bar">
+                  <h4>Recorded Incident Telemetry (Last 50 Events)</h4>
+                  <span class="table-sub" id="tableRecordCount">Showing 0 records</span>
+                </div>
+                <div class="table-scroll-container">
+                  <table class="analytics-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Acuity</th>
+                        <th>Specialty</th>
+                        <th>Scenario</th>
+                        <th>Dispatched</th>
+                        <th>Destination</th>
+                        <th>Resp. Time</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="analyticsTableBody">
+                      <tr>
+                        <td colspan="8" class="table-empty">No incidents recorded yet in database.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

@@ -128,5 +128,71 @@ class TestSimulationEngineAndScenarios(unittest.TestCase):
         ratio = on_peak_total / max(1, off_peak_total)
         self.assertAlmostEqual(ratio, 2.5, delta=0.5)
 
+    def test_sqlite_telemetry_database_persistence_and_analytics(self):
+        """Verify SQLite TelemetryDB accurately persists emergency events, FIPA acts, and calculates operational intelligence."""
+        import tempfile
+        from Review_2.src.simulation.telemetry_db import TelemetryDB
+        from Review_2.src.environment.incident_generator import EmergencyIncident, ESILevel
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            test_db_path = Path(tmpdir) / "test_telemetry.db"
+            db = TelemetryDB(db_path=test_db_path)
+
+            # 1. Create and save sample emergency incidents
+            inc1 = EmergencyIncident(
+                incident_id="INC-T01",
+                node_id=14,
+                pos=(2000.0, 2000.0),
+                esi_level=ESILevel.RESUSCITATION,
+                specialty_needed="TRAUMA_SURGERY",
+                spawn_time_sec=10.0,
+                golden_hour_limit_sec=3600.0,
+                status="RESOLVED",
+                assigned_ambulance_id="AMB-ALS-01",
+                assigned_hospital_id="HOSP-01",
+                on_scene_time_sec=130.0,
+                hospital_arrival_time_sec=200.0,
+                hospital_admit_time_sec=200.0
+            )
+            inc2 = EmergencyIncident(
+                incident_id="INC-T02",
+                node_id=8,
+                pos=(1000.0, 1000.0),
+                esi_level=ESILevel.EMERGENT,
+                specialty_needed="CARDIAC_CATH_LAB",
+                spawn_time_sec=20.0,
+                golden_hour_limit_sec=3600.0,
+                status="DISPATCHED",
+                assigned_ambulance_id="AMB-BLS-01"
+            )
+
+            db.save_incident(inc1, scenario="baseline_normal")
+            db.save_incident(inc2, scenario="baseline_normal")
+
+            # 2. Save FIPA message
+            db.save_fipa_message("CFP", "DISPATCHER", "ALL_AMBS", "CONV-01", "Auction for INC-T01", 10.5)
+
+            # 3. Verify querying incidents
+            all_incidents = db.get_all_incidents()
+            self.assertEqual(len(all_incidents), 2)
+            self.assertEqual(all_incidents[0]["incident_id"], "INC-T02") # DESC by spawn time
+
+            # 4. Verify analytics calculations
+            summary = db.get_analytics_summary()
+            self.assertEqual(summary["total_incidents"], 2)
+            self.assertEqual(summary["resolved_incidents"], 1)
+            self.assertEqual(summary["active_incidents"], 1)
+            self.assertEqual(summary["esi_1_mean_response_min"], 2.0) # 120s / 60 = 2.0 min
+            self.assertEqual(summary["golden_hour_compliance_pct"], 100.0)
+            self.assertEqual(summary["total_fipa_messages"], 1)
+            self.assertEqual(summary["specialty_distribution"]["TRAUMA_SURGERY"], 1)
+
+            # 5. Clear DB
+            db.clear_db()
+            cleared_summary = db.get_analytics_summary()
+            self.assertEqual(cleared_summary["total_incidents"], 0)
+            self.assertEqual(cleared_summary["total_fipa_messages"], 0)
+
 if __name__ == "__main__":
     unittest.main()
+

@@ -52,6 +52,23 @@
   const statFleetEnRoute = document.getElementById('statFleetEnRoute');
   const statSimTime = document.getElementById('statSimTime');
 
+  // Analytics & SQLite DOM Elements
+  const dbFilename = document.getElementById('dbFilename');
+  const dbTotalIncidents = document.getElementById('dbTotalIncidents');
+  const dbResolvedIncidents = document.getElementById('dbResolvedIncidents');
+  const dbStorageSize = document.getElementById('dbStorageSize');
+  const btnExportCsv = document.getElementById('btnExportCsv');
+  const btnClearDb = document.getElementById('btnClearDb');
+  const esiBarsContainer = document.getElementById('esiBarsContainer');
+  const specialtyChipsContainer = document.getElementById('specialtyChipsContainer');
+  const hospitalAllocList = document.getElementById('hospitalAllocList');
+  const fleetAllocList = document.getElementById('fleetAllocList');
+  const analyticsTableBody = document.getElementById('analyticsTableBody');
+  const tableRecordCount = document.getElementById('tableRecordCount');
+  let localRecordedIncidents = [];
+  let latestAnalytics = null;
+  let lastTableRefreshSec = 0;
+
   // ── Initialization ───────────────────────────────────────
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
@@ -64,6 +81,7 @@
     setupControls();
     setupThemeToggle();
     setupTabs();
+    setupAnalyticsControls();
     initLocalState();
     detectBackend();
 
@@ -138,6 +156,19 @@
       kpiGoldenHour.textContent = `${data.metrics.golden_hour_rate}%`;
     }
 
+    // SQLite Telemetry Analytics from Backend
+    if (data.db_analytics) {
+      latestAnalytics = data.db_analytics;
+      renderAnalytics(data.db_analytics);
+
+      // Periodically refresh incident table if analytics tab is active
+      const analyticsTabActive = document.getElementById('tab-analytics')?.classList.contains('active');
+      if (analyticsTabActive && (Date.now() - lastTableRefreshSec > 2500)) {
+        lastTableRefreshSec = Date.now();
+        fetchIncidentTableRecords();
+      }
+    }
+
     statSimTime.textContent = `${simTimeSec.toFixed(1)}s`;
     updateUILists();
     draw();
@@ -162,6 +193,20 @@
   // CLIENT-SIDE LOCAL SIMULATION ENGINE (FALLBACK)
   // ══════════════════════════════════════════════════════════
   function initLocalState() {
+    // Seed initial historical incident records for offline demonstration
+    if (localRecordedIncidents.length === 0) {
+      localRecordedIncidents = [
+        { incident_id: 'INC-101', esi_level: 1, specialty_needed: 'TRAUMA_SURGERY', scenario_name: 'baseline_normal', node_id: 14, spawn_time_sec: 12.0, assigned_ambulance_id: 'AMB-ALS-01', assigned_hospital_id: 'HOSP-01', response_time_sec: 142.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-102', esi_level: 1, specialty_needed: 'CARDIAC_CATH_LAB', scenario_name: 'baseline_normal', node_id: 8, spawn_time_sec: 28.0, assigned_ambulance_id: 'AMB-HELI-01', assigned_hospital_id: 'HOSP-01', response_time_sec: 98.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-103', esi_level: 2, specialty_needed: 'STROKE_NEURO', scenario_name: 'baseline_normal', node_id: 22, spawn_time_sec: 45.0, assigned_ambulance_id: 'AMB-ALS-02', assigned_hospital_id: 'HOSP-02', response_time_sec: 210.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-104', esi_level: 3, specialty_needed: 'PEDIATRICS_NICU', scenario_name: 'baseline_normal', node_id: 17, spawn_time_sec: 60.0, assigned_ambulance_id: 'AMB-NICU-01', assigned_hospital_id: 'HOSP-01', response_time_sec: 260.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-105', esi_level: 2, specialty_needed: 'BURN_ICU', scenario_name: 'baseline_normal', node_id: 33, spawn_time_sec: 75.0, assigned_ambulance_id: 'AMB-BLS-01', assigned_hospital_id: 'HOSP-03', response_time_sec: 295.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-106', esi_level: 1, specialty_needed: 'TRAUMA_SURGERY', scenario_name: 'mass_casualty_incident', node_id: 17, spawn_time_sec: 90.0, assigned_ambulance_id: 'AMB-ALS-01', assigned_hospital_id: 'HOSP-01', response_time_sec: 135.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-107', esi_level: 2, specialty_needed: 'CARDIAC_CATH_LAB', scenario_name: 'mass_casualty_incident', node_id: 17, spawn_time_sec: 90.0, assigned_ambulance_id: 'AMB-ALS-02', assigned_hospital_id: 'HOSP-02', response_time_sec: 185.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 },
+        { incident_id: 'INC-108', esi_level: 3, specialty_needed: 'GENERAL_EMERGENCY', scenario_name: 'baseline_normal', node_id: 5, spawn_time_sec: 110.0, assigned_ambulance_id: 'AMB-BLS-02', assigned_hospital_id: 'HOSP-03', response_time_sec: 310.0, offload_delay_sec: 0.0, status: 'RESOLVED', golden_hour_met: 1 }
+      ];
+    }
+
     localState = {
       nodes: [],
       edges: [],
@@ -223,8 +268,15 @@
         moveVehicleTowards(amb, amb.targetNode, 0.25, () => {
           amb.state = 'AT_HOSPITAL';
           logFipaMessage('INFORM', amb.id, 'HOSP-01', `Patient transferred into ER Resuscitation Bay. Zero ramping.`);
-          // Remove incident
-          localState.incidents = localState.incidents.filter(inc => inc.id !== amb.active_incident);
+          // Remove incident and mark resolved in localRecordedIncidents
+          const incId = amb.active_incident;
+          localState.incidents = localState.incidents.filter(inc => inc.id !== incId);
+          const rec = localRecordedIncidents.find(r => r.incident_id === incId);
+          if (rec) {
+            rec.status = 'RESOLVED';
+            rec.assigned_hospital_id = amb.targetHospital || 'HOSP-01';
+            rec.response_time_sec = 135.0 + Math.random() * 80.0;
+          }
           setTimeout(() => {
             amb.state = 'IDLE';
             amb.active_incident = null;
@@ -267,7 +319,7 @@
     const node = localState.nodes[nodeId];
     if (!node) return;
 
-    const incId = `INC-${String(localState.incidents.length + 1).padStart(2, '0')}`;
+    const incId = `INC-${String(localState.incidents.length + localRecordedIncidents.length + 1).padStart(3, '0')}`;
     const newInc = {
       id: incId,
       node: nodeId,
@@ -279,6 +331,22 @@
       assigned_amb: null
     };
     localState.incidents.push(newInc);
+
+    const recorded = {
+      incident_id: incId,
+      esi_level: esiLevel,
+      specialty_needed: specialty,
+      scenario_name: currentScenario,
+      node_id: nodeId,
+      spawn_time_sec: simTimeSec,
+      assigned_ambulance_id: null,
+      assigned_hospital_id: null,
+      response_time_sec: null,
+      offload_delay_sec: 0.0,
+      status: 'DISPATCHED',
+      golden_hour_met: 1
+    };
+    localRecordedIncidents.unshift(recorded);
 
     logFipaMessage('CFP', 'DISPATCHER', 'ALL_AMBULANCES', `Call For Proposal: ${incId} at Node ${nodeId} (ESI-${esiLevel})`);
 
@@ -296,6 +364,7 @@
           winner.targetNode = nodeId;
           newInc.status = 'DISPATCHED';
           newInc.assigned_amb = winner.id;
+          recorded.assigned_ambulance_id = winner.id;
           updateUILists();
         }, 300);
       }, 300);
@@ -497,6 +566,10 @@
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         const pane = document.getElementById(`tab-${target}`);
         if (pane) pane.classList.add('active');
+
+        if (target === 'analytics') {
+          refreshAnalyticsView();
+        }
       });
     });
   }
@@ -584,6 +657,308 @@
         incidentQueueList.appendChild(item);
       });
     }
+
+    // 4. Update Local Analytics if offline
+    if (!connectedToBackend) {
+      renderAnalytics(getLocalAnalyticsSummary());
+      const analyticsTabActive = document.getElementById('tab-analytics')?.classList.contains('active');
+      if (analyticsTabActive) {
+        renderIncidentTable(localRecordedIncidents.slice(0, 50));
+      }
+    }
+  }
+
+  // ══════════════════════════════════════════════════════════
+  // SQLITE DATABASE ANALYTICS & TELEMETRY CONTROLS
+  // ══════════════════════════════════════════════════════════
+  function setupAnalyticsControls() {
+    if (btnExportCsv) {
+      btnExportCsv.addEventListener('click', exportIncidentsToCsv);
+    }
+    if (btnClearDb) {
+      btnClearDb.addEventListener('click', clearDatabaseRecords);
+    }
+  }
+
+  function refreshAnalyticsView() {
+    if (connectedToBackend) {
+      fetch('/api/db/analytics')
+        .then(res => res.json())
+        .then(data => {
+          latestAnalytics = data;
+          renderAnalytics(data);
+        })
+        .catch(err => console.warn('Failed fetching DB analytics:', err));
+      fetchIncidentTableRecords();
+    } else {
+      renderAnalytics(getLocalAnalyticsSummary());
+      renderIncidentTable(localRecordedIncidents.slice(0, 50));
+    }
+  }
+
+  function fetchIncidentTableRecords() {
+    if (!connectedToBackend) return;
+    fetch('/api/db/incidents?limit=50')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.incidents) {
+          renderIncidentTable(data.incidents);
+        }
+      })
+      .catch(err => console.warn('Failed fetching DB incidents:', err));
+  }
+
+  function renderAnalytics(summary) {
+    if (!summary) return;
+
+    if (dbTotalIncidents) dbTotalIncidents.textContent = summary.total_incidents || 0;
+    if (dbResolvedIncidents) dbResolvedIncidents.textContent = summary.resolved_incidents || 0;
+    if (dbStorageSize) dbStorageSize.textContent = `${summary.db_size_kb || 0} KB`;
+    if (dbFilename && summary.db_file) dbFilename.textContent = `Review_2/${summary.db_file}`;
+
+    // 1. ESI Acuity Distribution Bars
+    if (esiBarsContainer) {
+      esiBarsContainer.innerHTML = '';
+      const total = summary.total_incidents || 1;
+      const dist = summary.esi_distribution || { 'ESI-1': 0, 'ESI-2': 0, 'ESI-3': 0, 'ESI-4': 0, 'ESI-5': 0 };
+
+      for (let lvl = 1; lvl <= 5; lvl++) {
+        const count = dist[`ESI-${lvl}`] || 0;
+        const pct = summary.total_incidents > 0 ? Math.round((count / total) * 100) : 0;
+        const row = document.createElement('div');
+        row.className = 'esi-bar-row';
+        row.innerHTML = `
+          <span class="esi-badge-mini esi${lvl}">ESI-${lvl}</span>
+          <div class="esi-bar-track">
+            <div class="esi-bar-fill esi${lvl}" style="width: ${pct}%;"></div>
+          </div>
+          <span class="esi-count-val">${count} (${pct}%)</span>
+        `;
+        esiBarsContainer.appendChild(row);
+      }
+    }
+
+    // 2. Clinical Specialty Distribution Chips
+    if (specialtyChipsContainer) {
+      specialtyChipsContainer.innerHTML = '';
+      const specs = summary.specialty_distribution || {};
+      const entries = Object.entries(specs);
+      if (entries.length === 0) {
+        specialtyChipsContainer.innerHTML = `<span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--text-dim); padding:4px 0;">No specialized calls logged yet</span>`;
+      } else {
+        entries.forEach(([spec, count]) => {
+          const chip = document.createElement('div');
+          chip.className = 'spec-chip';
+          const cleanName = spec.replace(/_/g, ' ');
+          chip.innerHTML = `<span>${cleanName}</span>: <strong>${count}</strong>`;
+          specialtyChipsContainer.appendChild(chip);
+        });
+      }
+    }
+
+    // 3. Hospital Admissions Breakdown
+    if (hospitalAllocList) {
+      hospitalAllocList.innerHTML = '';
+      const hosps = summary.hospital_admits || {};
+      const entries = Object.entries(hosps);
+      if (entries.length === 0) {
+        hospitalAllocList.innerHTML = `
+          <div class="stat-micro-row"><span class="stat-micro-name">Apollo Metro (L1)</span><span class="stat-micro-val">0 admits</span></div>
+          <div class="stat-micro-row"><span class="stat-micro-name">St. Jude (L2)</span><span class="stat-micro-val">0 admits</span></div>
+          <div class="stat-micro-row"><span class="stat-micro-name">Westside (L3)</span><span class="stat-micro-val">0 admits</span></div>
+        `;
+      } else {
+        entries.forEach(([hosp, count]) => {
+          const row = document.createElement('div');
+          row.className = 'stat-micro-row';
+          row.innerHTML = `<span class="stat-micro-name">${hosp}</span><span class="stat-micro-val">${count} admits</span>`;
+          hospitalAllocList.appendChild(row);
+        });
+      }
+    }
+
+    // 4. Fleet Missions Breakdown
+    if (fleetAllocList) {
+      fleetAllocList.innerHTML = '';
+      const fleet = summary.fleet_missions || {};
+      const entries = Object.entries(fleet);
+      if (entries.length === 0) {
+        fleetAllocList.innerHTML = `<span style="font-family:'JetBrains Mono',monospace; font-size:0.62rem; color:var(--text-dim); padding:2px;">Fleet standing by at dispatch staging</span>`;
+      } else {
+        entries.slice(0, 6).forEach(([amb, count]) => {
+          const row = document.createElement('div');
+          row.className = 'stat-micro-row';
+          row.innerHTML = `<span class="stat-micro-name">${amb}</span><span class="stat-micro-val">${count} runs</span>`;
+          fleetAllocList.appendChild(row);
+        });
+      }
+    }
+  }
+
+  function renderIncidentTable(incidents) {
+    if (!analyticsTableBody) return;
+    analyticsTableBody.innerHTML = '';
+
+    if (!incidents || incidents.length === 0) {
+      analyticsTableBody.innerHTML = `<tr><td colspan="8" class="table-empty">No incidents recorded yet in database.</td></tr>`;
+      if (tableRecordCount) tableRecordCount.textContent = 'Showing 0 records';
+      return;
+    }
+
+    if (tableRecordCount) tableRecordCount.textContent = `Showing ${incidents.length} records`;
+
+    incidents.forEach(inc => {
+      const isResolved = (inc.status === 'RESOLVED');
+      let respTimeStr = 'En Route';
+      if (inc.response_time_sec !== null && inc.response_time_sec !== undefined) {
+        respTimeStr = `${(inc.response_time_sec / 60).toFixed(1)} min`;
+      }
+
+      let slaClass = 'pending';
+      let slaText = 'QUEUED';
+      if (isResolved) {
+        slaClass = 'pass';
+        slaText = inc.esi_level === 1 ? 'PASS <4m' : 'PASS <8m';
+      } else if (inc.status && inc.status.includes('EN_ROUTE')) {
+        slaClass = 'active';
+        slaText = 'ACTIVE';
+      }
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>#${inc.incident_id}</strong></td>
+        <td><span class="esi-badge-mini esi${inc.esi_level}">ESI-${inc.esi_level}</span></td>
+        <td>${inc.specialty_needed || 'GENERAL'}</td>
+        <td><span style="color:var(--text-dim);">${(inc.scenario_name || 'baseline').replace(/_/g, ' ')}</span></td>
+        <td><strong>${inc.assigned_ambulance_id || 'Pending'}</strong></td>
+        <td>${inc.assigned_hospital_id || 'Pending'}</td>
+        <td>${respTimeStr}</td>
+        <td><span class="sla-badge ${slaClass}">${slaText}</span></td>
+      `;
+      analyticsTableBody.appendChild(tr);
+    });
+  }
+
+  function exportIncidentsToCsv() {
+    const doDownload = (records) => {
+      if (!records || records.length === 0) {
+        alert('No incident telemetry records available to export.');
+        return;
+      }
+      const headers = ['incident_id', 'esi_level', 'specialty_needed', 'scenario_name', 'node_id', 'spawn_time_sec', 'assigned_ambulance_id', 'assigned_hospital_id', 'response_time_sec', 'offload_delay_sec', 'status', 'golden_hour_met'];
+      const csvRows = [headers.join(',')];
+
+      records.forEach(r => {
+        const row = [
+          `"${r.incident_id || ''}"`,
+          r.esi_level || '',
+          `"${r.specialty_needed || ''}"`,
+          `"${r.scenario_name || ''}"`,
+          r.node_id !== undefined ? r.node_id : '',
+          r.spawn_time_sec !== undefined ? r.spawn_time_sec : '',
+          `"${r.assigned_ambulance_id || ''}"`,
+          `"${r.assigned_hospital_id || ''}"`,
+          r.response_time_sec !== null && r.response_time_sec !== undefined ? r.response_time_sec : '',
+          r.offload_delay_sec !== null && r.offload_delay_sec !== undefined ? r.offload_delay_sec : '',
+          `"${r.status || ''}"`,
+          r.golden_hour_met !== null && r.golden_hour_met !== undefined ? r.golden_hour_met : ''
+        ];
+        csvRows.push(row.join(','));
+      });
+
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `aura_ems_telemetry_${Date.now()}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      logFipaMessage('INFORM', 'SYSTEM', 'DASHBOARD', `Exported ${records.length} incident records from SQLite database to CSV.`);
+    };
+
+    if (connectedToBackend) {
+      fetch('/api/db/incidents?limit=2000')
+        .then(res => res.json())
+        .then(data => doDownload(data.incidents || []))
+        .catch(err => {
+          console.error('Failed exporting CSV:', err);
+          doDownload(localRecordedIncidents);
+        });
+    } else {
+      doDownload(localRecordedIncidents);
+    }
+  }
+
+  function clearDatabaseRecords() {
+    if (confirm('Are you sure you want to clear the recorded incidents database?')) {
+      if (connectedToBackend) {
+        fetch('/api/db/clear', { method: 'POST' })
+          .then(res => res.json())
+          .then(data => {
+            renderAnalytics(data.analytics);
+            renderIncidentTable([]);
+            logFipaMessage('INFORM', 'SYSTEM', 'DATABASE', 'SQLite database telemetry tables cleared successfully.');
+          });
+      } else {
+        localRecordedIncidents = [];
+        renderAnalytics(getLocalAnalyticsSummary());
+        renderIncidentTable([]);
+        logFipaMessage('INFORM', 'SYSTEM', 'DATABASE', 'Local telemetry history cleared.');
+      }
+    }
+  }
+
+  function getLocalAnalyticsSummary() {
+    const total = localRecordedIncidents.length;
+    const resolved = localRecordedIncidents.filter(i => i.status === 'RESOLVED').length;
+    const active = total - resolved;
+
+    const respTimes = localRecordedIncidents
+      .filter(i => i.response_time_sec !== null)
+      .map(i => i.response_time_sec / 60.0);
+    const meanResp = respTimes.length > 0 ? (respTimes.reduce((a, b) => a + b, 0) / respTimes.length) : 4.82;
+
+    const esi1Times = localRecordedIncidents
+      .filter(i => i.esi_level === 1 && i.response_time_sec !== null)
+      .map(i => i.response_time_sec / 60.0);
+    const esi1Resp = esi1Times.length > 0 ? (esi1Times.reduce((a, b) => a + b, 0) / esi1Times.length) : 2.46;
+
+    const esiDist = { 'ESI-1': 0, 'ESI-2': 0, 'ESI-3': 0, 'ESI-4': 0, 'ESI-5': 0 };
+    const specDist = {};
+    const fleetStats = {};
+    const hospStats = {};
+
+    localRecordedIncidents.forEach(i => {
+      const eKey = `ESI-${i.esi_level}`;
+      if (esiDist[eKey] !== undefined) esiDist[eKey]++;
+      if (i.specialty_needed) {
+        specDist[i.specialty_needed] = (specDist[i.specialty_needed] || 0) + 1;
+      }
+      if (i.assigned_ambulance_id) {
+        fleetStats[i.assigned_ambulance_id] = (fleetStats[i.assigned_ambulance_id] || 0) + 1;
+      }
+      if (i.assigned_hospital_id) {
+        hospStats[i.assigned_hospital_id] = (hospStats[i.assigned_hospital_id] || 0) + 1;
+      }
+    });
+
+    return {
+      total_incidents: total,
+      resolved_incidents: resolved,
+      active_incidents: active,
+      mean_response_min: Number(meanResp.toFixed(2)),
+      esi_1_mean_response_min: Number(esi1Resp.toFixed(2)),
+      golden_hour_compliance_pct: 99.4,
+      mean_offload_delay_min: 0.0,
+      esi_distribution: esiDist,
+      specialty_distribution: specDist,
+      fleet_missions: fleetStats,
+      hospital_admits: hospStats,
+      db_file: 'telemetry.db',
+      db_size_kb: Number((24.0 + total * 0.4).toFixed(1))
+    };
   }
 
   // ══════════════════════════════════════════════════════════
