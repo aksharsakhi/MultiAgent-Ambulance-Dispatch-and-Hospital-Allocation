@@ -546,6 +546,9 @@ def run_server(port: int = 8000):
 
     print_banner(port)
 
+    # Auto-start live simulation stepping immediately on launch
+    controller.start_running()
+
     # Run HTTP server in a dedicated background thread
     server_thread = threading.Thread(target=httpd.serve_forever, daemon=True)
     server_thread.start()

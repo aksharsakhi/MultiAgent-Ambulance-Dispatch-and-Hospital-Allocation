@@ -23,6 +23,7 @@ echo -e "${C_CYAN}════════════════════�
 echo -e "${C_BOLD}🚑 AURA-EMS LIVE MULTI-AGENT SYSTEM LAUNCHER${C_RESET}"
 echo -e "   Course: 23CSE301 FOAI · Amrita Vishwa Vidyapeetham"
 echo -e "   Team: N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538)"
+echo -e "   Dual Execution: Real Mesa Multi-Agent Engine + Interactive Web Cockpit"
 echo -e "${C_CYAN}══════════════════════════════════════════════════════════════════════════════${C_RESET}"
 
 # 1. Locate the correct Python interpreter with required dependencies
@@ -61,14 +62,16 @@ echo -e "\n${C_CYAN}[*] Running System Diagnostic & Environment Verification...$
 
 PORT=8000
 
-# 3. Open browser dashboard automatically in background after a brief delay
+# 3. Open browser presentation deck and live dashboard automatically in background
 (
   sleep 1.2
-  echo -e "${C_GREEN}[*] Launching Web Cockpit in your default browser...${C_RESET}"
+  echo -e "${C_GREEN}[*] Launching Master Presentation Deck & Live Web Cockpit in your browser...${C_RESET}"
   if [[ "$OSTYPE" == "darwin"* ]]; then
+    open "http://localhost:${PORT}/Master_Review/"
     open "http://localhost:${PORT}/Review_2/dashboard.html"
   elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
     if command -v xdg-open >/dev/null 2>&1; then
+      xdg-open "http://localhost:${PORT}/Master_Review/" >/dev/null 2>&1 &
       xdg-open "http://localhost:${PORT}/Review_2/dashboard.html" >/dev/null 2>&1 &
     fi
   fi
@@ -76,4 +79,5 @@ PORT=8000
 
 # 4. Start Live Simulation Server with Dual Web API + Interactive Terminal Loop
 echo -e "\n${C_CYAN}[*] Initializing High-Performance Python Mesa Backend on Port ${PORT}...${C_RESET}"
+echo -e "${C_GREEN}✓ Live simulation auto-stepping active:${C_RESET} Terminal output & Browser Cockpit running simultaneously."
 exec "$PYTHON_CMD" Review_2/server.py "${PORT}"

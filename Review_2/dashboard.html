@@ -18,8 +18,11 @@
   <!-- Top Navigation & Control Command Bar -->
   <header class="cockpit-nav">
     <div class="nav-left">
+      <a href="../Master_Review/" target="_blank" class="nav-back-link master-deck-badge" title="Open Combined Master Presentation Deck (20 Marks) in New Tab">
+        🏆 Master Deck (20M) ↗
+      </a>
       <a href="index.html" class="nav-back-link" title="Return to Review 2 Presentation Deck">
-        ⏮ Presentation Deck
+        ⏮ Review 2
       </a>
       <div class="nav-divider"></div>
       <div class="brand">
@@ -61,6 +64,9 @@
 
     <!-- Quick Emergency Action Triggers & Utilities -->
     <div class="nav-right">
+      <button class="action-btn deck-btn" id="btnToggleDeckModal" title="View Master Presentation Slides while Live Simulation is Running">
+        📽️ Slide Deck
+      </button>
       <button class="action-btn emergency" id="btnTriggerESI1" title="Trigger Critical Resuscitation Call (ESI-1)">
         🚨 Call ESI-1
       </button>
@@ -84,7 +90,7 @@
       <div class="panel-header">
         <div class="panel-title-wrap">
           <span class="icon">🗺️</span>
-          <h2>Urban Topology & Fleet Dispatch Network</h2>
+          <h2>Urban Topology &amp; Fleet Dispatch Network</h2>
           <span class="badge blue">6×6 Manhattan Grid · 36 Intersections</span>
         </div>
         <div class="map-stats-strip">
@@ -301,6 +307,26 @@
     </aside>
 
   </main>
+
+  <!-- Embedded Master Slide Deck Modal for Simultaneous Presentation & Live Demo -->
+  <div class="deck-modal-backdrop" id="deckModalBackdrop">
+    <div class="deck-modal-window glass-card">
+      <div class="deck-modal-header">
+        <div class="deck-modal-title">
+          <span class="icon">🏆</span>
+          <h3>AURA-EMS Master Defense Deck · Reviews 1 &amp; 2 (20 Marks)</h3>
+          <span class="badge blue">Live Multi-Agent Core Running in Background</span>
+        </div>
+        <div class="deck-modal-actions">
+          <a href="../Master_Review/" target="_blank" class="mini-btn action-btn" title="Open Deck in Separate Fullscreen Tab">Open in Full Tab ↗</a>
+          <button class="modal-close-btn" id="btnCloseDeckModal" title="Close Slide Viewer (Esc)">&times;</button>
+        </div>
+      </div>
+      <div class="deck-modal-body">
+        <iframe src="../Master_Review/index.html" class="deck-iframe" id="deckIframe" title="Master Defense Presentation Deck"></iframe>
+      </div>
+    </div>
+  </div>
 
   <script src="dashboard.js"></script>
 </body>

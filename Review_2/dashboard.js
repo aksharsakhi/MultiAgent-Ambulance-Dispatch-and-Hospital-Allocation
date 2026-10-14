@@ -82,6 +82,7 @@
     setupThemeToggle();
     setupTabs();
     setupAnalyticsControls();
+    setupDeckModal();
     initLocalState();
     detectBackend();
 
@@ -116,6 +117,11 @@
         backendLabel.textContent = `In-Browser Engine (Client-Side)`;
         backendPill.querySelector('.status-dot').className = 'status-dot offline';
         logFipaMessage('INFORM', 'SYSTEM', 'DASHBOARD', `Running high-fidelity client-side simulation engine (GitHub Pages mode).`);
+        if (!isRunning) {
+          isRunning = true;
+          updatePlayPauseUI();
+          runInterval = setInterval(stepLocalSimulation, 400 / playbackSpeed);
+        }
         draw();
       });
   }
@@ -587,6 +593,38 @@
       localStorage.setItem('aura-theme', next);
       draw();
     });
+  }
+
+  function setupDeckModal() {
+    const btnToggleDeck = document.getElementById('btnToggleDeckModal');
+    const btnCloseDeck = document.getElementById('btnCloseDeckModal');
+    const backdrop = document.getElementById('deckModalBackdrop');
+
+    if (btnToggleDeck && backdrop) {
+      btnToggleDeck.addEventListener('click', () => {
+        backdrop.classList.toggle('active');
+      });
+    }
+
+    if (btnCloseDeck && backdrop) {
+      btnCloseDeck.addEventListener('click', () => {
+        backdrop.classList.remove('active');
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+          backdrop.classList.remove('active');
+        }
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && backdrop.classList.contains('active')) {
+          backdrop.classList.remove('active');
+        }
+      });
+    }
   }
 
   // ══════════════════════════════════════════════════════════
