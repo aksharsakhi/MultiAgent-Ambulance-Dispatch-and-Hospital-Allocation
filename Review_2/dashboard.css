@@ -125,6 +125,31 @@ html, body {
   background: var(--blue-dim);
 }
 
+.analytics-nav-link {
+  color: var(--cyan);
+  border-color: rgba(6, 182, 212, 0.3);
+  background: var(--cyan-dim);
+}
+
+.analytics-nav-link:hover {
+  color: #fff;
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+
+.action-btn.analytics-action-btn {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.action-btn.analytics-action-btn:hover {
+  background: var(--cyan);
+  color: #fff;
+}
+
 .nav-divider {
   width: 1px;
   height: 20px;

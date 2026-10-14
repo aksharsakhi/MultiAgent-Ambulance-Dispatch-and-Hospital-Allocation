@@ -378,9 +378,20 @@ class AURABackendHandler(SimpleHTTPRequestHandler):
                 "is_running": controller.is_running,
                 "scenario": controller.current_scenario
             })
+        elif path in ("/analytics", "/analytics.html"):
+            self.send_response(302)
+            self.send_header("Location", "/Review_2/analytics.html")
+            self.end_headers()
         elif path == "/api/state":
             self._send_json(controller.get_state())
         elif path == "/api/db/analytics":
+            accept_header = self.headers.get("Accept", "")
+            # If user visits endpoint directly in browser address bar (Accept: text/html), redirect to visual dashboard
+            if "text/html" in accept_header and "application/json" not in accept_header:
+                self.send_response(302)
+                self.send_header("Location", "/Review_2/analytics.html")
+                self.end_headers()
+                return
             self._send_json(controller.db.get_analytics_summary())
         elif path == "/api/db/incidents":
             query = parse_qs(parsed.query)
