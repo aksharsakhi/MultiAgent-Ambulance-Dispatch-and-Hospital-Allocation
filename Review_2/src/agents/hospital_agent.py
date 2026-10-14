@@ -64,6 +64,11 @@ class HospitalAgent(mesa.Agent):
     def occupancy_rate(self) -> float:
         return (self.current_occupied_beds / max(1, self.total_er_capacity)) * 100.0
 
+    @property
+    def is_diverting(self) -> bool:
+        """Proactive diversion status when ER occupancy reaches or exceeds 85% threshold."""
+        return self.occupancy_rate >= 85.0
+
     def receive_message(self, msg: ACLMessage):
         self.inbox.append(msg)
 

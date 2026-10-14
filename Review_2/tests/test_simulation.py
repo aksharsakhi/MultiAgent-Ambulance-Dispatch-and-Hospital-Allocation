@@ -72,5 +72,61 @@ class TestSimulationEngineAndScenarios(unittest.TestCase):
         )
         self.assertGreaterEqual(summary.total_calls, 10)
 
+    def test_hospital_surge_scenario_execution(self):
+        """Verify hospital surge scenario runs and captures offload metrics."""
+        model, collector, summary = SimulationScenarioManager.run_scenario(
+            scenario_type=ScenarioType.HOSPITAL_SURGE,
+            config=self.config,
+            duration_minutes=10.0,
+            time_step_sec=5.0,
+            seed=42
+        )
+        self.assertIsNotNone(summary)
+        self.assertEqual(summary.scenario_name, "hospital_surge")
+        self.assertGreater(summary.total_calls, 0)
+
+    def test_city_graph_road_blockage_toggling(self):
+        """Verify CityGraph correctly blocks and unblocks arterial edges."""
+        model = AURASimulationModel(config=self.config, rows=6, cols=6, time_step_sec=5.0, seed=42)
+        u, v = 14, 15
+
+        # Initial weight is reasonable (e.g. 100-200 seconds)
+        w_initial = model.city_graph.graph[u][v]["weight"]
+        self.assertLess(w_initial, 1000.0)
+
+        # Block road
+        model.city_graph.set_road_blockage(u, v, is_blocked=True)
+        w_blocked = model.city_graph.graph[u][v]["weight"]
+        self.assertEqual(w_blocked, 100000.0)
+        self.assertTrue(model.city_graph.edge_states[(u, v)].is_blocked)
+
+        # Unblock road
+        model.city_graph.set_road_blockage(u, v, is_blocked=False)
+        w_restored = model.city_graph.graph[u][v]["weight"]
+        self.assertLess(w_restored, 1000.0)
+        self.assertFalse(model.city_graph.edge_states[(u, v)].is_blocked)
+
+    def test_incident_generator_poisson_arrival_rate_scaling(self):
+        """Verify that Poisson emergency incident generator correctly scales arrivals during peak hours."""
+        from Review_2.src.environment.incident_generator import IncidentGenerator
+        from Review_2.src.environment.city_graph import CityGraph
+        cg = CityGraph(rows=6, cols=6, block_spacing_m=1000.0)
+        gen = IncidentGenerator(num_nodes=36, base_arrival_rate_per_min=1.0, peak_multiplier=2.5, seed=42)
+
+        # Count total arrivals over 1000 steps (5000s) off-peak vs on-peak
+        off_peak_total = sum(
+            len(gen.generate_step_incidents(t, 5.0, is_peak_hour=False, city_graph=cg))
+            for t in range(0, 5000, 5)
+        )
+        on_peak_total = sum(
+            len(gen.generate_step_incidents(t, 5.0, is_peak_hour=True, city_graph=cg))
+            for t in range(0, 5000, 5)
+        )
+
+        self.assertGreater(on_peak_total, off_peak_total)
+        # On-peak should be roughly 2.5x off-peak
+        ratio = on_peak_total / max(1, off_peak_total)
+        self.assertAlmostEqual(ratio, 2.5, delta=0.5)
+
 if __name__ == "__main__":
     unittest.main()

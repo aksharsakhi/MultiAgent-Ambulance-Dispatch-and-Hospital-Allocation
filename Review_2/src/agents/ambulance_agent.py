@@ -70,6 +70,11 @@ class AmbulanceAgent(mesa.Agent):
         self.total_distance_km = 0.0
         self.total_dynamic_replans = 0
 
+    @property
+    def fuel_percentage(self) -> float:
+        """Remaining fuel range as a percentage of total fuel capacity."""
+        return (self.remaining_fuel_km / max(1.0, self.fuel_capacity_km)) * 100.0
+
     def receive_message(self, msg: ACLMessage):
         self.inbox.append(msg)
 

@@ -189,11 +189,11 @@ MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/
     │       └── mci_disaster_clearance.png
     │
     │
-    └── tests/                      # Automated Testing Suite (14 Tests · 100% Pass)
-        ├── test_agents.py          # FIPA-ACL messaging & bidding tests (Review 2 Rubric 2)
-        ├── test_algorithms.py      # Time-dependent A*, D* Lite & Gale-Shapley tests (Review 1 Rubric 3)
-        ├── test_simulation.py      # Mesa model lifecycle & 4 scenario tests (Review 2 Rubric 3)
-        └── test_peas_and_environment.py # PEAS utility, 7 canonical dimensions & scalability (Review 1 Rubrics 1, 2)
+    └── tests/                      # Automated Testing Suite (25 Tests · 100% Pass)
+        ├── test_agents.py          # FIPA-ACL messaging & bidding tests (5 tests · Review 2 Rubric 2)
+        ├── test_algorithms.py      # Time-dependent A*, D* Lite & Gale-Shapley tests (6 tests · Review 1 Rubric 3)
+        ├── test_simulation.py      # Mesa model lifecycle & 4 scenario tests (7 tests · Review 2 Rubric 3)
+        └── test_peas_and_environment.py # PEAS utility, 7 canonical dimensions & scalability (7 tests · Review 1 Rubrics 1, 2)
 ```
 
 ---
@@ -212,7 +212,7 @@ For rapid grading and evaluation on laptop environments, three pre-configured sh
 * **Automatically opens** the live interactive mission control cockpit in your default web browser (`http://localhost:8000/Review_2/dashboard.html`).
 * Leaves terminal running with live ANSI-color interactive telemetry controls (`[s]` step, `[r]` run continuous, `[1]` spawn critical call, `[m]` mass casualty, `[g]` road gridlock, `[h]` hospital surge, `[t]` state dump, `[q]` quit).
 
-### 2. 🧪 Run Complete Automated Test Suite (14 Tests · 100% Passing)
+### 2. 🧪 Run Complete Automated Test Suite (25 Tests · 100% Passing)
 ```bash
 ./run_tests.sh
 ```

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ══════════════════════════════════════════════════════════════════════════════
 # AURA-EMS: Autonomous Multi-Agent Ambulance Dispatch & Hospital Allocation
-# Automated Test Suite Runner (14 Unit & Integration Tests across all Rubrics)
+# Automated Test Suite Runner (25 Unit & Integration Tests across all Rubrics)
 # Course: 23CSE301 Foundations of Artificial Intelligence · Amrita Vishwa Vidyapeetham
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -57,7 +57,7 @@ echo -e "\n${C_CYAN}[4/4] Running PEAS, Environment & Scalability Tests (Review 
 "$PYTHON_CMD" -m unittest Review_2/tests/test_peas_and_environment.py -v
 
 echo -e "\n${C_GREEN}══════════════════════════════════════════════════════════════════════════════${C_RESET}"
-echo -e "${C_GREEN}🎉 ALL 14 AUTOMATED UNIT & INTEGRATION TESTS PASSED WITH 100% SUCCESS RATE!${C_RESET}"
+echo -e "${C_GREEN}🎉 ALL 25 AUTOMATED UNIT & INTEGRATION TESTS PASSED WITH 100% SUCCESS RATE!${C_RESET}"
 echo -e "   • PEAS Clinical Triage & Heterogeneous Fleet Utility: VERIFIED"
 echo -e "   • Russell & Norvig 7 Canonical Environment Properties: VERIFIED"
 echo -e "   • Time-Dependent A* Admissibility & Dynamic D* Lite Replanning: VERIFIED"

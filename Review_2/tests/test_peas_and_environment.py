@@ -229,5 +229,27 @@ class TestPEASAndEnvironmentTaxonomy(unittest.TestCase):
         # Check execution speed is well under real-time requirement (< 15 ms)
         self.assertLess(t_elapsed_ms, 15.0)
 
+    def test_peas_sensors_telemetry_accuracy(self):
+        """
+        Verify PEAS Sensors: Telemetry feeds (GPS node tracking, fuel level, and ER beds).
+        Asserts sensor readings reflect true ground-truth agent variables without drift.
+        """
+        amb = AmbulanceAgent("AMB-ALS-01", self.model, "ALS", base_node=0,
+                             speed_kmh=60.0, fuel_capacity_km=300.0,
+                             capabilities=["CARDIAC_MONITOR"])
+
+        # GPS sensor reading matches city graph node 0 coordinates
+        pos_ground_truth = self.model.city_graph.get_node_pos(0)
+        self.assertEqual(amb.current_pos, pos_ground_truth)
+
+        # Fuel sensor reading matches capacity initially
+        self.assertEqual(amb.remaining_fuel_km, 300.0)
+
+        # Simulate 10 km motion
+        amb.total_distance_km += 10.0
+        amb.remaining_fuel_km -= 10.0
+        self.assertEqual(amb.remaining_fuel_km, 290.0)
+        self.assertAlmostEqual(amb.fuel_percentage, (290.0 / 300.0) * 100.0, places=2)
+
 if __name__ == "__main__":
     unittest.main()
