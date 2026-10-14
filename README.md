@@ -188,55 +188,49 @@ MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/
     │       ├── specialty_matching_rate.png
     │       └── mci_disaster_clearance.png
     │
-    └── tests/                      # Automated Testing Suite (100% Pass)
-        ├── test_agents.py          # FIPA-ACL messaging & bidding tests
-        ├── test_algorithms.py      # Time-dependent A*, D* Lite & Gale-Shapley tests
-        └── test_simulation.py      # Mesa model lifecycle & metrics tests
+    │
+    └── tests/                      # Automated Testing Suite (14 Tests · 100% Pass)
+        ├── test_agents.py          # FIPA-ACL messaging & bidding tests (Review 2 Rubric 2)
+        ├── test_algorithms.py      # Time-dependent A*, D* Lite & Gale-Shapley tests (Review 1 Rubric 3)
+        ├── test_simulation.py      # Mesa model lifecycle & 4 scenario tests (Review 2 Rubric 3)
+        └── test_peas_and_environment.py # PEAS utility, 7 canonical dimensions & scalability (Review 1 Rubrics 1, 2)
 ```
 
 ---
 
-## ⚡ Quickstart Guide
+## ⚡ One-Click Demonstration & Execution Scripts
 
-### 1. Clone & Set Up Environment
+For rapid grading and evaluation on laptop environments, three pre-configured shell scripts are provided:
+
+### 1. 🚀 Launch Live Python Simulation & Web Cockpit (One-Click)
 ```bash
-git clone https://github.com/aksharsakhi/MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation.git
-cd MultiAgent-Ambulance-Dispatch-and-Hospital-Allocation/Review_2
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Run automated environment verification
-python verify_setup.py
+./run_demo.sh
 ```
+* **Auto-detects** your system's Python 3 environment with required libraries (`mesa`, `networkx`, `scipy`, `yaml`).
+* Runs automated diagnostic verification (`verify_setup.py`).
+* Spawns the high-performance Python Mesa backend server on port `8000`.
+* **Automatically opens** the live interactive mission control cockpit in your default web browser (`http://localhost:8000/Review_2/dashboard.html`).
+* Leaves terminal running with live ANSI-color interactive telemetry controls (`[s]` step, `[r]` run continuous, `[1]` spawn critical call, `[m]` mass casualty, `[g]` road gridlock, `[h]` hospital surge, `[t]` state dump, `[q]` quit).
 
-### 2. Launch Multi-Agent Backend & Live Web Cockpit
-Run the unified Python server that executes the Mesa multi-agent engine and serves the interactive browser cockpit simultaneously:
+### 2. 🧪 Run Complete Automated Test Suite (14 Tests · 100% Passing)
 ```bash
-python server.py
+./run_tests.sh
 ```
-Then open `http://localhost:8000/Review_2/dashboard.html` in your browser to inspect the live multi-agent simulation cockpit with real-time FIPA-ACL auction message streams!
+* Executes all 14 unit and integration tests across all 4 suites in ~0.03 seconds.
+* See the comprehensive [Testing Implementation Report](TESTING_IMPLEMENTATION_REPORT.md) for full mathematical invariant proofs and rubric mappings.
 
-### 3. Run Interactive Terminal Dashboard (CLI Mode)
-Experience terminal-based dispatch with an ASCII city grid and step-by-step agent decisions:
+### 3. 🖥️ Run Terminal-Only Interactive Simulation Engine
 ```bash
-python main.py
+./run_cli_simulation.sh
 ```
-
-### 4. Run Benchmark Suite & Generate Visualizations
-Execute head-to-head Monte Carlo simulations against legacy CAD:
-```bash
-# Run benchmark engine
-python benchmarks/benchmark_engine.py
-
-# Generate high-resolution publication plots
-python benchmarks/generate_plots.py
-```
-
-### 5. Run Automated Test Suite
-```bash
-python -m unittest discover -s tests
-```
+* Interactive CLI menu allowing immediate execution of:
+  - `[1]` Baseline Urban Flow
+  - `[2]` Peak Traffic Bottleneck Gridlock
+  - `[3]` Mass Casualty Incident (MCI) Disaster
+  - `[4]` Hospital ER Saturation Surge
+  - `[5]` 100-Episode Monte Carlo Comparative Benchmark
+  - `[6]` Diagnostic Setup Verification Suite
+  - `[7]` Re-generation of Publication-Grade Benchmark Plots
 
 ---
 
@@ -245,7 +239,19 @@ python -m unittest discover -s tests
 - **Course:** 23CSE301 — Foundations of Artificial Intelligence (FOAI)
 - **Institution:** Amrita Vishwa Vidyapeetham, Department of Computer Science & Engineering
 - **Project Topic:** Multi-Agent Ambulance Dispatch and Hospital Allocation System (AURA-EMS)
-- **Author / Lead Developer:** Akshar Sakhi
+- **Team Members:**
+  - **N. Aadesh** — Roll No: CB.SC.U4CSE23535
+  - **Akshar Sakhi** — Roll No: CB.SC.U4CSE23547
+  - **Nishanth** — Roll No: CB.SC.U4CSE23538
+
+---
+
+## 📄 Documentation Artifacts & Links
+
+- 📑 **[Testing Implementation & Rubric Verification Report](TESTING_IMPLEMENTATION_REPORT.md)** — In-depth breakdown of all 14 test cases, invariants, and rubric coverage.
+- 📘 **[Review 1 Comprehensive Defense Report](Review_1/Review1_Comprehensive_Report.md)** — Formal PEAS, Environment, and TDA* / D* Lite mathematical proofs.
+- 📗 **[Review 2 Comprehensive Defense Report](Review_2/Review2_Comprehensive_Report.md)** — Multi-agent system architecture, FIPA-ACL protocol specifications, and benchmark metrics.
+- 🎓 **[Viva Defense Master Question Bank](Review_1/VIVA_DEFENSE_MASTER_GUIDE.md)** — Exhaustive answers to potential faculty examination questions.
 
 ---
 
