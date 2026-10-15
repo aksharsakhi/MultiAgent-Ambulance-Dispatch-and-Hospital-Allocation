@@ -241,10 +241,10 @@ Review_2/
 
 ### Topic Allocations by Team Member
 
-* **Sheela Akshar Sakhi (CB.SC.U4CSE23547 · Team Lead):** Tool/package selection, architectural modularity, FIPA-ACL message envelope, Dispatcher Agent auction coordinator.
-* **Member 2 (`CB.SC.U4CSE23538`):** Environment modeling, city graph road hierarchies, time-dependent speed functions, non-homogeneous Poisson incident generation.
-* **Member 3 (`CB.SC.U4CSE23535`):** Heterogeneous ambulance fleet (ALS, BLS, NICU, HEMS), BDI decision states, Time-Dependent A\* admissibility proof.
-* **Member 4 (`CB.SC.U4CSE[Member 4]`):** D\* Lite dynamic replanning, Gale-Shapley bilateral hospital matching, empirical benchmarking against Centralized CAD, test scenarios.
+* **Akshar Sakhi (CB.SC.U4CSE23547 · Team Lead):** Tool/package selection, architectural modularity, FIPA-ACL message envelope, Dispatcher Agent auction coordinator.
+* **Nishanth (CB.SC.U4CSE23538):** Environment modeling, city graph road hierarchies, time-dependent speed functions, non-homogeneous Poisson incident generation.
+* **N. Aadesh (CB.SC.U4CSE23535):** Heterogeneous ambulance fleet (ALS, BLS, NICU, HEMS), BDI decision states, Time-Dependent A\* admissibility proof.
+* **Lathan (CB.SC.U4CSE23540):** D\* Lite dynamic replanning, Gale-Shapley bilateral hospital matching, empirical benchmarking against Centralized CAD, test scenarios.
 
 ### Model Cross-Examination Questions & Answers
 

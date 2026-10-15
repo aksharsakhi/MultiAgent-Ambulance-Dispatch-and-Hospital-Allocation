@@ -243,6 +243,7 @@ For rapid grading and evaluation on laptop environments, three pre-configured sh
   - **N. Aadesh** — Roll No: CB.SC.U4CSE23535
   - **Akshar Sakhi** — Roll No: CB.SC.U4CSE23547
   - **Nishanth** — Roll No: CB.SC.U4CSE23538
+  - **Lathan** — Roll No: CB.SC.U4CSE23540
 
 ---
 

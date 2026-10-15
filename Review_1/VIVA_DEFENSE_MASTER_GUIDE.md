@@ -6,10 +6,10 @@
 
 ### Quick Rubrics & Marks Distribution Cheat Sheet
 
-* **PEAS Formulation (3 Marks):** Led by **Sheela Akshar Sakhi (23547)** & Member 2 (`23538`).
-* **Environment & Agent Analysis (3 Marks):** Led by Member 2 (`23538`) & Member 3 (`23535`).
-* **Algorithmic Modeling & Search Strategy (3 Marks):** Led by Member 3 (`23535`) & Member 4.
-* **Q&A, Plan & Presentation Mechanics (1 Mark):** All 4 Members.
+* **PEAS Formulation (3 Marks):** Led by **Akshar Sakhi (23547)** & **Nishanth (23538)**.
+* **Environment & Agent Analysis (3 Marks):** Led by **Nishanth (23538)** & **N. Aadesh (23535)**.
+* **Algorithmic Modeling & Search Strategy (3 Marks):** Led by **N. Aadesh (23535)** & **Lathan (23540)**.
+* **Q&A, Plan & Presentation Mechanics (1 Mark):** All 4 Members (Akshar, Nishanth, Aadesh, Lathan).
 
 ---
 

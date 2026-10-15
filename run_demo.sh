@@ -22,7 +22,7 @@ C_RESET='\033[0m'
 echo -e "${C_CYAN}══════════════════════════════════════════════════════════════════════════════${C_RESET}"
 echo -e "${C_BOLD}🚑 AURA-EMS LIVE MULTI-AGENT SYSTEM LAUNCHER${C_RESET}"
 echo -e "   Course: 23CSE301 FOAI · Amrita Vishwa Vidyapeetham"
-echo -e "   Team: N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538)"
+echo -e "   Team: N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538), Lathan (CSE23540)"
 echo -e "   Dual Execution: Real Mesa Multi-Agent Engine + Interactive Web Cockpit"
 echo -e "${C_CYAN}══════════════════════════════════════════════════════════════════════════════${C_RESET}"
 

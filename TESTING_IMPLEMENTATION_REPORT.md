@@ -2,7 +2,7 @@
 
 **Course:** 23CSE301 Foundations of Artificial Intelligence · Amrita Vishwa Vidyapeetham  
 **Project:** AURA-EMS (Autonomous Unified Response Agent for Emergency Medical Logistics)  
-**Authors:** N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538)  
+**Authors:** N. Aadesh (CSE23535), Akshar Sakhi (CSE23547), Nishanth (CSE23538), Lathan (CSE23540)  
 **Academic Defense Scope:** Review 1 (10 Marks) + Review 2 (10 Marks) = **20 Marks Total**  
 **Test Suite Status:** 🟢 **26 / 26 Unit & Integration Tests Passing (100% Health, 0.046s Execution Time)**
 

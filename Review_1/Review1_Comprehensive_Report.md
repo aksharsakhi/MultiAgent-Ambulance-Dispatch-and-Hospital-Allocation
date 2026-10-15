@@ -10,9 +10,9 @@
 | Team Member | Roll Number | Review 1 Assigned Rubric Topic | Marks Weightage |
 | :--- | :--- | :--- | :--- |
 | **Sheela Akshar Sakhi** (Team Lead) | `CB.SC.U4CSE23547` | Foundational Motivation, Centralized CAD Bottlenecks vs MAS, PEAS Formulation (Dispatcher & Ambulance Agents) | **3 Marks** |
-| **Member 2** | `CB.SC.U4CSE23538` | Hospital ER Agent PEAS Formulation, Russell & Norvig 7 Canonical Dimensions of EMS | **3 Marks** |
-| **Member 3** | `CB.SC.U4CSE23535` | Agent Typology (Utility vs Goal BDI), Closed-Loop Perception-Action Architecture, FIPA-ACL Contract Net Protocol Lifecycle | **3 Marks** |
-| **Member 4** | `CB.SC.U4CSE[Member 4]` | Time-Dependent A* (TDA*), Dynamic D* Lite Replanning, Gale-Shapley Two-Sided Matching, Review 2 6-Week Roadmap | **1 Mark + Sprints** |
+| **Nishanth** | `CB.SC.U4CSE23538` | Hospital ER Agent PEAS Formulation, Russell & Norvig 7 Canonical Dimensions of EMS | **3 Marks** |
+| **N. Aadesh** | `CB.SC.U4CSE23535` | Agent Typology (Utility vs Goal BDI), Closed-Loop Perception-Action Architecture, FIPA-ACL Contract Net Protocol Lifecycle | **3 Marks** |
+| **Lathan** | `CB.SC.U4CSE23540` | Time-Dependent A* (TDA*), Dynamic D* Lite Replanning, Gale-Shapley Two-Sided Matching, Review 2 6-Week Roadmap | **1 Mark + Sprints** |
 
 ---
 
@@ -220,4 +220,4 @@ Week 5 - 6 (Sprint 3): Matching & Benchmark Defense
 
 **Report Authored by:**  
 Amrita FOAI Research Group — Team 23CSE301 Review 1  
-*Sheela Akshar Sakhi (`CB.SC.U4CSE23547`) • `CB.SC.U4CSE23538` • `CB.SC.U4CSE23535` • `CB.SC.U4CSE[Member 4]`*
+*Akshar Sakhi (`CB.SC.U4CSE23547`) • Nishanth (`CB.SC.U4CSE23538`) • N. Aadesh (`CB.SC.U4CSE23535`) • Lathan (`CB.SC.U4CSE23540`)*

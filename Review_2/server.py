@@ -482,7 +482,7 @@ def print_banner(port: int):
     print(f"""
 {C_CYAN}╔════════════════════════════════════════════════════════════════════════════════════════╗
 ║  {C_WHITE}{C_BOLD}🚑 AURA-EMS: AUTONOMOUS MULTI-AGENT EMERGENCY LOGISTICS SYSTEM{C_CYAN}                        ║
-║  Course: 23CSE301 FOAI · Amrita Vishwa Vidyapeetham · Lead: Akshar Sakhi               ║
+║  Course: 23CSE301 FOAI · Team: Aadesh (23535), Akshar (23547), Nishanth (23538), Lathan (23540)  ║
 ╠════════════════════════════════════════════════════════════════════════════════════════╣
 ║  {C_GREEN}● SERVER ONLINE{C_CYAN}                                                                        ║
 ║  📡 Local Server Port:    {C_WHITE}http://localhost:{port}{C_CYAN}                                            ║
