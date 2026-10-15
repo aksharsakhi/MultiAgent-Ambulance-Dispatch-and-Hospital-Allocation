@@ -252,6 +252,7 @@ For rapid grading and evaluation on laptop environments, three pre-configured sh
 - 📑 **[Testing Implementation & Rubric Verification Report](TESTING_IMPLEMENTATION_REPORT.md)** — In-depth breakdown of all 14 test cases, invariants, and rubric coverage.
 - 📘 **[Review 1 Comprehensive Defense Report](Review_1/Review1_Comprehensive_Report.md)** — Formal PEAS, Environment, and TDA* / D* Lite mathematical proofs.
 - 📗 **[Review 2 Comprehensive Defense Report](Review_2/Review2_Comprehensive_Report.md)** — Multi-agent system architecture, FIPA-ACL protocol specifications, and benchmark metrics.
+- 🎤 **[Master Defense Speech & Live Demo Guide](MY_DEFENSE_SPEECH_AND_DEMO_GUIDE.md)** — Word-for-word speaker script for Slides 13 & 14, live simulation demo protocol, and cross-examination answers.
 - 🎓 **[Viva Defense Master Question Bank](Review_1/VIVA_DEFENSE_MASTER_GUIDE.md)** — Exhaustive answers to potential faculty examination questions.
 
 ---
