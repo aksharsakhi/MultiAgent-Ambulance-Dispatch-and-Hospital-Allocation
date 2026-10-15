@@ -103,6 +103,7 @@
     setupScenarioSwitcher();
     setupPlotGallery();
     setupVivaAccordion();
+    setupMathTypesetting();
   }
 
   // ══════════════════════════════════════════════════════════
@@ -361,6 +362,29 @@
         });
       }
     });
+  }
+
+  // ══════════════════════════════════════════════════════════
+  // MATHEMATICAL TYPESETTING (KaTeX Auto-Render)
+  // ══════════════════════════════════════════════════════════
+  function setupMathTypesetting() {
+    function renderMath() {
+      if (typeof renderMathInElement === 'function') {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '$', right: '$', display: false }
+          ],
+          throwOnError: false
+        });
+      }
+    }
+
+    if (typeof renderMathInElement === 'function') {
+      renderMath();
+    } else {
+      window.addEventListener('load', renderMath);
+    }
   }
 
 })();
