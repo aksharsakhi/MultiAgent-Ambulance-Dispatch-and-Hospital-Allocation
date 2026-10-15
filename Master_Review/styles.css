@@ -685,11 +685,27 @@ html, body {
   color: var(--blue);
 }
 
+/* ── SPEAKER TELEPROMPTER CUE BOX ─────────────────────────────────────────── */
+.speaker-cue-box {
+  background: var(--blue-dim);
+  border-left: 3px solid var(--blue);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.speaker-cue-box strong {
+  color: var(--blue);
+  font-weight: 700;
+}
+
 /* ── VIVA ACCORDION ───────────────────────────────────────────────────────── */
 .viva-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   overflow-y: auto;
   max-height: 480px;
   padding-right: 4px;

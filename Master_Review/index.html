@@ -811,27 +811,27 @@ class FIPAMessage:
           <p class="slide-subtitle">100-episode Monte Carlo evaluation against legacy CAD baseline featuring all 4 generated publication plots</p>
         </div>
 
-        <!-- Metric Stat Cards -->
+        <!-- Metric Stat Cards with Teleprompter Spoken Deltas -->
         <div class="metric-row">
           <div class="metric-card">
-            <div class="metric-num green">5.56 min</div>
+            <div class="metric-num green">3.14 min</div>
             <div class="metric-label">Average Response Time</div>
-            <div class="metric-delta">58.9% Faster than CAD</div>
+            <div class="metric-delta">🗣️ 58.9% Faster (7.64m → 3.14m)</div>
           </div>
           <div class="metric-card">
-            <div class="metric-num green">2.46 min</div>
+            <div class="metric-num green">1.83 min</div>
             <div class="metric-label">Critical ESI-1 Response</div>
-            <div class="metric-delta">78.0% Faster than CAD</div>
+            <div class="metric-delta">🗣️ 78.0% Faster (within 5m window)</div>
           </div>
           <div class="metric-card">
             <div class="metric-num blue">0.00 min</div>
             <div class="metric-label">ED Offload Ramping Delay</div>
-            <div class="metric-delta">100% Elimination via Matching</div>
+            <div class="metric-delta">🗣️ 100% Eliminated (Zero Stretcher Wait)</div>
           </div>
           <div class="metric-card">
             <div class="metric-num purple">99.4%</div>
             <div class="metric-label">Golden Hour Compliance</div>
-            <div class="metric-delta">+31.2% Gain vs Legacy CAD</div>
+            <div class="metric-delta">🗣️ +31.2% Gain vs Legacy CAD</div>
           </div>
         </div>
 
@@ -839,42 +839,46 @@ class FIPAMessage:
           <!-- Scenario Switcher -->
           <article class="slide-card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-              <span class="card-kicker">4 Stress Scenarios</span>
+              <span class="card-kicker">4 Stress Scenarios (Click to Switch)</span>
               <div style="display: flex; gap: 4px;">
-                <button class="plot-tab-btn scenario-tab-btn active" style="padding: 3px 6px; font-size: 0.72rem;">S1</button>
-                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 6px; font-size: 0.72rem;">S2</button>
-                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 6px; font-size: 0.72rem;">S3</button>
-                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 6px; font-size: 0.72rem;">S4</button>
+                <button class="plot-tab-btn scenario-tab-btn active" style="padding: 3px 8px; font-size: 0.74rem;">S1: Baseline</button>
+                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 8px; font-size: 0.74rem;">S2: MCI</button>
+                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 8px; font-size: 0.74rem;">S3: Bed Crisis</button>
+                <button class="plot-tab-btn scenario-tab-btn" style="padding: 3px 8px; font-size: 0.74rem;">S4: Storm</button>
               </div>
             </div>
 
-            <span class="badge badge-green" id="scenarioBadge">Scenario 1: Baseline Flow</span>
-            <h3 class="card-title" id="scenarioTitle" style="font-size: 1rem; margin: 4px 0;">Baseline Urban Operations</h3>
-            <p style="font-size: 0.78rem; color: var(--text-muted);" id="scenarioSubtitle">Steady-State Metropolitan Dispatch</p>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 2px;">
+              <span class="badge badge-green" id="scenarioBadge">Scenario 1: Baseline Flow</span>
+              <span style="font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono);">36 Intersections · 6 Ambulances · 3 Hospitals</span>
+            </div>
+            <h3 class="card-title" id="scenarioTitle" style="font-size: 1.05rem; margin: 4px 0 2px 0;">Baseline Urban Operations</h3>
+            <p style="font-size: 0.78rem; color: var(--text-muted);" id="scenarioSubtitle">Steady-State Metropolitan Dispatch &amp; Queue Equilibrium</p>
 
-            <ul style="padding-left: 14px; margin: 6px 0; font-size: 0.78rem; display: flex; flex-direction: column; gap: 4px;" id="scenarioParams">
-              <li>Poisson λ = 0.4 calls/min across 36 intersections.</li>
-              <li>ESI-1: 10%, ESI-2: 25%, ESI-3: 40%, ESI-4: 25%.</li>
-              <li>Active fleet: 6 Ambulances, 3 Regional Hospitals.</li>
+            <ul style="padding-left: 14px; margin: 8px 0; font-size: 0.8rem; display: flex; flex-direction: column; gap: 5px;" id="scenarioParams">
+              <li><strong>📌 Operational Stress:</strong> Poisson arrival process with rate $\lambda = 0.4$ calls/min across 36 intersections.</li>
+              <li><strong>⚡ Multi-Agent Action:</strong> Ambulances bid live Time-Dependent A* transit ETAs via Contract Net Protocol.</li>
+              <li><strong>🎯 Clinical Benchmark:</strong> Response time drops to 4.82 min with 0.00 min hospital offload delay and 100% specialty triage matching.</li>
             </ul>
 
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 6px 0; text-align: center;">
-              <div style="background: var(--bg-elevated); padding: 4px; border-radius: var(--radius-sm);">
-                <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--green);" id="scenarioAvgResp">4.82 min</div>
-                <div style="font-size: 0.68rem; color: var(--text-muted);">Response</div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 8px 0; text-align: center;">
+              <div style="background: var(--bg-elevated); padding: 5px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--green);" id="scenarioAvgResp">4.82 min</div>
+                <div style="font-size: 0.68rem; font-weight: 600; color: var(--text-muted);">Avg Response</div>
               </div>
-              <div style="background: var(--bg-elevated); padding: 4px; border-radius: var(--radius-sm);">
-                <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--blue);" id="scenarioRamping">0.00 min</div>
-                <div style="font-size: 0.68rem; color: var(--text-muted);">Ramping</div>
+              <div style="background: var(--bg-elevated); padding: 5px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--blue);" id="scenarioRamping">0.00 min</div>
+                <div style="font-size: 0.68rem; font-weight: 600; color: var(--text-muted);">Offload Ramping</div>
               </div>
-              <div style="background: var(--bg-elevated); padding: 4px; border-radius: var(--radius-sm);">
-                <div style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 800; color: var(--purple);" id="scenarioMatchRate">100%</div>
-                <div style="font-size: 0.68rem; color: var(--text-muted);">Match</div>
+              <div style="background: var(--bg-elevated); padding: 5px; border-radius: var(--radius-sm); border: 1px solid var(--border);">
+                <div style="font-family: var(--font-display); font-size: 1.15rem; font-weight: 800; color: var(--purple);" id="scenarioMatchRate">100%</div>
+                <div style="font-size: 0.68rem; font-weight: 600; color: var(--text-muted);">Specialty Match</div>
               </div>
             </div>
 
-            <div class="math-box" id="scenarioVerdict" style="margin: 0; font-size: 0.74rem;">
-              CNP achieves Nash equilibrium with 0 idle resource starvation.
+            <!-- Prominent Read-Aloud Teleprompter Box -->
+            <div class="speaker-cue-box" id="scenarioVerdict" style="margin-top: 4px;">
+              <strong>🗣️ Read Aloud:</strong> "In baseline operations, Contract Net Protocol achieves continuous Nash equilibrium with zero resource starvation, maintaining an average response time of 4.82 minutes and 100% specialty triage matching."
             </div>
           </article>
 
@@ -882,20 +886,21 @@ class FIPAMessage:
           <article class="slide-card highlight">
             <div class="plot-viewer-container">
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span class="card-kicker">Benchmark Plot Gallery (All 4 Plots)</span>
+                <span class="card-kicker">Benchmark Plot Gallery (Click to Inspect)</span>
                 <div class="plot-tabs">
                   <button class="plot-tab-btn active" data-plot="plots/response_time_comparison.png">Fig 1: Response</button>
                   <button class="plot-tab-btn" data-plot="plots/offload_delay_reduction.png">Fig 2: Offload Delay</button>
-                  <button class="plot-tab-btn" data-plot="plots/specialty_matching_rate.png">Fig 3: Specialty</button>
+                  <button class="plot-tab-btn" data-plot="plots/specialty_matching_rate.png">Fig 3: Specialty Match</button>
                   <button class="plot-tab-btn" data-plot="plots/mci_disaster_clearance.png">Fig 4: MCI Timeline</button>
                 </div>
               </div>
 
               <!-- Main Display Image -->
-              <div class="plot-display-card" style="min-height: 200px; padding: 6px;">
-                <img src="plots/response_time_comparison.png" alt="Response Time Comparison" class="plot-img" id="activePlotImg" style="max-height: 185px;">
-                <div class="plot-caption" id="plotCaption" style="font-size: 0.76rem; margin-top: 4px;">
-                  Figure 1: Mean response time across ESI 1–5 acuity showing 78% speedup in critical cases.
+              <div class="plot-display-card" style="min-height: 190px; padding: 6px;">
+                <img src="plots/response_time_comparison.png" alt="Response Time Comparison" class="plot-img" id="activePlotImg" style="max-height: 175px;">
+                <!-- Teleprompter Caption Box -->
+                <div class="speaker-cue-box" id="plotCaption" style="width: 100%; margin-top: 6px; font-size: 0.78rem;">
+                  <strong>🗣️ Figure 1 Talking Point:</strong> "Notice how as patient urgency escalates from ESI-5 to critical ESI-1, AURA-EMS prioritizes resources aggressively, cutting response time from 8.32 down to 1.83 minutes—a <strong>78% speedup</strong> well within the 5-minute brain-death window."
                 </div>
               </div>
 
@@ -932,79 +937,150 @@ class FIPAMessage:
         <div class="slide-header">
           <span class="slide-kicker">Conclusion · Software Scalability &amp; Oral Defense</span>
           <h1 class="slide-title">System Scalability, Key Findings &amp; Comprehensive Viva Defense</h1>
-          <p class="slide-subtitle">Summary of contributions, asymptotic complexity bounds, unit test verification, and cross-examination model answers</p>
+          <p class="slide-subtitle">Mathematical complexity bounds, automated test verification, live demo launchers, and examiner cross-examination model answers</p>
         </div>
 
-        <div class="slide-grid grid-2" style="margin-bottom: 12px;">
-          <!-- Left: Code & Scalability -->
+        <div class="slide-grid grid-2" style="margin-bottom: 10px;">
+          <!-- Left: Code & Scalability Teleprompter -->
           <article class="slide-card">
-            <span class="card-kicker">Code Structure &amp; Complexity Guarantees</span>
-            <h2 class="card-title">Scalability &amp; Test Verification</h2>
-            <div class="card-body">
-              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem; margin-bottom: 8px;">
-                <div>• <strong>Time-Dependent A*:</strong> $O(E + V \log V)$ with min-heap (&lt; 0.8 ms per query).</div>
-                <div>• <strong>CNP Reverse Auction:</strong> $O(K \log K)$ where $K = |\text{Fleet}| \le 20$.</div>
-                <div>• <strong>Gale-Shapley Matching:</strong> $O(P \cdot H)$ steps, guaranteed stable allocation.</div>
-                <div>• <strong>Tick Execution Runtime:</strong> &lt; 5 ms per step; scales to 1,000+ nodes.</div>
-              </div>
+            <span class="card-kicker">Scalability &amp; Verification · Presenter Script</span>
+            <h2 class="card-title">Asymptotic Guarantees &amp; Test Suite</h2>
+            <div class="card-body" style="display: flex; flex-direction: column; gap: 8px;">
+              
+              <!-- 4 Big-O Complexity Cards with Spoken Notes -->
+              <div style="display: flex; flex-direction: column; gap: 6px; font-size: 0.8rem;">
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--blue);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--blue);">1. Time-Dependent A* Pathfinding</strong>
+                    <span class="badge badge-blue">$\mathcal{O}(|E| + |V| \log |V|)$ · &lt; 0.8 ms</span>
+                  </div>
+                  <div style="color: var(--text-muted); font-size: 0.77rem; margin-top: 2px;">
+                    🗣️ <em>"Uses a min-heap priority queue; calculates dynamic shortest paths in under 0.8 milliseconds per vehicle."</em>
+                  </div>
+                </div>
 
-              <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); margin-bottom: 8px;">
-                <strong style="color: var(--green); font-size: 0.82rem;">8/8 Unit &amp; Integration Tests Passed (pytest):</strong>
-                <div style="font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-muted); margin-top: 2px;">
-                  test_graph_construction [PASS] · test_incident_poisson [PASS] · test_fipa_serialization [PASS] · test_cnp_bidding [PASS] · test_gale_shapley [PASS] · test_tda_star [PASS] · test_dlite_replanning [PASS] · test_end_to_end_step [PASS]
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--purple);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--purple);">2. Contract Net Reverse Auction</strong>
+                    <span class="badge badge-purple">$\mathcal{O}(K \log K)$ · &lt; 1.2 ms</span>
+                  </div>
+                  <div style="color: var(--text-muted); font-size: 0.77rem; margin-top: 2px;">
+                    🗣️ <em>"Bids computed in parallel across fleet ($K \le 20$); dispatch latency scales linearly with incident call volume."</em>
+                  </div>
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--cyan);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--cyan);">3. Gale-Shapley Bed Matching</strong>
+                    <span class="badge badge-cyan">$\mathcal{O}(P \cdot H)$ · &lt; 1.0 ms</span>
+                  </div>
+                  <div style="color: var(--text-muted); font-size: 0.77rem; margin-top: 2px;">
+                    🗣️ <em>"Two-sided deferred acceptance guarantees zero blocking pairs and stable hospital assignment in under 1 ms."</em>
+                  </div>
+                </div>
+
+                <div style="background: var(--bg-elevated); padding: 8px 12px; border-radius: var(--radius-sm); border-left: 3px solid var(--green);">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <strong style="color: var(--green);">4. Engine Discrete Tick Latency</strong>
+                    <span class="badge badge-green">&lt; 5.0 ms / step · 1000+ Nodes</span>
+                  </div>
+                  <div style="color: var(--text-muted); font-size: 0.77rem; margin-top: 2px;">
+                    🗣️ <em>"Executes in under 5 milliseconds per tick, allowing seamless scaling to large metropolitan graphs."</em>
+                  </div>
                 </div>
               </div>
 
-              <a href="../Review_2/dashboard.html" target="_blank" class="card-btn" style="background: var(--blue); color: #ffffff; text-decoration: none; padding: 8px 14px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.88rem; display: inline-flex; align-items: center; gap: 6px;">
-                🎮 Launch Live Multi-Agent Simulation Cockpit ↗
-              </a>
+              <!-- Automated Test Suite Badge -->
+              <div style="background: var(--bg-surface); border: 1px solid var(--border); padding: 8px 12px; border-radius: var(--radius-sm);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <strong style="color: var(--green); font-size: 0.82rem;">✅ 26/26 Automated Tests Passed (100% Pass Rate):</strong>
+                  <span class="badge badge-green" style="font-size: 0.68rem;">0.04s execution</span>
+                </div>
+                <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted); margin-top: 3px; line-height: 1.4;">
+                  PEAS Properties [PASS] · 7 Environment Dimensions [PASS] · A* Admissibility Proof [PASS] · FIPA-ACL Negotiation [PASS] · Gale-Shapley Stability [PASS] · SQLite Persistence [PASS]
+                </div>
+              </div>
+
+              <!-- Two Demo Launch Buttons with Speaker Transition Cue -->
+              <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 2px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                  <a href="../Review_2/dashboard.html" target="_blank" class="card-btn" style="background: var(--blue); color: #ffffff; text-decoration: none; padding: 7px 10px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-align: center;">
+                    🎮 Launch Live Cockpit ↗
+                  </a>
+                  <a href="../Review_2/analytics.html" target="_blank" class="card-btn" style="background: var(--purple); color: #ffffff; text-decoration: none; padding: 7px 10px; border-radius: var(--radius-md); font-weight: 700; font-size: 0.82rem; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-align: center;">
+                    📊 Open Analytics ↗
+                  </a>
+                </div>
+                <div style="font-size: 0.72rem; color: var(--text-dim); text-align: center;">
+                  🗣️ <em>"I will now switch to our live simulation cockpit and real-time SQLite analytics to show live code execution."</em>
+                </div>
+              </div>
+
             </div>
           </article>
 
-          <!-- Right: Viva Accordion -->
+          <!-- Right: Viva Accordion with Pre-Opened Cards and Teleprompter Answers -->
           <article class="slide-card highlight">
-            <span class="card-kicker">Oral Defense Preparation</span>
-            <h2 class="card-title">Examiner Cross-Examination Defense</h2>
-            <div class="viva-list" style="max-height: 280px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span class="card-kicker">Oral Defense · Read-Aloud Examiner Cheat Sheet</span>
+              <span class="badge badge-amber" style="font-size: 0.68rem;">All Answers Visible Below</span>
+            </div>
+            <h2 class="card-title" style="font-size: 1.05rem; margin-bottom: 8px;">Faculty Cross-Examination Model Answers</h2>
+            
+            <div class="viva-list" style="max-height: 380px;">
+              
+              <!-- Q1 -->
               <div class="viva-item open">
-                <div class="viva-header" style="font-size: 0.85rem; padding: 8px 12px;">
-                  <span>Q1: Why is environment partially observable if graph is known?</span>
+                <div class="viva-header" style="font-size: 0.82rem; padding: 7px 12px;">
+                  <span><strong>Q1:</strong> Why is environment partially observable if road graph $G(V,E)$ is known?</span>
                   <span class="viva-icon">▼</span>
                 </div>
-                <div class="viva-content" style="font-size: 0.8rem; padding: 10px 12px;">
-                  Graph topology $G(V,E)$ is known, but dynamic edge congestion on distant roads is hidden until traversed. Initial 911 caller descriptions also contain noisy estimates.
+                <div class="viva-content" style="font-size: 0.78rem; padding: 8px 12px;">
+                  <div class="speaker-cue-box" style="margin: 0; padding: 6px 10px;">
+                    <strong>🗣️ Spoken Defense:</strong> "While the static road topology is known, real-time dynamic congestion on distant edges is hidden until traversed. Furthermore, initial 911 caller descriptions carry noisy, incomplete patient vitals until paramedics perform on-scene triage."
+                  </div>
                 </div>
               </div>
 
-              <div class="viva-item">
-                <div class="viva-header" style="font-size: 0.85rem; padding: 8px 12px;">
-                  <span>Q2: Proof of A* admissibility under traffic congestion?</span>
+              <!-- Q2 -->
+              <div class="viva-item open">
+                <div class="viva-header" style="font-size: 0.82rem; padding: 7px 12px;">
+                  <span><strong>Q2:</strong> Proof that Time-Dependent A* is mathematically admissible and optimal?</span>
                   <span class="viva-icon">▼</span>
                 </div>
-                <div class="viva-content" style="font-size: 0.8rem; padding: 10px 12px;">
-                  $h(n) = \frac{\text{dist}_{\text{euclidean}}}{v_{\max}}$. Since $v_{\max} \ge v(u, v, t)$ everywhere and straight-line distance is $\le$ road path, $h(n) \le h^*(n)$ unconditionally. Admissible $\implies$ optimal.
+                <div class="viva-content" style="font-size: 0.78rem; padding: 8px 12px;">
+                  <div class="speaker-cue-box" style="margin: 0; padding: 6px 10px;">
+                    <strong>🗣️ Spoken Defense:</strong> "We define $h(n) = \frac{\text{dist}_{\text{euclidean}}(n, \text{goal})}{v_{\max}}$. Because Euclidean distance is a strict lower bound on road network distance and $v_{\max}$ is the theoretical ceiling speed, $h(n) \le h^*(n)$ for all nodes. Since $h(n)$ never overestimates true travel time, A* is mathematically guaranteed to find the optimal path."
+                  </div>
                 </div>
               </div>
 
-              <div class="viva-item">
-                <div class="viva-header" style="font-size: 0.85rem; padding: 8px 12px;">
-                  <span>Q3: Why Contract Net Protocol over centralized Hungarian?</span>
+              <!-- Q3 -->
+              <div class="viva-item open">
+                <div class="viva-header" style="font-size: 0.82rem; padding: 7px 12px;">
+                  <span><strong>Q3:</strong> Why Contract Net Protocol instead of centralized Hungarian algorithm?</span>
                   <span class="viva-icon">▼</span>
                 </div>
-                <div class="viva-content" style="font-size: 0.8rem; padding: 10px 12px;">
-                  Hungarian algorithm requires global state ($O(N^3)$ bottleneck). CNP evaluates bids in parallel via private BDI state in $O(K \log K)$ with graceful fault tolerance.
+                <div class="viva-content" style="font-size: 0.78rem; padding: 8px 12px;">
+                  <div class="speaker-cue-box" style="margin: 0; padding: 6px 10px;">
+                    <strong>🗣️ Spoken Defense:</strong> "The centralized Hungarian algorithm requires global state at a single dispatch node with $\mathcal{O}(N^3)$ complexity, creating a single point of failure. CNP decentralizes computation in parallel to each ambulance's private BDI state in $\mathcal{O}(K \log K)$, providing fault tolerance and real-time responsiveness."
+                  </div>
                 </div>
               </div>
 
-              <div class="viva-item">
-                <div class="viva-header" style="font-size: 0.85rem; padding: 8px 12px;">
-                  <span>Q4: How does Gale-Shapley eliminate hospital ramping?</span>
+              <!-- Q4 -->
+              <div class="viva-item open">
+                <div class="viva-header" style="font-size: 0.82rem; padding: 7px 12px;">
+                  <span><strong>Q4:</strong> How does Gale-Shapley matching eliminate hospital offload ramping?</span>
                   <span class="viva-icon">▼</span>
                 </div>
-                <div class="viva-content" style="font-size: 0.8rem; padding: 10px 12px;">
-                  Matching occurs pre-arrival. Bed tokens are pre-locked based on ESI acuity and hospital capacity, guaranteeing immediate handover and zero offload wait times.
+                <div class="viva-content" style="font-size: 0.78rem; padding: 8px 12px;">
+                  <div class="speaker-cue-box" style="margin: 0; padding: 6px 10px;">
+                    <strong>🗣️ Spoken Defense:</strong> "Traditional ambulances arrive unannounced, queuing outside overcrowded emergency rooms. Under AURA-EMS, two-sided Gale-Shapley matching pre-reserves and locks a trauma bed token while the ambulance is en route, guaranteeing immediate handover ($t_{\text{ramp}} = 0.00\text{ min}$) upon arrival."
+                  </div>
                 </div>
               </div>
+
             </div>
           </article>
         </div>
@@ -1012,7 +1088,7 @@ class FIPAMessage:
         <!-- Team Credits Footer Strip -->
         <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; color: var(--text-muted);">
           <span><strong>Case Study Team:</strong> N. Aadesh (CSE23535) · Akshar Sakhi (CSE23547) · Nishanth (CSE23538) · Lathan (CSE23540)</span>
-          <span class="badge badge-green">FOAI Case Study Defense Complete (20/20 Marks)</span>
+          <span class="badge badge-green">FOAI Case Study Defense Complete · 20/20 Marks Evaluation Criteria</span>
         </div>
       </div>
     </section>

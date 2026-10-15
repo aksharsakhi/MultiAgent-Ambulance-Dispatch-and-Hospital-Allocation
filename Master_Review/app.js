@@ -11,7 +11,7 @@
   const totalSlides = 14;
   let currentSlide = 0;
 
-  // ── Scenario Data for Slide 12 ────────────────────────────
+  // ── Scenario Data for Slide 12 (Deck Slide 13) ───────────
   const scenariosData = [
     {
       title: 'Baseline Urban Operations',
@@ -19,15 +19,14 @@
       badge: 'green',
       badgeText: 'Scenario 1: Baseline Flow',
       params: [
-        '<strong>Arrival Process:</strong> Poisson distribution with rate λ = 0.4 calls/min across 36 intersections.',
-        '<strong>Triage Acuity:</strong> ESI-1: 10%, ESI-2: 25%, ESI-3: 40%, ESI-4: 25%.',
-        '<strong>Traffic Conditions:</strong> Nominal speed (45 km/h), stochastic intersection delays.',
-        '<strong>Active Fleet:</strong> 6 Ambulances (2 ALS, 3 BLS, 1 Moto), 3 Regional Hospitals.'
+        '<strong>📌 Operational Stress:</strong> Poisson arrival process with rate λ = 0.4 calls/min across 36 intersections.',
+        '<strong>⚡ Multi-Agent Action:</strong> Ambulances bid live Time-Dependent A* transit ETAs via Contract Net Protocol.',
+        '<strong>🎯 Clinical Benchmark:</strong> Response time drops to 4.82 min with 0.00 min hospital offload delay and 100% specialty triage matching.'
       ],
       avgResp: '4.82 min',
       ramping: '0.00 min',
       matchRate: '100%',
-      verdict: 'Contract Net Protocol achieves optimal Nash equilibrium with 0 idle resource starvation and perfect fleet rotation.'
+      verdict: '<strong>🗣️ Read Aloud:</strong> "In baseline operations, Contract Net Protocol achieves continuous Nash equilibrium with zero resource starvation, maintaining an average response time of 4.82 minutes and 100% specialty triage matching."'
     },
     {
       title: 'Multi-Vehicle Highway Collision (MCI)',
@@ -35,15 +34,14 @@
       badge: 'red',
       badgeText: 'Scenario 2: Mass Casualty (MCI)',
       params: [
-        '<strong>Incident Profile:</strong> 6 simultaneous critical patients (4 ESI-1, 2 ESI-2) on Highway Node N10.',
-        '<strong>Triage Protocol:</strong> Automatic batching & rapid motorcycle stabilization dispatch.',
-        '<strong>Fleet Mobilization:</strong> 100% fleet recall + mutual aid coordination.',
-        '<strong>Target Benchmark:</strong> Evacuation clearance within golden window (< 15 min).'
+        '<strong>📌 Operational Stress:</strong> 6 simultaneous critical casualties (4 ESI-1, 2 ESI-2) clustered at Highway Node N10.',
+        '<strong>⚡ Multi-Agent Action:</strong> Decentralized wave dispatch mobilizes full fleet + rapid motorcycle first responders simultaneously.',
+        '<strong>🎯 Clinical Benchmark:</strong> All 6 victims cleared in 11.4 min vs 24.8 min for serial CAD (54% clearance speedup).'
       ],
       avgResp: '3.12 min',
       ramping: '0.00 min',
       matchRate: '100%',
-      verdict: 'Multi-agent wave dispatch evacuated all 6 victims in 11.4 min vs 24.8 min under serial CAD dispatch (54% clearance speedup).'
+      verdict: '<strong>🗣️ Read Aloud:</strong> "During mass casualty surge, our multi-agent wave dispatch evacuated all 6 critical victims in 11.4 minutes compared to 24.8 minutes under legacy serial CAD—achieving a 54% disaster clearance speedup."'
     },
     {
       title: 'Hospital Bed Crisis & ER Diversion',
@@ -51,15 +49,14 @@
       badge: 'purple',
       badgeText: 'Scenario 3: ED Bed Saturation',
       params: [
-        '<strong>Central Hospital (H1):</strong> 95% bed capacity saturated (19/20 beds occupied).',
-        '<strong>Trigger Threshold:</strong> Proactive diversion signal sent at 85% occupancy.',
-        '<strong>Secondary Facilities:</strong> St. Jude (H2: 45% full), City General (H3: 60% full).',
-        '<strong>Matching Metric:</strong> Two-sided stable Gale-Shapley optimization.'
+        '<strong>📌 Operational Stress:</strong> Central Hospital H1 reaches 95% bed capacity saturation (19/20 beds occupied).',
+        '<strong>⚡ Multi-Agent Action:</strong> Gale-Shapley matching triggers proactive diversion at 85% threshold, rerouting to St. Jude & City General.',
+        '<strong>🎯 Clinical Benchmark:</strong> Completely eliminates ambulance offload ramping (saving 22 min per crew) with zero human intervention.'
       ],
       avgResp: '5.20 min',
       ramping: '0.00 min',
       matchRate: '100%',
-      verdict: 'Completely eliminated ambulance offload ramping (saving 22 min per crew) by dynamically rerouting to St. Jude without central human intervention.'
+      verdict: '<strong>🗣️ Read Aloud:</strong> "When Central Hospital reached 85% capacity, Gale-Shapley dynamically diverted incoming ambulances to secondary facilities, saving 22 minutes per crew and eliminating hospital ramping without central human intervention."'
     },
     {
       title: 'Severe Weather Grid Storm',
@@ -67,24 +64,23 @@
       badge: 'amber',
       badgeText: 'Scenario 4: Severe Grid Storm',
       params: [
-        '<strong>Environmental Shock:</strong> 50% link throughput reduction + 3 arterial road closures.',
-        '<strong>Replanning Engine:</strong> Dynamic D* Lite continuous edge weight cost updates.',
-        '<strong>Congestion Multiplier:</strong> Peak congestion factor c(e, t) = 3.5x nominal delay.',
-        '<strong>Fleet Routing:</strong> Decentralized real-time alternate path synthesis.'
+        '<strong>📌 Operational Stress:</strong> Storm closes 3 arterial roads; throughput drops 50%; peak congestion delay multiplier reaches 3.5×.',
+        '<strong>⚡ Multi-Agent Action:</strong> D* Lite incremental search repairs disrupted graph routes in 1.4 ms without full graph recomputation.',
+        '<strong>🎯 Clinical Benchmark:</strong> Ambulances bypass flooded choke points, avoiding the 28+ min gridlock delays suffered by static routing.'
       ],
       avgResp: '6.45 min',
       ramping: '0.00 min',
       matchRate: '98.5%',
-      verdict: 'D* Lite replanned around blocked bridges in 1.4 milliseconds, averting gridlock delays that stalled legacy CAD ambulances by 28+ minutes.'
+      verdict: '<strong>🗣️ Read Aloud:</strong> "When severe storm shocks closed 3 arterial roads, D* Lite incrementally replanned routes in 1.4 milliseconds, averting the 28+ minute gridlock delays that crippled legacy static CAD ambulances."'
     }
   ];
 
-  // ── Publication Plot Captions for Slide 12 ─────────────────
+  // ── Publication Plot Captions for Slide 12 (Deck Slide 13) ───
   const plotCaptions = {
-    'plots/response_time_comparison.png': 'Figure 1: Mean response time comparison across triage acuity classes ESI 1 to 5 showing 78% speedup in critical cases.',
-    'plots/offload_delay_reduction.png': 'Figure 2: Complete eradication of Emergency Department ambulance ramping delays via Gale-Shapley bed allocation.',
-    'plots/specialty_matching_rate.png': 'Figure 3: Clinical specialty matching accuracy (Cath Lab, Trauma, Neuro) reaching 100% with multi-agent coordination.',
-    'plots/mci_disaster_clearance.png': 'Figure 4: Mass Casualty Incident clearance timeline demonstrating 54% faster disaster evacuation under AURA-EMS.'
+    'plots/response_time_comparison.png': '<strong>🗣️ Figure 1 Talking Point:</strong> "Notice how as patient urgency escalates from ESI-5 to critical ESI-1, AURA-EMS prioritizes resources aggressively, cutting response time from 8.32 down to 1.83 minutes—a <strong>78% speedup</strong> well within the 5-minute brain-death window."',
+    'plots/offload_delay_reduction.png': '<strong>🗣️ Figure 2 Talking Point:</strong> "This figure proves the complete collapse of Emergency Department ambulance ramping to exactly <strong>0.00 minutes</strong> across all simulation hours via pre-arrival Gale-Shapley bed reservation."',
+    'plots/specialty_matching_rate.png': '<strong>🗣️ Figure 3 Talking Point:</strong> "This plot confirms <strong>100% specialty matching accuracy</strong>. Critical STEMI cardiac and neuro-trauma cases are routed directly to equipped Cath Labs and Trauma Bays without secondary transfers."',
+    'plots/mci_disaster_clearance.png': '<strong>🗣️ Figure 4 Talking Point:</strong> "Here we compare disaster evacuation timelines. Legacy serial CAD took 24.8 minutes to clear 6 casualties, whereas our multi-agent parallel wave dispatch cleared the scene in <strong>11.4 minutes (54% speedup)</strong>."'
   };
 
   // ── DOM Initialization ───────────────────────────────────
@@ -303,7 +299,7 @@
         if (respEl) respEl.textContent = data.avgResp;
         if (rampEl) rampEl.textContent = data.ramping;
         if (matchEl) matchEl.textContent = data.matchRate;
-        if (verdictEl) verdictEl.textContent = data.verdict;
+        if (verdictEl) verdictEl.innerHTML = data.verdict;
       });
     });
   }
@@ -325,7 +321,7 @@
         plotImg.src = src;
         plotImg.alt = title || 'Publication Plot';
         if (plotCaption) {
-          plotCaption.textContent = plotCaptions[src] || title;
+          plotCaption.innerHTML = plotCaptions[src] || title;
         }
       }
     }
@@ -355,10 +351,7 @@
       const header = item.querySelector('.viva-header');
       if (header) {
         header.addEventListener('click', () => {
-          const isOpen = item.classList.contains('open');
-          // Close others
-          items.forEach(i => i.classList.remove('open'));
-          if (!isOpen) item.classList.add('open');
+          item.classList.toggle('open');
         });
       }
     });
